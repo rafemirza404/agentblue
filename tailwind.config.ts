@@ -47,6 +47,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // AgentBlue custom colors
+        "electric-blue": "hsl(var(--electric-blue))",
+        "deep-navy": "hsl(var(--deep-navy))",
+        "slate-blue": "hsl(var(--slate-blue))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
