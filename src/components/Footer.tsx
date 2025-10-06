@@ -1,4 +1,5 @@
-import { Zap, Mail, Phone, MapPin } from "lucide-react";
+import agentblueLogo from "@/assets/agentblue-logo.png";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -8,14 +9,17 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center p-1">
+                <img 
+                  src={agentblueLogo} 
+                  alt="AgentBlue Logo" 
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="text-xl font-bold">AgentBlue</span>
             </div>
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
-              Transforming businesses through intelligent AI automation solutions. 
-              Scale faster, work smarter, achieve more.
+              Transforming businesses through strategic automation—not just tools, but operational excellence.
             </p>
           </div>
 

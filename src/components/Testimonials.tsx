@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, TrendingUp, Zap, DollarSign, Check } from "lucide-react";
 
 const Testimonials = () => {
   const testimonials = [
@@ -27,10 +27,10 @@ const Testimonials = () => {
   ];
 
   const stats = [
-    { number: "500%", label: "Average ROI Increase" },
-    { number: "40hrs", label: "Weekly Time Saved" },
-    { number: "99.9%", label: "Uptime Guarantee" },
-    { number: "30min", label: "Implementation Start" },
+    { number: "$100k+", label: "Annual Savings (Avg. Mid-Size Client)", icon: DollarSign },
+    { number: "85%", label: "Time Reclaimed from Manual Tasks", icon: Zap },
+    { number: "3-6 mo", label: "Average ROI Timeline", icon: TrendingUp },
+    { number: "95%", label: "Error Reduction on Automated Workflows", icon: Check },
   ];
 
   return (
@@ -48,10 +48,15 @@ const Testimonials = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
+                <div className="flex justify-center mb-3">
+                  <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
+                    <stat.icon className="w-6 h-6 text-accent" />
+                  </div>
+                </div>
                 <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
                   {stat.number}
                 </div>
-                <div className="text-muted-foreground font-medium">
+                <div className="text-muted-foreground font-medium text-sm">
                   {stat.label}
                 </div>
               </div>
