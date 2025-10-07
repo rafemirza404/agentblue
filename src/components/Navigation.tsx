@@ -1,18 +1,33 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import agentblueLogo from "@/assets/agentblue-logo.png";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const navItems = [
     { name: "Services", href: "/services" },
     { name: "About", href: "/about" },
-    { name: "Case Studies", href: "/case-studies" },
     { name: "Contact", href: "/contact" },
   ];
+
+  const handleGetStarted = () => {
+    if (location.pathname === '/' || location.pathname === '/home') {
+      // Scroll to contact form on homepage
+      const contactSection = document.getElementById('contact-form-section');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else {
+      // Navigate to contact page
+      navigate('/contact');
+    }
+    setIsOpen(false);
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-lg border-b border-border/50 z-50">
@@ -33,15 +48,15 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-muted-foreground hover:text-foreground transition-smooth"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
-            <Button variant="hero" size="sm">
+            <Button variant="hero" size="sm" onClick={handleGetStarted}>
               Get Started
             </Button>
           </div>
@@ -63,16 +78,16 @@ const Navigation = () => {
           <div className="md:hidden py-4 border-t border-border/50">
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className="text-muted-foreground hover:text-foreground transition-smooth py-2"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
-              <Button variant="hero" size="sm" className="w-fit">
+              <Button variant="hero" size="sm" className="w-fit" onClick={handleGetStarted}>
                 Get Started
               </Button>
             </div>

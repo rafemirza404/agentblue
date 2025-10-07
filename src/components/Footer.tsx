@@ -38,10 +38,9 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-semibold text-lg">Company</h3>
             <ul className="space-y-2 text-sm text-primary-foreground/80">
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Case Studies</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Blog</a></li>
+              <li><a href="/about" className="hover:text-primary-foreground transition-colors">About Us</a></li>
+              <li><a href="/services" className="hover:text-primary-foreground transition-colors">Services</a></li>
+              <li><a href="/contact" className="hover:text-primary-foreground transition-colors">Contact</a></li>
             </ul>
           </div>
 
@@ -51,19 +50,19 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-primary-foreground/80">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <a href="mailto:hello@agentblue.ai" className="hover:text-primary-foreground transition-colors">
-                  hello@agentblue.ai
+                <a href="mailto:sophia@supportagentblue.in" className="hover:text-primary-foreground transition-colors">
+                  sophia@supportagentblue.in
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <a href="tel:+1-555-0123" className="hover:text-primary-foreground transition-colors">
-                  +1 (555) 012-3456
+                <a href="tel:+919934017786" className="hover:text-primary-foreground transition-colors">
+                  +91 99340 17786
                 </a>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                <span>San Francisco, CA</span>
+                <span>Remote-First Consultancy</span>
               </div>
             </div>
           </div>

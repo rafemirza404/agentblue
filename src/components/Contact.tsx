@@ -6,7 +6,7 @@ import { ArrowRight, Calendar, Mail, MessageSquare } from "lucide-react";
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-20 md:py-32">
+    <section id="contact-form-section" className="py-20 md:py-32">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
@@ -54,9 +54,11 @@ const Contact = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full">
-                  hello@agentblue.ai
-                </Button>
+                <a href="mailto:sophia@supportagentblue.in">
+                  <Button variant="outline" className="w-full">
+                    sophia@supportagentblue.in
+                  </Button>
+                </a>
               </CardContent>
             </Card>
 
