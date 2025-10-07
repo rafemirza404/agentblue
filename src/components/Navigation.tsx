@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import agentblueLogo from "@/assets/agentblue-logo.png";
@@ -18,7 +19,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-smooth">
             <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1">
               <img 
                 src={agentblueLogo} 
@@ -27,7 +28,7 @@ const Navigation = () => {
               />
             </div>
             <span className="text-xl font-bold text-foreground">AgentBlue</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
