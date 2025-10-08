@@ -28,13 +28,29 @@ const Hero = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Button size="lg" variant="default" className="text-lg px-8">
+            <Button 
+              size="lg" 
+              variant="default" 
+              className="text-lg px-8"
+              onClick={() => {
+                const contactSection = document.getElementById('contact-form-section');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+            >
               Start Your Automation Journey
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="text-lg px-8 border-accent text-accent hover:bg-accent/10"
+              onClick={() => {
+                const caseStudiesSection = document.getElementById('case-studies');
+                if (caseStudiesSection) {
+                  caseStudiesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
             >
               View Success Stories
             </Button>

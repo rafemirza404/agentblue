@@ -23,8 +23,8 @@ const Navigation = () => {
         contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
-      // Navigate to contact page
-      navigate('/contact');
+      // Navigate to contact page with hash to contact methods section
+      navigate('/contact#contact-methods');
     }
     setIsOpen(false);
   };

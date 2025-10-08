@@ -29,7 +29,7 @@ const Contact = () => {
         </section>
 
         {/* Contact Methods */}
-        <section className="py-20 bg-secondary/30">
+        <section id="contact-methods" className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
@@ -105,7 +105,7 @@ const Contact = () => {
         </section>
 
         {/* Contact Form */}
-        <section className="py-20">
+        <section id="contact-form" className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-5 gap-12">

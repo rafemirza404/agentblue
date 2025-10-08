@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* AgentBlue Design System - Clean, professional AI automation company */
 
 @layer base {
