@@ -121,7 +121,7 @@ const About = () => {
                       Marketing strategist and automation consultant. Specializes in operational diagnosis, ROI modeling, and client-facing strategy. Ensures every automation delivers measurable business impact.
                     </p>
                     <a 
-                      href="https://www.linkedin.com/in/sadique-mirza" 
+                      href="https://www.linkedin.com/in/muhammadsadique/" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-[#0077B5] hover:opacity-80 transition-opacity"
@@ -145,7 +145,7 @@ const About = () => {
                       Technical architect and development specialist. Builds custom automation solutions, integrations, and AI implementations. Turns strategic blueprints into production-ready systems.
                     </p>
                     <a 
-                      href="https://www.linkedin.com/in/rafe-mirza" 
+                      href="https://www.linkedin.com/in/rafe-mirza-3a952b2b5/" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-[#0077B5] hover:opacity-80 transition-opacity"
