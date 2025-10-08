@@ -117,7 +117,7 @@ const Chatbot = () => {
   return (
     <>
       {/* Desktop Chat Modal */}
-      <div className="hidden md:block fixed bottom-8 right-8 w-[400px] h-[600px] bg-background rounded-2xl shadow-elegant z-[9999] flex flex-col animate-in slide-in-from-bottom-4 fade-in duration-300">
+      <div className="hidden md:flex fixed bottom-8 right-8 w-[400px] h-[600px] max-h-[calc(100vh-4rem)] bg-background rounded-2xl shadow-elegant z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#1a2332] to-[#2c3e50] rounded-t-2xl p-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -138,7 +138,7 @@ const Chatbot = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 bg-gray-50 p-5 overflow-y-auto">
+        <div className="flex-1 bg-gray-50 p-5 overflow-y-auto min-h-0">
           <div className="space-y-4">
             {messages.map((message, index) => (
               <div key={index} className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
@@ -193,7 +193,7 @@ const Chatbot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-white p-4 border-t border-gray-200 rounded-b-2xl">
+        <div className="bg-white p-4 border-t border-gray-200 rounded-b-2xl flex-shrink-0">
           <div className="relative">
             <Input
               value={inputValue}
@@ -237,7 +237,7 @@ const Chatbot = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 bg-gray-50 p-4 overflow-y-auto">
+        <div className="flex-1 bg-gray-50 p-4 overflow-y-auto min-h-0">
           <div className="space-y-4">
             {messages.map((message, index) => (
               <div key={index} className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
@@ -291,7 +291,7 @@ const Chatbot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-white p-4 border-t border-gray-200">
+        <div className="bg-white p-4 border-t border-gray-200 flex-shrink-0">
           <div className="relative">
             <Input
               value={inputValue}
