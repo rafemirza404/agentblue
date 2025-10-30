@@ -55,19 +55,6 @@ const Chatbot = () => {
     }
   }, [isOpen]);
 
-  // Listen for custom event to open chatbot
-  useEffect(() => {
-    const handleOpenChatbot = () => {
-      setIsOpen(true);
-    };
-    
-    window.addEventListener('openChatbot', handleOpenChatbot);
-    
-    return () => {
-      window.removeEventListener('openChatbot', handleOpenChatbot);
-    };
-  }, []);
-
   const quickReplies = [
     { text: "🔍 Learn about your services", key: "services" },
     { text: "💡 I have a specific need", key: "need" },
