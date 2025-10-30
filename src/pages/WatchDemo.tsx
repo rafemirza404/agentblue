@@ -114,12 +114,16 @@ const WatchDemo = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-16 leading-tight">
-              Watch a live AI voice agent handle real customer conversations—qualification, objections, and booking—in under 2 minutes
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto">
+              Watch our AI voice agent qualify leads, handle objections, and book meetings
             </h1>
 
+            <p className="text-xl md:text-2xl text-blue-400 text-center mb-16 max-w-3xl mx-auto">
+              See how our AI handles real conversations in under 2 minutes
+            </p>
+
             {/* Video Container */}
-            <div className="max-w-[900px] mx-auto mb-16">
+            <div className="max-w-[900px] mx-auto">
               <div className="relative rounded-xl overflow-hidden shadow-2xl">
                 <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
                   <div className="text-center p-8">
@@ -134,57 +138,73 @@ const WatchDemo = () => {
         </div>
       </section>
 
-      {/* What You'll See Section */}
-      <section className="py-20 md:py-32 bg-white">
+      {/* What You'll See Section - Black Background with Icons */}
+      <section className="py-20 md:py-32 bg-black">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-900 mb-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-white mb-16">
               What You'll See in This Demo
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-12">
+            <div className="space-y-8 max-w-3xl mx-auto">
               {/* Real Customer Conversation */}
-              <div className="text-center">
-                <div className="text-5xl mb-6">💬</div>
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                  Real Customer Conversation
-                </h3>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  Watch our AI voice agent handle an actual call—from greeting to qualification to booking.
-                </p>
+              <div className="flex items-start gap-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center">
+                  <MessageSquare className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                    Real Customer Conversations
+                  </h3>
+                  <p className="text-lg text-gray-300 leading-relaxed">
+                    Watch our AI voice agent handle an actual call—from greeting to qualification to booking.
+                  </p>
+                </div>
               </div>
 
               {/* Natural Language Processing */}
-              <div className="text-center">
-                <div className="text-5xl mb-6">🧠</div>
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                  Natural Language Processing
-                </h3>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  See how it understands context, handles objections, and responds like a trained human agent.
-                </p>
+              <div className="flex items-start gap-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center">
+                  <Target className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                    Natural Language Understanding
+                  </h3>
+                  <p className="text-lg text-gray-300 leading-relaxed">
+                    See how it understands context, handles objections, and responds like a trained human agent.
+                  </p>
+                </div>
               </div>
 
               {/* Seamless Appointment Setting */}
-              <div className="text-center">
-                <div className="text-5xl mb-6">📅</div>
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                  Seamless Appointment Setting
-                </h3>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  Experience how the AI checks availability, books meetings, and sends confirmations—all automatically.
-                </p>
+              <div className="flex items-start gap-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center">
+                  <Calendar className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                    Seamless Appointment Setting
+                  </h3>
+                  <p className="text-lg text-gray-300 leading-relaxed">
+                    Experience how the AI checks availability, books meetings, and sends confirmations—all automatically.
+                  </p>
+                </div>
               </div>
 
               {/* 24/7 Lead Qualification */}
-              <div className="text-center">
-                <div className="text-5xl mb-6">🎯</div>
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                  24/7 Lead Qualification
-                </h3>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                  Learn how it asks the right questions to identify high-intent prospects without human intervention.
-                </p>
+              <div className="flex items-start gap-6">
+                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                    24/7 Lead Qualification
+                  </h3>
+                  <p className="text-lg text-gray-300 leading-relaxed">
+                    Learn how it asks the right questions to identify high-intent prospects without human intervention.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
