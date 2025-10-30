@@ -10,20 +10,36 @@ interface Message {
   isQuickReply?: boolean;
 }
 
+// Session ID management
+const getSessionId = () => {
+  let sessionId = localStorage.getItem('chatSessionId');
+  if (!sessionId) {
+    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 11);
+    localStorage.setItem('chatSessionId', sessionId);
+  }
+  return sessionId;
+};
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -84,10 +100,14 @@ const Chatbot = () => {
     setIsTyping(true);
     
     try {
+      const sessionId = getSessionId();
       const response = await fetch('https://n8nlocal.supportagentblue.com/webhook/ffcf29b6-19e9-40fd-81a6-132910560043/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ 
+          message: userMessage,
+          sessionId: sessionId
+        }),
       });
       
       if (!response.ok) {
@@ -117,11 +137,11 @@ const Chatbot = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 right-8 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-accent rounded-full shadow-elegant hover:shadow-glow hover:scale-105 transition-smooth z-[9999] flex items-center justify-center group"
+        className="fixed bottom-8 right-8 w-[52px] h-[52px] bg-accent rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.25)] hover:scale-105 transition-all duration-300 z-[9999] flex items-center justify-center group"
         aria-label="Open chat"
       >
-        <MessageCircle className="w-6 h-6 md:w-7 md:h-7 text-white" />
-        <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+        <MessageCircle className="w-6 h-6 text-white" />
+        <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
       </button>
     );
   }
@@ -129,41 +149,54 @@ const Chatbot = () => {
   return (
     <>
       {/* Desktop Chat Modal */}
-      <div className="hidden md:flex fixed bottom-8 right-8 w-[400px] h-[600px] max-h-[calc(100vh-4rem)] bg-background rounded-2xl shadow-elegant z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300">
+      <div className="hidden md:flex fixed bottom-8 right-8 w-[380px] h-[650px] max-h-[calc(100vh-4rem)] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#1a2332] to-[#2c3e50] rounded-t-2xl p-5 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-[#1a2332] to-[#2c3e50] rounded-t-2xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1">
-              <img src={agentblueLogo} alt="AgentBlue" className="w-full h-full object-contain" />
+            <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center p-1.5">
+              <img 
+                src={agentblueLogo} 
+                alt="AgentBlue" 
+                className="w-full h-full object-contain"
+                style={{ imageRendering: '-webkit-optimize-contrast' }}
+              />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">AgentBlue Assistant</h3>
-              <p className="text-gray-300 text-sm">⚡ Typically replies instantly</p>
+              <h3 className="text-white font-semibold text-base">AgentBlue</h3>
+              <p className="text-gray-300 text-xs">⚡ Typically replies instantly</p>
             </div>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-white hover:bg-white/10 rounded-lg p-1 transition-smooth"
+            className="text-white hover:bg-white/10 rounded-lg p-1.5 transition-all duration-200"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 bg-gray-50 p-5 overflow-y-auto min-h-0">
+        <div 
+          ref={messagesContainerRef}
+          className="flex-1 bg-gray-50 p-4 overflow-y-auto min-h-0 scroll-smooth"
+        >
           <div className="space-y-4">
             {messages.map((message, index) => (
-              <div key={index} className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
+              <div key={index} className={`flex ${message.isBot ? "justify-start" : "justify-end"} mb-3`}>
                 {message.isBot && (
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
-                    <img src={agentblueLogo} alt="Bot" className="w-full h-full object-contain" />
+                  <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
+                    <img 
+                      src={agentblueLogo} 
+                      alt="Bot" 
+                      className="w-full h-full object-contain"
+                      style={{ imageRendering: '-webkit-optimize-contrast' }}
+                    />
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] p-3 rounded-xl whitespace-pre-line ${
+                  className={`max-w-[75%] px-4 py-2.5 rounded-2xl whitespace-pre-line text-sm leading-relaxed ${
                     message.isBot
-                      ? "bg-white text-gray-800 shadow-sm rounded-tl-none"
-                      : "bg-accent text-white rounded-tr-none"
+                      ? "bg-white text-gray-800 shadow-sm rounded-tl-sm"
+                      : "bg-[#0084ff] text-white rounded-tr-sm"
                   }`}
                 >
                   {message.text}
@@ -187,11 +220,16 @@ const Chatbot = () => {
             )}
             
             {isTyping && (
-              <div className="flex justify-start">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
-                  <img src={agentblueLogo} alt="Bot" className="w-full h-full object-contain" />
+              <div className="flex justify-start mb-3">
+                <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
+                  <img 
+                    src={agentblueLogo} 
+                    alt="Bot" 
+                    className="w-full h-full object-contain"
+                    style={{ imageRendering: '-webkit-optimize-contrast' }}
+                  />
                 </div>
-                <div className="bg-white p-3 rounded-xl rounded-tl-none shadow-sm">
+                <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm">
                   <div className="flex gap-1">
                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
@@ -211,14 +249,14 @@ const Chatbot = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
-              className="pr-12 rounded-3xl border-gray-300 focus:border-accent"
+              placeholder="Type a message..."
+              className="pr-12 rounded-full border-gray-300 focus:border-[#0084ff] focus:ring-1 focus:ring-[#0084ff] text-sm h-10"
             />
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className={`absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition-smooth ${
-                inputValue.trim() ? "bg-accent hover:bg-accent/90" : "bg-gray-300"
+              className={`absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                inputValue.trim() ? "bg-[#0084ff] hover:bg-[#0073e6]" : "bg-gray-300 cursor-not-allowed"
               }`}
             >
               <Send className="w-4 h-4 text-white" />
@@ -228,41 +266,54 @@ const Chatbot = () => {
       </div>
 
       {/* Mobile Full-Screen Chat */}
-      <div className="md:hidden fixed inset-0 bg-background z-[9999] flex flex-col animate-in slide-in-from-bottom-4 duration-300">
+      <div className="md:hidden fixed inset-0 bg-white z-[9999] flex flex-col animate-in slide-in-from-bottom-4 duration-300">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#1a2332] to-[#2c3e50] p-5 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-[#1a2332] to-[#2c3e50] p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1">
-              <img src={agentblueLogo} alt="AgentBlue" className="w-full h-full object-contain" />
+            <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center p-1.5">
+              <img 
+                src={agentblueLogo} 
+                alt="AgentBlue" 
+                className="w-full h-full object-contain"
+                style={{ imageRendering: '-webkit-optimize-contrast' }}
+              />
             </div>
             <div>
-              <h3 className="text-white font-bold text-lg">AgentBlue Assistant</h3>
-              <p className="text-gray-300 text-sm">⚡ Typically replies instantly</p>
+              <h3 className="text-white font-semibold text-base">AgentBlue</h3>
+              <p className="text-gray-300 text-xs">⚡ Typically replies instantly</p>
             </div>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-white hover:bg-white/10 rounded-lg p-1 transition-smooth"
+            className="text-white hover:bg-white/10 rounded-lg p-1.5 transition-all duration-200"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 bg-gray-50 p-4 overflow-y-auto min-h-0">
+        <div 
+          ref={messagesContainerRef}
+          className="flex-1 bg-gray-50 p-4 overflow-y-auto min-h-0 scroll-smooth"
+        >
           <div className="space-y-4">
             {messages.map((message, index) => (
-              <div key={index} className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
+              <div key={index} className={`flex ${message.isBot ? "justify-start" : "justify-end"} mb-3`}>
                 {message.isBot && (
-                  <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
-                    <img src={agentblueLogo} alt="Bot" className="w-full h-full object-contain" />
+                  <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
+                    <img 
+                      src={agentblueLogo} 
+                      alt="Bot" 
+                      className="w-full h-full object-contain"
+                      style={{ imageRendering: '-webkit-optimize-contrast' }}
+                    />
                   </div>
                 )}
                 <div
-                  className={`max-w-[80%] p-3 rounded-xl whitespace-pre-line ${
+                  className={`max-w-[75%] px-4 py-2.5 rounded-2xl whitespace-pre-line text-sm leading-relaxed ${
                     message.isBot
-                      ? "bg-white text-gray-800 shadow-sm rounded-tl-none"
-                      : "bg-accent text-white rounded-tr-none"
+                      ? "bg-white text-gray-800 shadow-sm rounded-tl-sm"
+                      : "bg-[#0084ff] text-white rounded-tr-sm"
                   }`}
                 >
                   {message.text}
@@ -276,7 +327,7 @@ const Chatbot = () => {
                   <button
                     key={reply.key}
                     onClick={() => handleQuickReply(reply.key)}
-                    className="text-left p-3 bg-white hover:bg-gray-100 rounded-xl text-sm text-gray-700 shadow-sm transition-smooth border border-gray-200"
+                    className="text-left p-3 bg-white hover:bg-gray-100 rounded-xl text-sm text-gray-700 shadow-sm transition-all duration-200 border border-gray-200"
                   >
                     {reply.text}
                   </button>
@@ -285,11 +336,16 @@ const Chatbot = () => {
             )}
             
             {isTyping && (
-              <div className="flex justify-start">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
-                  <img src={agentblueLogo} alt="Bot" className="w-full h-full object-contain" />
+              <div className="flex justify-start mb-3">
+                <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-sm">
+                  <img 
+                    src={agentblueLogo} 
+                    alt="Bot" 
+                    className="w-full h-full object-contain"
+                    style={{ imageRendering: '-webkit-optimize-contrast' }}
+                  />
                 </div>
-                <div className="bg-white p-3 rounded-xl rounded-tl-none shadow-sm">
+                <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm">
                   <div className="flex gap-1">
                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
                     <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
@@ -309,14 +365,14 @@ const Chatbot = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
-              className="pr-12 rounded-3xl border-gray-300 focus:border-accent"
+              placeholder="Type a message..."
+              className="pr-12 rounded-full border-gray-300 focus:border-[#0084ff] focus:ring-1 focus:ring-[#0084ff] text-sm h-10"
             />
             <button
               onClick={handleSend}
               disabled={!inputValue.trim()}
-              className={`absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition-smooth ${
-                inputValue.trim() ? "bg-accent hover:bg-accent/90" : "bg-gray-300"
+              className={`absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                inputValue.trim() ? "bg-[#0084ff] hover:bg-[#0073e6]" : "bg-gray-300 cursor-not-allowed"
               }`}
             >
               <Send className="w-4 h-4 text-white" />

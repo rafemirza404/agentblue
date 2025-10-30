@@ -128,29 +128,33 @@ const WatchDemo = () => {
         </div>
       </div>
 
-      {/* Hero Section with Video - Moved Up */}
-      <section className="py-12 bg-black">
+      {/* Hero Section with Video */}
+      <section className="pt-16 pb-8 bg-black">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             {/* Headline */}
-            <div className="text-center mb-10">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
+            <div className="text-center mb-12">
+              <h1 className="text-5xl md:text-7xl font-extrabold mb-8 text-white leading-tight tracking-tight">
                 IT'S NOT JUST AUTOMATION.
                 <br />
-                <span className="text-gray-300">IT'S 24/7 OPERATIONAL LEVERAGE.</span>
+                <span className="bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
+                  IT'S 24/7 OPERATIONAL LEVERAGE.
+                </span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light">
                 Watch how our AI voice agents handle real customer conversations with human-like intelligence
               </p>
             </div>
 
-            {/* Video Container - Prominent Position */}
-            <div className="relative rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(255,255,255,0.08)] mb-16">
-              <div className="aspect-video bg-gray-900 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl mb-4">📹</div>
-                  <p className="text-white text-xl font-medium mb-2">Demo Video Coming Soon</p>
-                  <p className="text-gray-400">We're currently filming this demo. Check back soon!</p>
+            {/* Video Container */}
+            <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_80px_rgba(255,255,255,0.1)] mb-12 border border-white/10">
+              <div className="aspect-video bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="w-24 h-24 mx-auto mb-6 bg-white/5 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/10">
+                    <div className="text-5xl">📹</div>
+                  </div>
+                  <p className="text-white text-2xl font-semibold mb-3">Demo Video Coming Soon</p>
+                  <p className="text-gray-400 text-lg">We're currently filming this demo. Check back soon!</p>
                 </div>
               </div>
             </div>
@@ -159,72 +163,83 @@ const WatchDemo = () => {
       </section>
 
       {/* What You'll See */}
-      <section className="py-20 bg-black">
+      <section className="py-24 bg-black border-t border-white/5">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
-              What You'll See in This Demo:
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16">
+              What You'll See in This Demo
             </h2>
             
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-white border-0">
-                <CardContent className="p-8 text-center">
-                  <div className="text-5xl mb-4">🎯</div>
-                  <h3 className="text-xl font-bold mb-4">Lead Qualification</h3>
-                  <p className="text-muted-foreground">
-                    Watch how the AI asks strategic questions to identify high-intent prospects and gather key information.
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-[0_20px_60px_rgba(255,255,255,0.1)] transition-all duration-300 hover:-translate-y-1">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <span className="text-4xl">🎯</span>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">Lead Qualification</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Watch how the AI asks strategic questions to identify high-intent prospects and gather key information.
+                </p>
+              </div>
 
-              <Card className="bg-white border-0">
-                <CardContent className="p-8 text-center">
-                  <div className="text-5xl mb-4">💬</div>
-                  <h3 className="text-xl font-bold mb-4">Objection Handling</h3>
-                  <p className="text-muted-foreground">
-                    See natural responses to common concerns, pushback, and hesitation—just like a trained sales rep would handle.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-[0_20px_60px_rgba(255,255,255,0.1)] transition-all duration-300 hover:-translate-y-1">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl flex items-center justify-center mb-6">
+                  <span className="text-4xl">💬</span>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">Objection Handling</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  See natural responses to common concerns, pushback, and hesitation—just like a trained sales rep would handle.
+                </p>
+              </div>
 
-              <Card className="bg-white border-0">
-                <CardContent className="p-8 text-center">
-                  <div className="text-5xl mb-4">📅</div>
-                  <h3 className="text-xl font-bold mb-4">Meeting Booking</h3>
-                  <p className="text-muted-foreground">
-                    Experience seamless calendar integration as the AI handles scheduling without human intervention.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 border border-gray-100 hover:shadow-[0_20px_60px_rgba(255,255,255,0.1)] transition-all duration-300 hover:-translate-y-1">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl flex items-center justify-center mb-6">
+                  <span className="text-4xl">📅</span>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">Meeting Booking</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Experience seamless calendar integration as the AI handles scheduling without human intervention.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Results Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+      <section className="py-24 bg-gradient-to-b from-black via-gray-950 to-black border-y border-white/5">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-6">
               Real Results from AI Voice Agents
             </h2>
+            <p className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto">
+              Stop losing leads to slow response times and missed calls. Our AI voice agents deliver measurable impact.
+            </p>
             
             <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-accent mb-2">24/7</div>
-                <p className="text-gray-300">Always Available</p>
+              <div className="text-center group">
+                <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-4 group-hover:border-white/20 transition-all duration-300">
+                  <div className="text-6xl font-black bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-3">24/7</div>
+                  <p className="text-gray-300 text-lg font-medium">Always Available</p>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-accent mb-2">90%</div>
-                <p className="text-gray-300">Cost Reduction</p>
+              <div className="text-center group">
+                <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-4 group-hover:border-white/20 transition-all duration-300">
+                  <div className="text-6xl font-black bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-3">90%</div>
+                  <p className="text-gray-300 text-lg font-medium">Cost Reduction</p>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-accent mb-2">3x</div>
-                <p className="text-gray-300">More Conversations</p>
+              <div className="text-center group">
+                <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-4 group-hover:border-white/20 transition-all duration-300">
+                  <div className="text-6xl font-black bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-3">3x</div>
+                  <p className="text-gray-300 text-lg font-medium">More Conversations</p>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-accent mb-2">0</div>
-                <p className="text-gray-300">Missed Opportunities</p>
+              <div className="text-center group">
+                <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm border border-white/10 rounded-2xl p-8 mb-4 group-hover:border-white/20 transition-all duration-300">
+                  <div className="text-6xl font-black bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent mb-3">0</div>
+                  <p className="text-gray-300 text-lg font-medium">Missed Opportunities</p>
+                </div>
               </div>
             </div>
           </div>
@@ -232,20 +247,21 @@ const WatchDemo = () => {
       </section>
 
       {/* CTA Form Section */}
-      <section className="py-20 bg-gradient-to-r from-accent to-accent/90">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+      <section className="py-32 bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-14">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
                 Ready to Deploy Your Own AI Voice Agent?
               </h2>
-              <p className="text-xl text-white/90">
+              <p className="text-xl md:text-2xl text-white/95 leading-relaxed max-w-2xl mx-auto">
                 Book a free strategy call to discuss how AI voice agents can transform your business operations.
               </p>
             </div>
 
-            <Card className="bg-white border-0">
-              <CardContent className="p-8">
+            <Card className="bg-white border-0 shadow-2xl rounded-2xl">
+              <CardContent className="p-10">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
