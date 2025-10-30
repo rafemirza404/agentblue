@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle, Target, MessageSquare, Calendar, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const WatchDemo = () => {
@@ -112,68 +112,44 @@ const WatchDemo = () => {
       {/* Hero Section with Video and Key Points */}
       <section className="py-20 md:py-32 bg-black">
         <div className="container mx-auto px-4">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight">
               Watch our AI voice agent qualify leads, handle objections, and book meetings
             </h1>
 
-            <p className="text-xl md:text-2xl text-blue-400 text-center mb-16 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-blue-400 text-center mb-16">
               See how our AI handles real conversations in under 2 minutes
             </p>
 
-            {/* Video and Bullet Points Side by Side */}
-            <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-center lg:items-start max-w-6xl mx-auto">
-              {/* Video Container - Left Side */}
-              <div className="w-full lg:w-[58%] flex-shrink-0">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <div className="text-5xl mb-3">📹</div>
-                      <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
-                      <p className="text-white/90 text-base">Currently filming. Check back soon!</p>
-                    </div>
+            {/* Video Container - Centered */}
+            <div className="max-w-3xl mx-auto mb-12">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
+                    <p className="text-white/90 text-base">Currently filming. Check back soon!</p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Key Points - Right Side */}
-              <div className="flex-1 w-full space-y-8 pt-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg md:text-xl font-semibold text-white leading-tight">
-                    Real Customer Conversations
-                  </h3>
-                </div>
+            {/* Key Points - Below Video */}
+            <div className="max-w-2xl mx-auto space-y-6">
+              <div className="text-white text-lg md:text-xl font-semibold">
+                Real Customer Conversations
+              </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                    <Target className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg md:text-xl font-semibold text-white leading-tight">
-                    Natural Language Understanding
-                  </h3>
-                </div>
+              <div className="text-white text-lg md:text-xl font-semibold">
+                Natural Language Understanding
+              </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                    <Calendar className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg md:text-xl font-semibold text-white leading-tight">
-                    Seamless Appointment Setting
-                  </h3>
-                </div>
+              <div className="text-white text-lg md:text-xl font-semibold">
+                Seamless Appointment Setting
+              </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                    <CheckCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-lg md:text-xl font-semibold text-white leading-tight">
-                    24/7 Lead Qualification
-                  </h3>
-                </div>
+              <div className="text-white text-lg md:text-xl font-semibold">
+                24/7 Lead Qualification
               </div>
             </div>
           </div>
