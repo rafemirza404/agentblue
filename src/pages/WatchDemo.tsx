@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight } from "lucide-react";
+import { CheckCircle, Target, MessageSquare, Calendar, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const WatchDemo = () => {
@@ -112,94 +112,76 @@ const WatchDemo = () => {
       {/* Hero Section with Video and Key Points */}
       <section className="py-20 md:py-32 bg-black">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight">
-              Building Effective AI Agents Can be{" "}
-              <span className="italic underline">A Challenge</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto">
+              Watch our AI voice agent qualify leads, handle objections, and book meetings
             </h1>
 
-            <p className="text-lg md:text-xl text-white/80 italic text-center mb-16">
-              It requires you to get good at many things, such as...
+            <p className="text-xl md:text-2xl text-blue-400 text-center mb-16 max-w-3xl mx-auto">
+              See how our AI handles real conversations in under 2 minutes
             </p>
 
-            {/* Video Container - Centered */}
-            <div className="max-w-4xl mx-auto mb-16">
-              <div className="relative rounded-lg overflow-hidden shadow-2xl">
-                <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
-                    <p className="text-white/90 text-base">Currently filming. Check back soon!</p>
+            {/* Video and Bullet Points Side by Side */}
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
+              {/* Video Container - Left Side */}
+              <div className="w-full lg:w-[55%] flex-shrink-0">
+                <div className="relative rounded-xl overflow-hidden shadow-2xl">
+                  <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
+                    <div className="text-center p-8">
+                      <div className="text-5xl mb-3">📹</div>
+                      <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
+                      <p className="text-white/90 text-base">Currently filming. Check back soon!</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Key Points - Below Video - Centered */}
-            <div className="max-w-3xl mx-auto space-y-8 text-center">
-              <div className="text-white text-lg md:text-xl">
-                <span className="font-bold">Figuring out</span> the best way to do things
-              </div>
+              {/* Key Points - Right Side */}
+              <div className="flex-1 space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
+                    <MessageSquare className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">
+                      Real Customer Conversations
+                    </h3>
+                  </div>
+                </div>
 
-              <div className="text-white text-lg md:text-xl">
-                <span className="font-bold">Picking</span> the right tools for the job
-              </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">
+                      Natural Language Understanding
+                    </h3>
+                  </div>
+                </div>
 
-              <div className="text-white text-lg md:text-xl">
-                <span className="font-bold">Mapping out</span> how everything should flow
-              </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
+                    <Calendar className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">
+                      Seamless Appointment Setting
+                    </h3>
+                  </div>
+                </div>
 
-              <div className="text-white text-lg md:text-xl">
-                <span className="font-bold">Wrangling</span> data without losing your mind
-              </div>
-
-              <div className="text-white text-lg md:text-xl italic">
-                <span className="font-bold">Keeping up</span> with the latest tech
-              </div>
-
-              <div className="text-white text-lg md:text-xl italic">
-                <span className="font-bold">Adapting</span> when things don't go as planned
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Strategic Automation Section */}
-      <section className="py-20 md:py-32 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              Strategic Automation Done Right Requires More Than Tools
-            </h2>
-            
-            <p className="text-xl md:text-2xl text-gray-700 mb-12 leading-relaxed">
-              It demands expertise across multiple dimensions, including...
-            </p>
-
-            <div className="space-y-6 text-left max-w-3xl mx-auto">
-              <div className="text-lg md:text-xl text-gray-800">
-                Diagnosing operational chaos before prescribing solutions
-              </div>
-              
-              <div className="text-lg md:text-xl text-gray-800">
-                Choosing platforms without vendor bias or commissions
-              </div>
-              
-              <div className="text-lg md:text-xl text-gray-800">
-                Designing workflows that scale with your business growth
-              </div>
-              
-              <div className="text-lg md:text-xl text-gray-800">
-                Managing integrations without breaking existing systems
-              </div>
-              
-              <div className="text-lg md:text-xl text-gray-800">
-                Staying ahead of automation trends and best practices
-              </div>
-              
-              <div className="text-lg md:text-xl text-gray-800">
-                Pivoting strategy when business needs shift
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
+                    <CheckCircle className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">
+                      24/7 Lead Qualification
+                    </h3>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
