@@ -54,6 +54,14 @@ const Hero = () => {
             >
               View Success Stories
             </Button>
+            <Button
+              size="lg"
+              variant="ghost"
+              className="text-lg px-8 text-foreground hover:text-accent"
+              onClick={() => window.location.href = '/watch-demo'}
+            >
+              Watch Demo →
+            </Button>
           </div>
 
           {/* Trust Indicators */}

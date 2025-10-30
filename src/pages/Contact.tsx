@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,8 +8,111 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Calendar, Mail, Phone, MessageCircle, Globe, Clock, Zap } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    phone: "",
+    details: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    if (!fullName || fullName.length < 2) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter your name",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!formData.email || !formData.email.includes('@')) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid email",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!formData.details || formData.details.length < 10) {
+      toast({
+        title: "Validation Error",
+        description: "Message must be at least 10 characters",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('https://n8nlocal.supportagentblue.com/webhook/69731dc5-5d13-451a-a880-ff44ff2e0e35', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: fullName,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          message: formData.details,
+          source: 'contact-page'
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Success!",
+          description: "Thanks for reaching out! We'll get back to you within 48 hours.",
+        });
+        setFormData({ firstName: "", lastName: "", email: "", company: "", phone: "", details: "" });
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please email us at sophia@supportagentblue.in",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const scrollToContactMethods = () => {
+    const element = document.getElementById('contact-methods');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const scrollToContactForm = () => {
+    const element = document.getElementById('contact-form');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -21,9 +125,12 @@ const Contact = () => {
               <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
                 Ready to Fix Operations the Right Way?
               </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
                 Schedule your free 30-minute diagnostic call and discover what's really holding your business back—no sales pitch, just strategic guidance.
               </p>
+              <Button size="lg" onClick={scrollToContactMethods}>
+                Schedule Free Consultation
+              </Button>
             </div>
           </div>
         </section>
@@ -48,7 +155,9 @@ const Contact = () => {
                     <p className="text-muted-foreground">Book a 30-minute diagnostic call with our strategists</p>
                   </CardHeader>
                   <CardContent>
-                    <Button size="lg" className="w-full bg-accent hover:bg-accent/90 mb-2">Book Free Call</Button>
+                    <Button size="lg" className="w-full bg-accent hover:bg-accent/90 mb-2" onClick={scrollToContactForm}>
+                      Book Free Call
+                    </Button>
                     <p className="text-sm text-muted-foreground text-center">No sales pitch—just operational insights</p>
                   </CardContent>
                 </Card>
@@ -85,18 +194,27 @@ const Contact = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="opacity-60">
+                <Card>
                   <CardHeader>
-                    <Badge variant="secondary" className="w-fit mb-2">Coming Soon</Badge>
-                    <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 text-accent">
                       <MessageCircle className="w-6 h-6" />
                     </div>
                     <CardTitle className="text-2xl">Live Chat</CardTitle>
-                    <p className="text-muted-foreground">AI-powered instant responses</p>
+                    <p className="text-muted-foreground">Get instant AI-powered responses</p>
                   </CardHeader>
                   <CardContent>
-                    <Button variant="ghost" size="lg" className="w-full mb-2" disabled>24/7 automated support</Button>
-                    <p className="text-sm text-muted-foreground text-center">Launching soon</p>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="w-full mb-2"
+                      onClick={() => {
+                        const chatButton = document.querySelector('[aria-label="Open chat"]') as HTMLButtonElement;
+                        if (chatButton) chatButton.click();
+                      }}
+                    >
+                      Chat Now
+                    </Button>
+                    <p className="text-sm text-muted-foreground text-center">Available 24/7</p>
                   </CardContent>
                 </Card>
               </div>
@@ -116,34 +234,83 @@ const Contact = () => {
                       <p className="text-muted-foreground">Tell us about your operational challenges and we'll get back to you within 48 hours.</p>
                     </CardHeader>
                     <CardContent>
-                      <form className="space-y-6">
+                      <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="firstName">First Name *</Label>
-                            <Input id="firstName" placeholder="John" />
+                            <Input 
+                              id="firstName" 
+                              name="firstName"
+                              value={formData.firstName}
+                              onChange={handleChange}
+                              placeholder="John"
+                              required
+                            />
                           </div>
                           <div>
                             <Label htmlFor="lastName">Last Name *</Label>
-                            <Input id="lastName" placeholder="Doe" />
+                            <Input 
+                              id="lastName" 
+                              name="lastName"
+                              value={formData.lastName}
+                              onChange={handleChange}
+                              placeholder="Doe"
+                              required
+                            />
                           </div>
                         </div>
                         <div>
                           <Label htmlFor="email">Email *</Label>
-                          <Input id="email" type="email" placeholder="john@company.com" />
+                          <Input 
+                            id="email" 
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="john@company.com"
+                            required
+                          />
                         </div>
                         <div>
-                          <Label htmlFor="company">Company *</Label>
-                          <Input id="company" placeholder="Your Company Name" />
+                          <Label htmlFor="company">Company</Label>
+                          <Input 
+                            id="company" 
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
+                            placeholder="Your Company Name"
+                          />
                         </div>
                         <div>
                           <Label htmlFor="phone">Phone (optional)</Label>
-                          <Input id="phone" placeholder="+1 (555) 123-4567" />
+                          <Input 
+                            id="phone" 
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder="+1 (555) 123-4567"
+                          />
                         </div>
                         <div>
                           <Label htmlFor="details">Project Details *</Label>
-                          <Textarea id="details" placeholder="Tell us about your operational challenges..." className="min-h-[120px]" />
+                          <Textarea 
+                            id="details" 
+                            name="details"
+                            value={formData.details}
+                            onChange={handleChange}
+                            placeholder="Tell us about your operational challenges..." 
+                            className="min-h-[120px]"
+                            required
+                          />
                         </div>
-                        <Button size="lg" className="w-full">Send Message</Button>
+                        <Button 
+                          size="lg" 
+                          className="w-full"
+                          type="submit"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? "Sending..." : "Send Message"}
+                        </Button>
                         <p className="text-xs text-muted-foreground text-center">✓ No spam. We respect your privacy.</p>
                       </form>
                     </CardContent>
@@ -191,7 +358,14 @@ const Contact = () => {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-bold mb-4">Prefer to Schedule Directly?</h2>
             <p className="text-xl mb-8 opacity-90">Book your free 30-minute consultation now</p>
-            <Button variant="secondary" size="lg" className="bg-white text-primary hover:bg-white/90">Schedule Free Call</Button>
+            <Button 
+              variant="secondary" 
+              size="lg" 
+              className="bg-white text-primary hover:bg-white/90"
+              onClick={scrollToContactMethods}
+            >
+              Schedule Free Call
+            </Button>
           </div>
         </section>
       </main>

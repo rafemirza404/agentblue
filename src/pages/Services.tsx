@@ -196,6 +196,9 @@ const Services = () => {
                 <Button variant="outline" size="lg" asChild>
                   <a href="#process">View Our Process</a>
                 </Button>
+                <Button variant="ghost" size="lg" asChild>
+                  <Link to="/watch-demo">See Demo in Action →</Link>
+                </Button>
               </div>
             </div>
           </div>

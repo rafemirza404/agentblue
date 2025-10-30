@@ -106,9 +106,9 @@ const WatchDemo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a2332] to-[#0f172a]">
+    <div className="min-h-screen bg-black">
       {/* Minimal Header */}
-      <header className="sticky top-0 z-50 bg-[#1a2332]/95 backdrop-blur-sm border-b border-white/10">
+      <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2">
             <span className="text-white text-2xl font-bold">AgentBlue</span>
@@ -128,51 +128,38 @@ const WatchDemo = () => {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-              IT'S NOT JUST AUTOMATION.<br />
-              IT'S 24/7 OPERATIONAL LEVERAGE.
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
-              Watch a live 2-minute conversation between a prospect and our AI voice agent—<br />
-              handling qualification, objections, and booking meetings without human intervention.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Video Section */}
-      <section className="py-12">
+      {/* Hero Section with Video - Moved Up */}
+      <section className="py-12 bg-black">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <div className="relative aspect-video bg-[#0f172a] rounded-2xl shadow-2xl overflow-hidden border border-white/10">
-              {/* Placeholder - Video will be added later */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                <div className="text-6xl mb-6">📹</div>
-                <h3 className="text-2xl font-bold text-white mb-4">Demo Video Coming Soon</h3>
-                <p className="text-gray-400 text-lg">
-                  Watch this space for a live AI voice agent conversation
-                </p>
+            {/* Headline */}
+            <div className="text-center mb-10">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
+                IT'S NOT JUST AUTOMATION.
+                <br />
+                <span className="text-gray-300">IT'S 24/7 OPERATIONAL LEVERAGE.</span>
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
+                Watch how our AI voice agents handle real customer conversations with human-like intelligence
+              </p>
+            </div>
+
+            {/* Video Container - Prominent Position */}
+            <div className="relative rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(255,255,255,0.08)] mb-16">
+              <div className="aspect-video bg-gray-900 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">📹</div>
+                  <p className="text-white text-xl font-medium mb-2">Demo Video Coming Soon</p>
+                  <p className="text-gray-400">We're currently filming this demo. Check back soon!</p>
+                </div>
               </div>
-              {/* When ready, replace above with:
-              <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/YOUR_VIDEO_ID?modestbranding=1&rel=0&showinfo=0&controls=1&iv_load_policy=3&color=white"
-                title="AI Voice Agent Demo"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-              */}
             </div>
           </div>
         </div>
       </section>
 
       {/* What You'll See */}
-      <section className="py-20">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
@@ -180,31 +167,31 @@ const WatchDemo = () => {
             </h2>
             
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+              <Card className="bg-white border-0">
                 <CardContent className="p-8 text-center">
                   <div className="text-5xl mb-4">🎯</div>
-                  <h3 className="text-xl font-bold text-white mb-4">Lead Qualification</h3>
-                  <p className="text-gray-300">
+                  <h3 className="text-xl font-bold mb-4">Lead Qualification</h3>
+                  <p className="text-muted-foreground">
                     Watch how the AI asks strategic questions to identify high-intent prospects and gather key information.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+              <Card className="bg-white border-0">
                 <CardContent className="p-8 text-center">
                   <div className="text-5xl mb-4">💬</div>
-                  <h3 className="text-xl font-bold text-white mb-4">Objection Handling</h3>
-                  <p className="text-gray-300">
+                  <h3 className="text-xl font-bold mb-4">Objection Handling</h3>
+                  <p className="text-muted-foreground">
                     See natural responses to common concerns, pushback, and hesitation—just like a trained sales rep would handle.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+              <Card className="bg-white border-0">
                 <CardContent className="p-8 text-center">
                   <div className="text-5xl mb-4">📅</div>
-                  <h3 className="text-xl font-bold text-white mb-4">Meeting Booking</h3>
-                  <p className="text-gray-300">
+                  <h3 className="text-xl font-bold mb-4">Meeting Booking</h3>
+                  <p className="text-muted-foreground">
                     Experience seamless calendar integration as the AI handles scheduling without human intervention.
                   </p>
                 </CardContent>
@@ -215,7 +202,7 @@ const WatchDemo = () => {
       </section>
 
       {/* Results Section */}
-      <section className="py-20 bg-white/5">
+      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
@@ -245,23 +232,23 @@ const WatchDemo = () => {
       </section>
 
       {/* CTA Form Section */}
-      <section className="py-20">
+      <section className="py-20 bg-gradient-to-r from-accent to-accent/90">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 Ready to Deploy Your Own AI Voice Agent?
               </h2>
-              <p className="text-xl text-gray-300">
+              <p className="text-xl text-white/90">
                 Book a free strategy call to discuss how AI voice agents can transform your business operations.
               </p>
             </div>
 
-            <Card className="bg-white/10 border-white/20 backdrop-blur-sm">
+            <Card className="bg-white border-0">
               <CardContent className="p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-white text-sm font-medium mb-2">
+                    <label htmlFor="name" className="block text-sm font-medium mb-2">
                       Your Name *
                     </label>
                     <Input
@@ -270,13 +257,12 @@ const WatchDemo = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="John Doe"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+                    <label htmlFor="email" className="block text-sm font-medium mb-2">
                       Email Address *
                     </label>
                     <Input
@@ -286,13 +272,12 @@ const WatchDemo = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john@example.com"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="company" className="block text-white text-sm font-medium mb-2">
+                    <label htmlFor="company" className="block text-sm font-medium mb-2">
                       Company Name
                     </label>
                     <Input
@@ -301,12 +286,11 @@ const WatchDemo = () => {
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="Your Company"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="phone" className="block text-white text-sm font-medium mb-2">
+                    <label htmlFor="phone" className="block text-sm font-medium mb-2">
                       Phone Number
                     </label>
                     <Input
@@ -316,12 +300,11 @@ const WatchDemo = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+1 (555) 123-4567"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-white text-sm font-medium mb-2">
+                    <label htmlFor="message" className="block text-sm font-medium mb-2">
                       Tell Us About Your Needs *
                     </label>
                     <Textarea
@@ -330,7 +313,7 @@ const WatchDemo = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Describe your business and how AI voice agents could help..."
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 min-h-[120px]"
+                      className="min-h-[120px]"
                       required
                     />
                   </div>
@@ -344,7 +327,7 @@ const WatchDemo = () => {
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
 
-                  <p className="text-xs text-gray-400 text-center">
+                  <p className="text-xs text-muted-foreground text-center">
                     By submitting this form, you agree to receive communications from AgentBlue.
                   </p>
                 </form>

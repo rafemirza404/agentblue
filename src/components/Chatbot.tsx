@@ -84,22 +84,22 @@ const Chatbot = () => {
     setIsTyping(true);
     
     try {
-      // TODO: Replace with actual chatbot webhook URL when provided
-      // const response = await fetch('YOUR_CHATBOT_WEBHOOK_URL', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ message: userMessage }),
-      // });
-      // const data = await response.json();
-      // const botResponse = data.response || "Thanks for your message!";
+      const response = await fetch('https://n8nlocal.supportagentblue.com/webhook/ffcf29b6-19e9-40fd-81a6-132910560043/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage }),
+      });
       
-      // For now, show default response
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const botResponse = "Thanks for your message! For detailed assistance, please reach out to our team:\n\n📧 sophia@supportagentblue.in\n📞 +91 99340 17786\n\nOr book a free consultation to discuss your needs in detail.";
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+      
+      const data = await response.json();
+      const botResponse = data.response || data.message || "Thanks for your message! Our team will get back to you soon.";
       setMessages((prev) => [...prev, { text: botResponse, isBot: true }]);
     } catch (error) {
       console.error('Chatbot error:', error);
-      const errorResponse = "Sorry, I'm having trouble connecting. Please email us at sophia@supportagentblue.in";
+      const errorResponse = "Thanks for your message! For immediate assistance:\n\n📧 sophia@supportagentblue.in\n📞 +91 99340 17786";
       setMessages((prev) => [...prev, { text: errorResponse, isBot: true }]);
     } finally {
       setIsTyping(false);

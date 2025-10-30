@@ -170,7 +170,12 @@ const About = () => {
               <p className="text-xl mb-8 opacity-90">
                 Let's start with an honest conversation about your business challenges.
               </p>
-              <Button variant="secondary" size="lg" className="bg-white text-primary hover:bg-white/90">
+              <Button 
+                variant="secondary" 
+                size="lg" 
+                className="bg-white text-primary hover:bg-white/90"
+                onClick={() => window.location.href = '/contact#contact-methods'}
+              >
                 Schedule Free Consultation
               </Button>
             </div>
