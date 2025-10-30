@@ -122,66 +122,54 @@ const WatchDemo = () => {
               See how our AI handles real conversations in under 2 minutes
             </p>
 
-            {/* Video and Bullet Points Side by Side */}
-            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
-              {/* Video Container - Left Side */}
-              <div className="w-full lg:w-[55%] flex-shrink-0">
-                <div className="relative rounded-xl overflow-hidden shadow-2xl">
-                  <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
-                    <div className="text-center p-8">
-                      <div className="text-5xl mb-3">📹</div>
-                      <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
-                      <p className="text-white/90 text-base">Currently filming. Check back soon!</p>
-                    </div>
+            {/* Video Container - Centered */}
+            <div className="max-w-[900px] mx-auto mb-12">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl">
+                <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
+                    <p className="text-white/90 text-base">Currently filming. Check back soon!</p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Key Points - Right Side */}
-              <div className="flex-1 space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
-                    <MessageSquare className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white">
-                      Real Customer Conversations
-                    </h3>
-                  </div>
+            {/* Key Points - Below Video */}
+            <div className="max-w-[700px] mx-auto space-y-6">
+              <div className="flex items-center gap-5">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 text-white" />
                 </div>
+                <p className="text-xl text-white font-normal">
+                  Real Customer Conversations
+                </p>
+              </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
-                    <Target className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white">
-                      Natural Language Understanding
-                    </h3>
-                  </div>
+              <div className="flex items-center gap-5">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-white" />
                 </div>
+                <p className="text-xl text-white font-normal">
+                  Natural Language Understanding
+                </p>
+              </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
-                    <Calendar className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white">
-                      Seamless Appointment Setting
-                    </h3>
-                  </div>
+              <div className="flex items-center gap-5">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-white" />
                 </div>
+                <p className="text-xl text-white font-normal">
+                  Seamless Appointment Setting
+                </p>
+              </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center mt-1">
-                    <CheckCircle className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white">
-                      24/7 Lead Qualification
-                    </h3>
-                  </div>
+              <div className="flex items-center gap-5">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-white" />
                 </div>
+                <p className="text-xl text-white font-normal">
+                  24/7 Lead Qualification
+                </p>
               </div>
             </div>
           </div>
