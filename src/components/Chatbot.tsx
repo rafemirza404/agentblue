@@ -74,24 +74,36 @@ const Chatbot = () => {
     }, 1000);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!inputValue.trim()) return;
     
     const userMessage = inputValue;
     setMessages((prev) => [...prev, { text: userMessage, isBot: false }]);
     setInputValue("");
     
-    // TODO: Connect to n8n webhook
-    // Endpoint: [your-n8n-webhook-url]
-    // For now, just logging to console
-    console.log('User message:', userMessage);
-    
     setIsTyping(true);
-    setTimeout(() => {
-      setIsTyping(false);
+    
+    try {
+      // TODO: Replace with actual chatbot webhook URL when provided
+      // const response = await fetch('YOUR_CHATBOT_WEBHOOK_URL', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ message: userMessage }),
+      // });
+      // const data = await response.json();
+      // const botResponse = data.response || "Thanks for your message!";
+      
+      // For now, show default response
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const botResponse = "Thanks for your message! For detailed assistance, please reach out to our team:\n\n📧 sophia@supportagentblue.in\n📞 +91 99340 17786\n\nOr book a free consultation to discuss your needs in detail.";
       setMessages((prev) => [...prev, { text: botResponse, isBot: true }]);
-    }, 1000);
+    } catch (error) {
+      console.error('Chatbot error:', error);
+      const errorResponse = "Sorry, I'm having trouble connecting. Please email us at sophia@supportagentblue.in";
+      setMessages((prev) => [...prev, { text: errorResponse, isBot: true }]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

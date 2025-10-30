@@ -1,10 +1,98 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Calendar, Mail, MessageSquare } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    if (!fullName || fullName.length < 2) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter your full name (at least 2 characters)",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!formData.email || !formData.email.includes('@')) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!formData.message || formData.message.length < 10) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a message (at least 10 characters)",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('https://n8nlocal.supportagentblue.com/webhook/69731dc5-5d13-451a-a880-ff44ff2e0e35', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: fullName,
+          email: formData.email,
+          company: formData.company,
+          message: formData.message,
+          source: 'contact-page'
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Success!",
+          description: "Thanks for reaching out! We'll get back to you within 24 hours.",
+        });
+        setFormData({ firstName: "", lastName: "", email: "", company: "", message: "" });
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try emailing us directly at sophia@supportagentblue.in",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
   return (
     <section id="contact-form-section" className="py-20 md:py-32">
       <div className="container mx-auto px-4">
@@ -92,56 +180,96 @@ const Contact = () => {
                   Tell us about your current processes and we'll identify the best automation opportunities.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label htmlFor="firstName" className="text-sm font-medium">
-                      First Name *
-                    </label>
-                    <Input id="firstName" placeholder="John" />
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label htmlFor="firstName" className="text-sm font-medium">
+                        First Name *
+                      </label>
+                      <Input 
+                        id="firstName" 
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        placeholder="John" 
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="lastName" className="text-sm font-medium">
+                        Last Name *
+                      </label>
+                      <Input 
+                        id="lastName" 
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        placeholder="Doe" 
+                        required
+                      />
+                    </div>
                   </div>
+
                   <div className="space-y-2">
-                    <label htmlFor="lastName" className="text-sm font-medium">
-                      Last Name *
+                    <label htmlFor="email" className="text-sm font-medium">
+                      Email Address *
                     </label>
-                    <Input id="lastName" placeholder="Doe" />
+                    <Input 
+                      id="email" 
+                      name="email"
+                      type="email" 
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="john@company.com" 
+                      required
+                    />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">
-                    Email Address *
-                  </label>
-                  <Input id="email" type="email" placeholder="john@company.com" />
-                </div>
+                  <div className="space-y-2">
+                    <label htmlFor="company" className="text-sm font-medium">
+                      Company Name
+                    </label>
+                    <Input 
+                      id="company" 
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
+                      placeholder="Your Company" 
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="company" className="text-sm font-medium">
-                    Company Name
-                  </label>
-                  <Input id="company" placeholder="Your Company" />
-                </div>
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium">
+                      Tell us about your automation needs *
+                    </label>
+                    <Textarea 
+                      id="message" 
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Describe your current processes, pain points, and what you'd like to automate..."
+                      className="min-h-[120px]"
+                      required
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium">
-                    Tell us about your automation needs *
-                  </label>
-                  <Textarea 
-                    id="message" 
-                    placeholder="Describe your current processes, pain points, and what you'd like to automate..."
-                    className="min-h-[120px]"
-                  />
-                </div>
+                  <Button 
+                    type="submit" 
+                    variant="hero" 
+                    size="lg" 
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Sending..." : "Get Free Assessment"}
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
 
-                <Button variant="hero" size="lg" className="w-full">
-                  Get Free Assessment
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-
-                <p className="text-xs text-muted-foreground text-center">
-                  By submitting this form, you agree to receive communications from AgentBlue. 
-                  We respect your privacy and will never share your information.
-                </p>
+                  <p className="text-xs text-muted-foreground text-center">
+                    By submitting this form, you agree to receive communications from AgentBlue. 
+                    We respect your privacy and will never share your information.
+                  </p>
+                </form>
               </CardContent>
             </Card>
           </div>

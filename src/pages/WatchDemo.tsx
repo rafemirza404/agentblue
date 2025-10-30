@@ -1,0 +1,362 @@
+import { useState, useEffect } from "react";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { CheckCircle, Target, MessageSquare, Calendar, ArrowRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+const WatchDemo = () => {
+  const { toast } = useToast();
+
+  // Update page title and meta description for SEO
+  useEffect(() => {
+    document.title = "Watch Demo - AgentBlue AI Voice Agents in Action";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Watch a live 2-minute demo of our AI voice agent handling customer conversations, qualifying prospects, and booking meetings—24/7 without human intervention.');
+    }
+    
+    return () => {
+      document.title = "AgentBlue - AI Automation Solutions for Modern Businesses";
+    };
+  }, []);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!formData.name || formData.name.length < 2) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter your full name (at least 2 characters)",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!formData.email || !formData.email.includes('@')) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!formData.message || formData.message.length < 10) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a message (at least 10 characters)",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('https://n8nlocal.supportagentblue.com/webhook/69731dc5-5d13-451a-a880-ff44ff2e0e35', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          source: 'watch-demo-page'
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Success!",
+          description: "Thanks for your interest! We'll be in touch within 24 hours.",
+        });
+        setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try emailing us directly at sophia@supportagentblue.in",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#1a2332] to-[#0f172a]">
+      {/* Minimal Header */}
+      <header className="sticky top-0 z-50 bg-[#1a2332]/95 backdrop-blur-sm border-b border-white/10">
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2">
+            <span className="text-white text-2xl font-bold">AgentBlue</span>
+          </a>
+          <a href="/contact#contact-methods" className="text-white hover:text-accent transition-smooth">
+            Contact
+          </a>
+        </div>
+      </header>
+
+      {/* Live Banner */}
+      <div className="bg-red-600 py-2.5">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-white text-sm font-bold uppercase tracking-wide">
+            🔴 LIVE DEMO | See AI Voice Agents in Action
+          </p>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              IT'S NOT JUST AUTOMATION.<br />
+              IT'S 24/7 OPERATIONAL LEVERAGE.
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed">
+              Watch a live 2-minute conversation between a prospect and our AI voice agent—<br />
+              handling qualification, objections, and booking meetings without human intervention.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Section */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="relative aspect-video bg-[#0f172a] rounded-2xl shadow-2xl overflow-hidden border border-white/10">
+              {/* Placeholder - Video will be added later */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                <div className="text-6xl mb-6">📹</div>
+                <h3 className="text-2xl font-bold text-white mb-4">Demo Video Coming Soon</h3>
+                <p className="text-gray-400 text-lg">
+                  Watch this space for a live AI voice agent conversation
+                </p>
+              </div>
+              {/* When ready, replace above with:
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/YOUR_VIDEO_ID?modestbranding=1&rel=0&showinfo=0&controls=1&iv_load_policy=3&color=white"
+                title="AI Voice Agent Demo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+              */}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What You'll See */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+              What You'll See in This Demo:
+            </h2>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <div className="text-5xl mb-4">🎯</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Lead Qualification</h3>
+                  <p className="text-gray-300">
+                    Watch how the AI asks strategic questions to identify high-intent prospects and gather key information.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <div className="text-5xl mb-4">💬</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Objection Handling</h3>
+                  <p className="text-gray-300">
+                    See natural responses to common concerns, pushback, and hesitation—just like a trained sales rep would handle.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/5 border-white/10 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <div className="text-5xl mb-4">📅</div>
+                  <h3 className="text-xl font-bold text-white mb-4">Meeting Booking</h3>
+                  <p className="text-gray-300">
+                    Experience seamless calendar integration as the AI handles scheduling without human intervention.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Results Section */}
+      <section className="py-20 bg-white/5">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
+              Real Results from AI Voice Agents
+            </h2>
+            
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="text-4xl font-bold text-accent mb-2">24/7</div>
+                <p className="text-gray-300">Always Available</p>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-accent mb-2">90%</div>
+                <p className="text-gray-300">Cost Reduction</p>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-accent mb-2">3x</div>
+                <p className="text-gray-300">More Conversations</p>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-accent mb-2">0</div>
+                <p className="text-gray-300">Missed Opportunities</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Form Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Deploy Your Own AI Voice Agent?
+              </h2>
+              <p className="text-xl text-gray-300">
+                Book a free strategy call to discuss how AI voice agents can transform your business operations.
+              </p>
+            </div>
+
+            <Card className="bg-white/10 border-white/20 backdrop-blur-sm">
+              <CardContent className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="name" className="block text-white text-sm font-medium mb-2">
+                      Your Name *
+                    </label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="John Doe"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+                      Email Address *
+                    </label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="john@example.com"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="company" className="block text-white text-sm font-medium mb-2">
+                      Company Name
+                    </label>
+                    <Input
+                      id="company"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleChange}
+                      placeholder="Your Company"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-white text-sm font-medium mb-2">
+                      Phone Number
+                    </label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+1 (555) 123-4567"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-white text-sm font-medium mb-2">
+                      Tell Us About Your Needs *
+                    </label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Describe your business and how AI voice agents could help..."
+                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 min-h-[120px]"
+                      required
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-accent hover:bg-accent/90 text-white font-semibold py-6 text-lg"
+                  >
+                    {isSubmitting ? "Sending..." : "Book Your Free Strategy Call"}
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+
+                  <p className="text-xs text-gray-400 text-center">
+                    By submitting this form, you agree to receive communications from AgentBlue.
+                  </p>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default WatchDemo;
