@@ -112,19 +112,20 @@ const WatchDemo = () => {
       {/* Hero Section with Video and Key Points */}
       <section className="py-20 md:py-32 bg-black">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight">
-              Watch our AI voice agent qualify leads, handle objections, and book meetings
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight">
+              Building Effective AI Agents Can be{" "}
+              <span className="italic underline">A Challenge</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-blue-400 text-center mb-16">
-              See how our AI handles real conversations in under 2 minutes
+            <p className="text-lg md:text-xl text-white/80 italic text-center mb-16">
+              It requires you to get good at many things, such as...
             </p>
 
             {/* Video Container - Centered */}
-            <div className="max-w-3xl mx-auto mb-12">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <div className="max-w-4xl mx-auto mb-16">
+              <div className="relative rounded-lg overflow-hidden shadow-2xl">
                 <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
                   <div className="text-center p-8">
                     <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
@@ -134,22 +135,71 @@ const WatchDemo = () => {
               </div>
             </div>
 
-            {/* Key Points - Below Video */}
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="text-white text-lg md:text-xl font-semibold">
-                Real Customer Conversations
+            {/* Key Points - Below Video - Centered */}
+            <div className="max-w-3xl mx-auto space-y-8 text-center">
+              <div className="text-white text-lg md:text-xl">
+                <span className="font-bold">Figuring out</span> the best way to do things
               </div>
 
-              <div className="text-white text-lg md:text-xl font-semibold">
-                Natural Language Understanding
+              <div className="text-white text-lg md:text-xl">
+                <span className="font-bold">Picking</span> the right tools for the job
               </div>
 
-              <div className="text-white text-lg md:text-xl font-semibold">
-                Seamless Appointment Setting
+              <div className="text-white text-lg md:text-xl">
+                <span className="font-bold">Mapping out</span> how everything should flow
               </div>
 
-              <div className="text-white text-lg md:text-xl font-semibold">
-                24/7 Lead Qualification
+              <div className="text-white text-lg md:text-xl">
+                <span className="font-bold">Wrangling</span> data without losing your mind
+              </div>
+
+              <div className="text-white text-lg md:text-xl italic">
+                <span className="font-bold">Keeping up</span> with the latest tech
+              </div>
+
+              <div className="text-white text-lg md:text-xl italic">
+                <span className="font-bold">Adapting</span> when things don't go as planned
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Strategic Automation Section */}
+      <section className="py-20 md:py-32 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              Strategic Automation Done Right Requires More Than Tools
+            </h2>
+            
+            <p className="text-xl md:text-2xl text-gray-700 mb-12 leading-relaxed">
+              It demands expertise across multiple dimensions, including...
+            </p>
+
+            <div className="space-y-6 text-left max-w-3xl mx-auto">
+              <div className="text-lg md:text-xl text-gray-800">
+                Diagnosing operational chaos before prescribing solutions
+              </div>
+              
+              <div className="text-lg md:text-xl text-gray-800">
+                Choosing platforms without vendor bias or commissions
+              </div>
+              
+              <div className="text-lg md:text-xl text-gray-800">
+                Designing workflows that scale with your business growth
+              </div>
+              
+              <div className="text-lg md:text-xl text-gray-800">
+                Managing integrations without breaking existing systems
+              </div>
+              
+              <div className="text-lg md:text-xl text-gray-800">
+                Staying ahead of automation trends and best practices
+              </div>
+              
+              <div className="text-lg md:text-xl text-gray-800">
+                Pivoting strategy when business needs shift
               </div>
             </div>
           </div>
