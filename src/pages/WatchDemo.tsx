@@ -135,38 +135,30 @@ const WatchDemo = () => {
             </div>
 
             {/* Key Points - Below Video */}
-            <div className="max-w-[700px] mx-auto space-y-6">
-              <div className="flex items-center gap-5">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-white" />
-                </div>
+            <div className="max-w-[700px] mx-auto space-y-6 text-center">
+              <div className="flex items-center justify-center gap-5">
+                <MessageSquare className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
                 <p className="text-xl text-white font-normal">
                   Real Customer Conversations
                 </p>
               </div>
 
-              <div className="flex items-center gap-5">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                  <Target className="w-5 h-5 text-white" />
-                </div>
+              <div className="flex items-center justify-center gap-5">
+                <Target className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
                 <p className="text-xl text-white font-normal">
                   Natural Language Understanding
                 </p>
               </div>
 
-              <div className="flex items-center gap-5">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-white" />
-                </div>
+              <div className="flex items-center justify-center gap-5">
+                <Calendar className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
                 <p className="text-xl text-white font-normal">
                   Seamless Appointment Setting
                 </p>
               </div>
 
-              <div className="flex items-center gap-5">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-white" />
-                </div>
+              <div className="flex items-center justify-center gap-5">
+                <CheckCircle className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
                 <p className="text-xl text-white font-normal">
                   24/7 Lead Qualification
                 </p>
