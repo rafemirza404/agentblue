@@ -35,16 +35,11 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showTopicCards, setShowTopicCards] = useState(true);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastMessageTimeRef = useRef<number>(0);
 
   const scrollToBottom = () => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (messagesContainerRef.current) {
-          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-        }
-      });
-    });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   // Scroll to bottom when messages change
@@ -328,6 +323,7 @@ const Chatbot = () => {
               </div>
             )}
           </div>
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input Area */}
@@ -453,6 +449,7 @@ const Chatbot = () => {
               </div>
             )}
           </div>
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Input Area */}
