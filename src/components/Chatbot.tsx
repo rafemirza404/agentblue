@@ -213,11 +213,11 @@ const Chatbot = () => {
   return (
     <>
       {/* Desktop Chat Modal */}
-      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[400px] max-w-[400px] h-[650px] max-h-[650px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
+      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[360px] max-w-[360px] h-[580px] max-h-[580px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
         {/* Header */}
-        <div className="h-[80px] bg-white px-6 py-5 flex items-center justify-between border-b border-[#E5E7EB]">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+        <div className="h-[70px] bg-white px-5 py-4 flex items-center justify-between border-b border-[#E5E7EB]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center">
               <img 
                 src={agentblueLogo} 
                 alt="AgentBlue" 
@@ -226,8 +226,8 @@ const Chatbot = () => {
               />
             </div>
             <div>
-              <h3 className="text-[#1a1a2e] font-semibold text-lg leading-tight">AgentBlue</h3>
-              <p className="text-[#6B7280] text-[13px] mt-0.5">We architect operational excellence</p>
+              <h3 className="text-[#1a1a2e] font-semibold text-base leading-tight">AgentBlue</h3>
+              <p className="text-[#6B7280] text-xs mt-0.5">We architect operational excellence</p>
             </div>
           </div>
           <button
@@ -242,17 +242,17 @@ const Chatbot = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          className="flex-1 bg-[#F8F9FA] p-5 overflow-y-auto scroll-smooth"
+          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth"
           style={{
             scrollbarWidth: 'thin',
             scrollbarColor: 'rgba(0,0,0,0.2) transparent'
           }}
         >
-          <div className="space-y-4">
+          <div className="space-y-3">
             {messages.map((message, index) => (
               <div key={index} className={`flex ${message.isBot ? "justify-start" : "justify-end"} animate-in fade-in duration-300`}>
                 {message.isBot && (
-                  <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-3 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
+                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center p-1 mr-2.5 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
                     <img 
                       src={agentblueLogo} 
                       alt="Bot" 
@@ -262,7 +262,7 @@ const Chatbot = () => {
                   </div>
                 )}
                 <div
-                  className={`max-w-[85%] px-4 py-3 whitespace-pre-line text-sm leading-relaxed ${
+                  className={`max-w-[85%] px-3.5 py-2.5 whitespace-pre-line text-sm leading-relaxed ${
                     message.isBot
                       ? "bg-[#F3F4F6] text-[#1a1a2e] rounded-2xl rounded-tl-[4px]"
                       : "bg-[#0066FF] text-white rounded-2xl rounded-tr-[4px]"
@@ -275,20 +275,20 @@ const Chatbot = () => {
             
             {/* Topic Cards - Show only after welcome message */}
             {showTopicCards && messages.length === 1 && messages[0].isBot && (
-              <div className="grid grid-cols-2 gap-3 mt-4 animate-in fade-in duration-500">
+              <div className="grid grid-cols-2 gap-2.5 mt-3 animate-in fade-in duration-500">
                 {topicCards.map((card) => {
                   const Icon = card.icon;
                   return (
                     <button
                       key={card.id}
                       onClick={() => handleTopicCardClick(card.message)}
-                      className="bg-white border-2 border-[#E5E7EB] rounded-xl p-4 cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)] text-left flex flex-col gap-2 col-span-2 last:col-span-2"
+                      className="bg-white border-2 border-[#E5E7EB] rounded-xl p-3 cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)] text-left flex flex-col gap-1.5 col-span-2 last:col-span-2"
                     >
-                      <Icon className="w-8 h-8 text-[#0066FF]" />
-                      <div className="text-[15px] font-semibold text-[#1a1a2e] leading-tight">
+                      <Icon className="w-7 h-7 text-[#0066FF]" />
+                      <div className="text-[14px] font-semibold text-[#1a1a2e] leading-tight">
                         {card.title}
                       </div>
-                      <div className="text-[13px] text-[#6B7280] leading-snug">
+                      <div className="text-xs text-[#6B7280] leading-snug">
                         {card.description}
                       </div>
                     </button>
@@ -300,7 +300,7 @@ const Chatbot = () => {
             {/* Typing Indicator */}
             {isTyping && (
               <div className="flex justify-start animate-in fade-in duration-200">
-                <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-3 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
+                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center p-1 mr-2.5 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
                   <img 
                     src={agentblueLogo} 
                     alt="Bot" 
@@ -308,7 +308,7 @@ const Chatbot = () => {
                     style={{ imageRendering: '-webkit-optimize-contrast' }}
                   />
                 </div>
-                <div className="max-w-[80px] bg-white px-5 py-3 rounded-2xl rounded-tl-[4px] shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                <div className="max-w-[70px] bg-white px-4 py-2.5 rounded-2xl rounded-tl-[4px] shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
                   <div className="flex gap-1.5 items-center">
                     <span className="w-1.5 h-1.5 bg-[#0066FF] rounded-full animate-bounce" style={{ animationDelay: "0ms", animationDuration: "1.4s" }}></span>
                     <span className="w-1.5 h-1.5 bg-[#0066FF] rounded-full animate-bounce" style={{ animationDelay: "200ms", animationDuration: "1.4s" }}></span>
@@ -321,19 +321,19 @@ const Chatbot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="h-[80px] bg-white px-5 py-4 border-t border-[#E5E7EB] flex gap-3 items-center">
+        <div className="h-[70px] bg-white px-4 py-3 border-t border-[#E5E7EB] flex gap-2.5 items-center">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-12 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
+            className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-4 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:shadow-[0_4px_12px_rgba(0,102,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-11 h-11 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:shadow-[0_4px_12px_rgba(0,102,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Send message"
           >
             <Send className="w-5 h-5 text-white" />
