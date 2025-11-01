@@ -27,43 +27,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    
-    <!-- Vapi AI Widget Script -->
-    <script
-      src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js"
-      async
-      type="text/javascript"
-    ></script>
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Vapi Widget Configuration -->
-    <vapi-widget
-      assistant-id="a2cc1d26-9117-436f-a991-15b6d80de3b1"
-      public-key="722c44f3-0bdb-48c0-b04f-7dee42b7f1ca"
-      button-label="Talk to Sophia"
-      button-color="#0066FF"
-      position="bottom-left"
-      offset="24px"
-      show-popup-text="true"
-      popup-text="Experience AI automation live - 2 min demo"
-    ></vapi-widget>
-
-    <style>
-      /* Custom Vapi Widget Styling */
-      vapi-widget {
-        --vapi-button-size: 56px;
-        --vapi-button-background: #0066FF;
-        --vapi-button-color: white;
-        --vapi-button-shadow: 0 4px 20px rgba(0, 102, 255, 0.3);
-        --vapi-button-hover-shadow: 0 6px 28px rgba(0, 102, 255, 0.4);
-        --vapi-popup-background: white;
-        --vapi-popup-text-color: #1a1a2e;
-        z-index: 9997;
-      }
-    </style>
   </body>
 </html>
