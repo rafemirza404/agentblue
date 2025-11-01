@@ -40,12 +40,16 @@ const Chatbot = () => {
   const lastMessageTimeRef = useRef<number>(0);
 
   const scrollToBottom = (smooth = true) => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTo({
-        top: messagesContainerRef.current.scrollHeight,
-        behavior: smooth ? 'smooth' : 'auto'
-      });
-    }
+    setTimeout(() => {
+      if (messagesContainerRef.current) {
+        messagesContainerRef.current.scrollTo({
+          top: messagesContainerRef.current.scrollHeight,
+          behavior: smooth ? 'smooth' : 'auto'
+        });
+        setIsAtBottom(true);
+        setShowNewMessage(false);
+      }
+    }, 100);
   };
 
   const checkIfAtBottom = () => {
@@ -59,10 +63,11 @@ const Chatbot = () => {
     }
   };
 
+  // Auto-scroll when messages change
   useEffect(() => {
     if (isAtBottom) {
       scrollToBottom();
-    } else if (messages.length > 0) {
+    } else if (messages.length > 0 && !isAtBottom) {
       setShowNewMessage(true);
     }
   }, [messages, isTyping, showTopicCards]);
