@@ -16,6 +16,9 @@ const getOrCreateSessionId = () => {
     sessionId = `session_${timestamp}_${randomString}`;
     localStorage.setItem("chatSessionId", sessionId);
     localStorage.setItem("chatSessionCreated", timestamp.toString());
+    console.log("✅ New session created:", sessionId);
+  } else {
+    console.log("✅ Existing session loaded:", sessionId);
   }
   return sessionId;
 };
@@ -40,46 +43,63 @@ const Chatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lastMessageTimeRef = useRef<number>(0);
 
-  // Improved scroll to bottom function
-  const scrollToBottom = () => {
+  // IMPROVED: More aggressive scroll to bottom function
+  const scrollToBottom = (force = false) => {
     const scroll = () => {
       if (messagesContainerRef.current) {
-        messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+        const container = messagesContainerRef.current;
+        container.scrollTop = container.scrollHeight;
+        console.log("📜 Scrolled to bottom - scrollTop:", container.scrollTop, "scrollHeight:", container.scrollHeight);
       }
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
     };
 
-    // Multiple scroll attempts for reliability
-    scroll();
-    setTimeout(scroll, 50);
-    setTimeout(scroll, 150);
+    // If force scroll, ignore user scroll state
+    if (force) {
+      scroll();
+      setTimeout(scroll, 50);
+      setTimeout(scroll, 150);
+      setTimeout(scroll, 300);
+    } else {
+      // Normal scroll - multiple attempts for reliability
+      scroll();
+      setTimeout(scroll, 50);
+      setTimeout(scroll, 150);
+      setTimeout(scroll, 300);
+    }
   };
 
   // Scroll to bottom when messages change
   useEffect(() => {
+    console.log("📨 Messages changed, scrolling...", messages.length);
     scrollToBottom();
   }, [messages]);
 
   // Scroll to bottom when typing indicator changes
   useEffect(() => {
     if (isTyping) {
+      console.log("⌨️ Typing indicator shown, scrolling...");
       scrollToBottom();
     }
   }, [isTyping]);
 
   // Scroll to bottom when topic cards change
   useEffect(() => {
+    console.log("🎴 Topic cards changed:", showTopicCards);
     setTimeout(() => {
       scrollToBottom();
-    }, 150);
+    }, 200);
   }, [showTopicCards]);
 
   // Scroll when chat opens
   useEffect(() => {
     if (isOpen) {
+      console.log("💬 Chat opened, scrolling...");
       setTimeout(() => {
-        scrollToBottom();
-      }, 400);
+        scrollToBottom(true);
+      }, 500);
     }
   }, [isOpen]);
 
@@ -109,19 +129,23 @@ const Chatbot = () => {
     };
   }, [isOpen]);
 
-  // Detect user scroll to show "new message" notification
+  // FIXED: Detect user scroll to show "new message" notification
   useEffect(() => {
     const container = messagesContainerRef.current;
     if (!container) return;
 
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container;
-      const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+      const scrollBottom = scrollHeight - scrollTop - clientHeight;
+      const isAtBottom = scrollBottom < 100; // More lenient threshold
+
       setIsUserScrolled(!isAtBottom);
 
       if (isAtBottom) {
         setHasNewMessage(false);
       }
+
+      console.log("🔄 Scroll detected - isAtBottom:", isAtBottom, "scrollBottom:", scrollBottom);
     };
 
     container.addEventListener("scroll", handleScroll);
@@ -184,6 +208,7 @@ const Chatbot = () => {
     // Message throttling - prevent spam
     const now = Date.now();
     if (now - lastMessageTimeRef.current < 1000) {
+      console.log("⚠️ Message throttled");
       return;
     }
     lastMessageTimeRef.current = now;
@@ -193,11 +218,17 @@ const Chatbot = () => {
     setInputValue("");
     setIsTyping(true);
 
-    // Auto-scroll after user message
-    setTimeout(() => scrollToBottom(), 100);
+    // Force scroll after user message
+    setTimeout(() => scrollToBottom(true), 150);
 
     try {
       const sessionId = getOrCreateSessionId();
+
+      console.log("📤 Sending to n8n:", {
+        message: trimmedMessage,
+        sessionId: sessionId,
+      });
+
       const response = await fetch(CHATBOT_CONFIG.n8nWebhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -213,22 +244,47 @@ const Chatbot = () => {
       }
 
       const data = await response.json();
-      const botResponse =
-        data.response || data.output || data.message || "Thanks for your message! Our team will get back to you soon.";
+      console.log("📥 Received from n8n:", data);
+
+      // FIXED: Handle array response from n8n
+      let botResponse = "Thanks for your message! Our team will get back to you soon.";
+
+      if (Array.isArray(data)) {
+        // n8n returns array with sessionId and output
+        const responseItem = data.find((item: any) => item.sessionId === sessionId);
+        if (responseItem && responseItem.output) {
+          botResponse = responseItem.output;
+        } else if (data[0] && data[0].output) {
+          // Fallback to first item
+          botResponse = data[0].output;
+        }
+      } else if (data.output) {
+        botResponse = data.output;
+      } else if (data.response) {
+        botResponse = data.response;
+      } else if (data.message) {
+        botResponse = data.message;
+      }
+
+      console.log("✅ Bot response:", botResponse);
 
       setMessages((prev) => [...prev, { text: botResponse, isBot: true }]);
 
-      // Show notification if user scrolled up, otherwise auto-scroll
-      if (isUserScrolled) {
-        setHasNewMessage(true);
-      } else {
-        setTimeout(() => scrollToBottom(), 100);
-      }
+      // FIXED: Show notification if user scrolled up, otherwise force scroll
+      setTimeout(() => {
+        if (isUserScrolled) {
+          console.log("🔔 User scrolled up, showing notification");
+          setHasNewMessage(true);
+        } else {
+          console.log("📜 Auto-scrolling to new message");
+          scrollToBottom(true);
+        }
+      }, 200);
     } catch (error) {
-      console.error("Chatbot error:", error);
+      console.error("❌ Chatbot error:", error);
       const errorResponse = `I'm having trouble connecting right now. Please try again in a moment, or email us at ${CHATBOT_CONFIG.contactEmail}`;
       setMessages((prev) => [...prev, { text: errorResponse, isBot: true }]);
-      setTimeout(() => scrollToBottom(), 100);
+      setTimeout(() => scrollToBottom(true), 150);
     } finally {
       setIsTyping(false);
     }
@@ -264,7 +320,7 @@ const Chatbot = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-[#0066FF] rounded-full shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_28px_rgba(0,102,255,0.4)] hover:scale-105 transition-all duration-300 z-[9998] flex items-center justify-center animate-pulse"
+        className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-[#0066FF] rounded-full shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_28px_rgba(0,102,255,0.4)] hover:scale-105 transition-all duration-300 z-[9998] flex items-center justify-center"
         aria-label="Open chat support"
       >
         <MessageCircle className="w-6 h-6 text-white" />
@@ -274,10 +330,10 @@ const Chatbot = () => {
 
   return (
     <>
-      {/* Desktop Chat Modal */}
-      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[400px] max-w-[400px] h-[650px] max-h-[650px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
+      {/* FIXED SIZE: Desktop Chat Modal - 400x650px */}
+      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[400px] h-[650px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
         {/* Header */}
-        <div className="h-[80px] bg-white px-6 py-5 flex items-center justify-between border-b border-[#E5E7EB]">
+        <div className="h-[80px] bg-white px-6 py-5 flex items-center justify-between border-b border-[#E5E7EB] flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center">
               <img
@@ -294,18 +350,18 @@ const Chatbot = () => {
           </div>
           <button
             onClick={handleClose}
-            className="w-8 h-8 text-[#6B7280] hover:bg-[#F3F4F6] rounded-lg transition-colors flex items-center justify-center"
+            className="w-8 h-8 text-[#6B7280] hover:bg-[#F3F4F6] rounded-lg transition-colors flex items-center justify-center flex-shrink-0"
             aria-label="Close chat"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Messages Area */}
-        <div className="relative flex-1">
+        {/* Messages Area - FIXED HEIGHT */}
+        <div className="relative flex-1 min-h-0">
           <div
             ref={messagesContainerRef}
-            className="absolute inset-0 bg-[#F8F9FA] p-5 overflow-y-auto scroll-smooth"
+            className="absolute inset-0 bg-[#F8F9FA] p-5 overflow-y-auto"
             style={{
               scrollbarWidth: "thin",
               scrollbarColor: "rgba(0,0,0,0.2) transparent",
@@ -339,7 +395,7 @@ const Chatbot = () => {
                 </div>
               ))}
 
-              {/* Topic Cards - Show only after welcome message */}
+              {/* Topic Cards */}
               {showTopicCards && messages.length === 1 && messages[0].isBot && (
                 <div className="grid grid-cols-2 gap-3 mt-4 animate-in fade-in duration-500">
                   {topicCards.map((card) => {
@@ -348,7 +404,7 @@ const Chatbot = () => {
                       <button
                         key={card.id}
                         onClick={() => handleTopicCardClick(card.message)}
-                        className="bg-white border-2 border-[#E5E7EB] rounded-xl p-4 cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)] text-left flex flex-col gap-2 col-span-2 last:col-span-2"
+                        className="bg-white border-2 border-[#E5E7EB] rounded-xl p-4 cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)] text-left flex flex-col gap-2 col-span-2"
                       >
                         <Icon className="w-8 h-8 text-[#0066FF] mb-1" />
                         <div className="text-[15px] font-semibold text-[#1a1a2e] leading-tight">{card.title}</div>
@@ -370,7 +426,7 @@ const Chatbot = () => {
                       style={{ imageRendering: "-webkit-optimize-contrast" }}
                     />
                   </div>
-                  <div className="max-w-[80px] bg-[#F3F4F6] px-5 py-3 rounded-2xl rounded-tl-[4px]">
+                  <div className="bg-[#F3F4F6] px-5 py-3 rounded-2xl rounded-tl-[4px]">
                     <div className="flex gap-1.5 items-center">
                       <span
                         className="w-1.5 h-1.5 bg-[#0066FF] rounded-full animate-bounce"
@@ -389,27 +445,31 @@ const Chatbot = () => {
                 </div>
               )}
             </div>
-            <div ref={messagesEndRef} />
+            <div ref={messagesEndRef} className="h-4" />
           </div>
 
-          {/* New Message Notification */}
+          {/* FIXED: New Message Notification */}
           {hasNewMessage && (
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 animate-in slide-in-from-bottom-2 fade-in duration-200">
               <button
                 onClick={() => {
                   setHasNewMessage(false);
-                  scrollToBottom();
+                  setIsUserScrolled(false);
+                  scrollToBottom(true);
                 }}
-                className="bg-[#0066FF] text-white px-4 py-2 rounded-full shadow-lg text-sm font-medium hover:bg-[#0052CC] transition-all flex items-center gap-2"
+                className="bg-[#0066FF] text-white px-4 py-2.5 rounded-full shadow-lg text-sm font-medium hover:bg-[#0052CC] transition-all flex items-center gap-2"
               >
-                <span>↓</span> New message
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                New message
               </button>
             </div>
           )}
         </div>
 
-        {/* Input Area */}
-        <div className="h-[80px] bg-white px-5 py-4 border-t border-[#E5E7EB] flex gap-3 items-center">
+        {/* Input Area - FIXED HEIGHT */}
+        <div className="h-[80px] bg-white px-5 py-4 border-t border-[#E5E7EB] flex gap-3 items-center flex-shrink-0">
           <input
             type="text"
             value={inputValue}
@@ -421,7 +481,7 @@ const Chatbot = () => {
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-[0_4px_12px_rgba(0,102,255,0.3)] disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-[0_4px_12px_rgba(0,102,255,0.3)] disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex-shrink-0"
             aria-label="Send message"
           >
             <Send className="w-5 h-5 text-white" />
@@ -432,7 +492,7 @@ const Chatbot = () => {
       {/* Mobile Full-Screen Chat */}
       <div className="md:hidden fixed inset-0 bg-white z-[10000] flex flex-col animate-in slide-in-from-bottom duration-350">
         {/* Header */}
-        <div className="h-[70px] bg-white px-5 py-4 flex items-center justify-between border-b border-[#E5E7EB]">
+        <div className="h-[70px] bg-white px-5 py-4 flex items-center justify-between border-b border-[#E5E7EB] flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center">
               <img
@@ -457,8 +517,8 @@ const Chatbot = () => {
         </div>
 
         {/* Messages Area */}
-        <div className="relative flex-1">
-          <div ref={messagesContainerRef} className="absolute inset-0 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth">
+        <div className="relative flex-1 min-h-0">
+          <div ref={messagesContainerRef} className="absolute inset-0 bg-[#F8F9FA] p-4 overflow-y-auto">
             <div className="space-y-4">
               {messages.map((message, index) => (
                 <div
@@ -518,7 +578,7 @@ const Chatbot = () => {
                       style={{ imageRendering: "-webkit-optimize-contrast" }}
                     />
                   </div>
-                  <div className="max-w-[80px] bg-[#F3F4F6] px-5 py-3 rounded-2xl rounded-tl-[4px]">
+                  <div className="bg-[#F3F4F6] px-5 py-3 rounded-2xl rounded-tl-[4px]">
                     <div className="flex gap-1.5 items-center">
                       <span
                         className="w-1.5 h-1.5 bg-[#0066FF] rounded-full animate-bounce"
@@ -537,7 +597,7 @@ const Chatbot = () => {
                 </div>
               )}
             </div>
-            <div ref={messagesEndRef} />
+            <div ref={messagesEndRef} className="h-4" />
           </div>
 
           {/* New Message Notification - Mobile */}
@@ -546,18 +606,22 @@ const Chatbot = () => {
               <button
                 onClick={() => {
                   setHasNewMessage(false);
-                  scrollToBottom();
+                  setIsUserScrolled(false);
+                  scrollToBottom(true);
                 }}
-                className="bg-[#0066FF] text-white px-4 py-2 rounded-full shadow-lg text-sm font-medium hover:bg-[#0052CC] transition-all flex items-center gap-2"
+                className="bg-[#0066FF] text-white px-4 py-2.5 rounded-full shadow-lg text-sm font-medium hover:bg-[#0052CC] transition-all flex items-center gap-2"
               >
-                <span>↓</span> New message
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+                New message
               </button>
             </div>
           )}
         </div>
 
         {/* Input Area */}
-        <div className="bg-white px-4 py-3 border-t border-[#E5E7EB] flex gap-3 items-center">
+        <div className="bg-white px-4 py-3 border-t border-[#E5E7EB] flex gap-3 items-center flex-shrink-0">
           <input
             type="text"
             value={inputValue}
@@ -565,12 +629,12 @@ const Chatbot = () => {
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
             className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
-            style={{ fontSize: "16px" }} // Prevents zoom on iOS
+            style={{ fontSize: "16px" }}
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
             aria-label="Send message"
           >
             <Send className="w-5 h-5 text-white" />
