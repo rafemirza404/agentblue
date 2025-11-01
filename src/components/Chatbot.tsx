@@ -38,19 +38,29 @@ const Chatbot = () => {
   const lastMessageTimeRef = useRef<number>(0);
 
   const scrollToBottom = () => {
-    if (messagesContainerRef.current) {
-      setTimeout(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
         if (messagesContainerRef.current) {
           messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
         }
-      }, 100);
-    }
+      });
+    });
   };
 
-  // Scroll to bottom when messages change or typing status changes
+  // Scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isTyping, showTopicCards]);
+  }, [messages]);
+
+  // Scroll to bottom when typing indicator appears/disappears
+  useEffect(() => {
+    scrollToBottom();
+  }, [isTyping]);
+
+  // Scroll to bottom when topic cards appear/disappear
+  useEffect(() => {
+    scrollToBottom();
+  }, [showTopicCards]);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
