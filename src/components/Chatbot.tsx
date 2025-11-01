@@ -202,7 +202,7 @@ const Chatbot = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-gradient-to-br from-[#0066FF] to-[#0052CC] rounded-full shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_30px_rgba(0,102,255,0.4)] hover:scale-105 transition-all duration-300 z-[9999] flex items-center justify-center"
+        className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-[#0066FF] rounded-full shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_28px_rgba(0,102,255,0.4)] hover:scale-105 transition-all duration-300 z-[9998] flex items-center justify-center"
         aria-label="Open chat support"
       >
         <MessageCircle className="w-6 h-6 text-white" />
@@ -213,11 +213,11 @@ const Chatbot = () => {
   return (
     <>
       {/* Desktop Chat Modal */}
-      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[400px] h-[650px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
+      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[400px] max-w-[400px] h-[650px] max-h-[650px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
         {/* Header */}
-        <div className="h-[80px] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] px-6 py-5 flex items-center justify-between border-b border-white/10">
+        <div className="h-[80px] bg-white px-6 py-5 flex items-center justify-between border-b border-[#E5E7EB]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-2">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center">
               <img 
                 src={agentblueLogo} 
                 alt="AgentBlue" 
@@ -226,13 +226,13 @@ const Chatbot = () => {
               />
             </div>
             <div>
-              <h3 className="text-white font-semibold text-lg leading-tight">AgentBlue</h3>
-              <p className="text-white/70 text-[13px] mt-0.5">We architect operational excellence</p>
+              <h3 className="text-[#1a1a2e] font-semibold text-lg leading-tight">AgentBlue</h3>
+              <p className="text-[#6B7280] text-[13px] mt-0.5">We architect operational excellence</p>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="text-white hover:bg-white/10 rounded-lg p-1.5 transition-colors"
+            className="text-[#6B7280] hover:bg-[#F3F4F6] rounded-lg p-1.5 transition-colors"
             aria-label="Close chat"
           >
             <X className="w-5 h-5" />
@@ -264,8 +264,8 @@ const Chatbot = () => {
                 <div
                   className={`max-w-[85%] px-4 py-3 whitespace-pre-line text-sm leading-relaxed ${
                     message.isBot
-                      ? "bg-white text-[#1a1a2e] shadow-[0_2px_8px_rgba(0,0,0,0.06)] rounded-2xl rounded-tl-[4px]"
-                      : "bg-gradient-to-br from-[#0066FF] to-[#0052CC] text-white rounded-2xl rounded-tr-[4px]"
+                      ? "bg-[#F3F4F6] text-[#1a1a2e] rounded-2xl rounded-tl-[4px]"
+                      : "bg-[#0066FF] text-white rounded-2xl rounded-tr-[4px]"
                   }`}
                 >
                   {message.text}
@@ -328,12 +328,12 @@ const Chatbot = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-12 bg-[#F3F4F6] border border-[#E5E7EB] rounded-3xl px-5 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
+            className="flex-1 h-12 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-gradient-to-br from-[#0066FF] to-[#0052CC] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:shadow-[0_4px_12px_rgba(0,102,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:shadow-[0_4px_12px_rgba(0,102,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Send message"
           >
             <Send className="w-5 h-5 text-white" />
@@ -344,9 +344,9 @@ const Chatbot = () => {
       {/* Mobile Full-Screen Chat */}
       <div className="md:hidden fixed inset-0 bg-white z-[10000] flex flex-col animate-in slide-in-from-bottom duration-300">
         {/* Header */}
-        <div className="h-[70px] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] px-5 py-4 flex items-center justify-between border-b border-white/10">
+        <div className="h-[70px] bg-white px-5 py-4 flex items-center justify-between border-b border-[#E5E7EB]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center p-1.5">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center">
               <img 
                 src={agentblueLogo} 
                 alt="AgentBlue" 
@@ -355,13 +355,13 @@ const Chatbot = () => {
               />
             </div>
             <div>
-              <h3 className="text-white font-semibold text-base leading-tight">AgentBlue</h3>
-              <p className="text-white/70 text-xs mt-0.5">We architect operational excellence</p>
+              <h3 className="text-[#1a1a2e] font-semibold text-base leading-tight">AgentBlue</h3>
+              <p className="text-[#6B7280] text-xs mt-0.5">We architect operational excellence</p>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="text-white hover:bg-white/10 rounded-lg p-1.5 transition-colors"
+            className="text-[#6B7280] hover:bg-[#F3F4F6] rounded-lg p-1.5 transition-colors"
             aria-label="Close chat"
           >
             <X className="w-5 h-5" />
@@ -389,8 +389,8 @@ const Chatbot = () => {
                 <div
                   className={`max-w-[90%] px-4 py-3 whitespace-pre-line text-sm leading-relaxed ${
                     message.isBot
-                      ? "bg-white text-[#1a1a2e] shadow-[0_2px_8px_rgba(0,0,0,0.06)] rounded-2xl rounded-tl-[4px]"
-                      : "bg-gradient-to-br from-[#0066FF] to-[#0052CC] text-white rounded-2xl rounded-tr-[4px]"
+                      ? "bg-[#F3F4F6] text-[#1a1a2e] rounded-2xl rounded-tl-[4px]"
+                      : "bg-[#0066FF] text-white rounded-2xl rounded-tr-[4px]"
                   }`}
                 >
                   {message.text}
@@ -453,13 +453,13 @@ const Chatbot = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-11 bg-[#F3F4F6] border border-[#E5E7EB] rounded-3xl px-5 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:bg-white focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
+            className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
             style={{ fontSize: '16px' }} // Prevents zoom on iOS
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-gradient-to-br from-[#0066FF] to-[#0052CC] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Send message"
           >
             <Send className="w-5 h-5 text-white" />
