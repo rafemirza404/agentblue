@@ -11,6 +11,7 @@ import WatchDemo from "./pages/WatchDemo";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "@/components/ScrollToTop";
 import Chatbot from "@/components/Chatbot";
+import VoiceCallButton from "@/components/VoiceCallButton";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Chatbot />
+        <VoiceCallButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
