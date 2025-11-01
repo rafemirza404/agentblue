@@ -163,7 +163,14 @@ const Contact = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="ghost" className="w-full">
+                <Button 
+                  variant="ghost" 
+                  className="w-full"
+                  onClick={() => {
+                    const chatButton = document.querySelector('[aria-label="Open chat support"]') as HTMLButtonElement;
+                    if (chatButton) chatButton.click();
+                  }}
+                >
                   Start Chat
                   <ArrowRight className="w-4 h-4" />
                 </Button>

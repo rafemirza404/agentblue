@@ -264,7 +264,7 @@ const Chatbot = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-[#0066FF] rounded-full shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_28px_rgba(0,102,255,0.4)] hover:scale-105 transition-all duration-300 z-[9998] flex items-center justify-center animate-pulse"
+        className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-[#0066FF] rounded-full shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_28px_rgba(0,102,255,0.4)] hover:scale-105 transition-all duration-300 z-[9998] flex items-center justify-center"
         aria-label="Open chat support"
       >
         <MessageCircle className="w-6 h-6 text-white" />
