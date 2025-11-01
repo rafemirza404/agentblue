@@ -35,42 +35,56 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showTopicCards, setShowTopicCards] = useState(true);
   const [showNewMessage, setShowNewMessage] = useState(false);
-  const [isAtBottom, setIsAtBottom] = useState(true);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const lastMessageTimeRef = useRef<number>(0);
+  const userScrolledRef = useRef(false);
+  const prevMessagesLengthRef = useRef(0);
 
-  const scrollToBottom = (smooth = true) => {
-    setTimeout(() => {
-      if (messagesContainerRef.current) {
-        messagesContainerRef.current.scrollTo({
-          top: messagesContainerRef.current.scrollHeight,
-          behavior: smooth ? 'smooth' : 'auto'
-        });
-        setIsAtBottom(true);
-        setShowNewMessage(false);
-      }
-    }, 100);
-  };
-
-  const checkIfAtBottom = () => {
-    if (messagesContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
-      const atBottom = scrollHeight - scrollTop - clientHeight < 50;
-      setIsAtBottom(atBottom);
-      if (atBottom) {
-        setShowNewMessage(false);
-      }
+  const scrollToBottom = (force = false) => {
+    if (messagesContainerRef.current && (!userScrolledRef.current || force)) {
+      setTimeout(() => {
+        if (messagesContainerRef.current) {
+          messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+        }
+      }, 50);
     }
   };
 
-  // Auto-scroll when messages change
-  useEffect(() => {
+  const handleScroll = () => {
+    if (!messagesContainerRef.current) return;
+    
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+    
     if (isAtBottom) {
-      scrollToBottom();
-    } else if (messages.length > 0 && !isAtBottom) {
-      setShowNewMessage(true);
+      userScrolledRef.current = false;
+      setShowNewMessage(false);
+    } else {
+      userScrolledRef.current = true;
+      if (messages.length > prevMessagesLengthRef.current) {
+        setShowNewMessage(true);
+      }
     }
-  }, [messages, isTyping, showTopicCards]);
+  };
+
+  // Auto-scroll on new messages
+  useEffect(() => {
+    if (messages.length > prevMessagesLengthRef.current) {
+      if (!userScrolledRef.current) {
+        scrollToBottom();
+      } else {
+        setShowNewMessage(true);
+      }
+      prevMessagesLengthRef.current = messages.length;
+    }
+  }, [messages]);
+
+  // Auto-scroll when typing indicator appears
+  useEffect(() => {
+    if (isTyping && !userScrolledRef.current) {
+      scrollToBottom();
+    }
+  }, [isTyping]);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -262,7 +276,7 @@ const Chatbot = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          onScroll={checkIfAtBottom}
+          onScroll={handleScroll}
           className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth relative"
           style={{
             scrollbarWidth: 'thin',
@@ -344,7 +358,8 @@ const Chatbot = () => {
           {showNewMessage && (
             <button
               onClick={() => {
-                scrollToBottom();
+                userScrolledRef.current = false;
+                scrollToBottom(true);
                 setShowNewMessage(false);
               }}
               className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#0066FF] text-white px-3 py-1.5 rounded-full text-xs font-medium shadow-lg hover:bg-[#0052CC] transition-all duration-200 flex items-center gap-1.5 animate-in fade-in slide-in-from-bottom-2"
@@ -405,7 +420,7 @@ const Chatbot = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          onScroll={checkIfAtBottom}
+          onScroll={handleScroll}
           className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth relative"
         >
           <div className="space-y-4">
@@ -483,7 +498,8 @@ const Chatbot = () => {
           {showNewMessage && (
             <button
               onClick={() => {
-                scrollToBottom();
+                userScrolledRef.current = false;
+                scrollToBottom(true);
                 setShowNewMessage(false);
               }}
               className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#0066FF] text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:bg-[#0052CC] transition-all duration-200 flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2"
