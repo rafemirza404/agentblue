@@ -34,57 +34,23 @@ const Chatbot = () => {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showTopicCards, setShowTopicCards] = useState(true);
-  const [showNewMessage, setShowNewMessage] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const lastMessageTimeRef = useRef<number>(0);
-  const userScrolledRef = useRef(false);
-  const prevMessagesLengthRef = useRef(0);
 
-  const scrollToBottom = (force = false) => {
-    if (messagesContainerRef.current && (!userScrolledRef.current || force)) {
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
       setTimeout(() => {
         if (messagesContainerRef.current) {
           messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
         }
-      }, 50);
+      }, 100);
     }
   };
 
-  const handleScroll = () => {
-    if (!messagesContainerRef.current) return;
-    
-    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
-    const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
-    
-    if (isAtBottom) {
-      userScrolledRef.current = false;
-      setShowNewMessage(false);
-    } else {
-      userScrolledRef.current = true;
-      if (messages.length > prevMessagesLengthRef.current) {
-        setShowNewMessage(true);
-      }
-    }
-  };
-
-  // Auto-scroll on new messages
+  // Scroll to bottom when messages change or typing status changes
   useEffect(() => {
-    if (messages.length > prevMessagesLengthRef.current) {
-      if (!userScrolledRef.current) {
-        scrollToBottom();
-      } else {
-        setShowNewMessage(true);
-      }
-      prevMessagesLengthRef.current = messages.length;
-    }
-  }, [messages]);
-
-  // Auto-scroll when typing indicator appears
-  useEffect(() => {
-    if (isTyping && !userScrolledRef.current) {
-      scrollToBottom();
-    }
-  }, [isTyping]);
+    scrollToBottom();
+  }, [messages, isTyping, showTopicCards]);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -276,8 +242,7 @@ const Chatbot = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          onScroll={handleScroll}
-          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth relative"
+          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth"
           style={{
             scrollbarWidth: 'thin',
             scrollbarColor: 'rgba(0,0,0,0.2) transparent'
@@ -353,20 +318,6 @@ const Chatbot = () => {
               </div>
             )}
           </div>
-
-          {/* New Message Indicator */}
-          {showNewMessage && (
-            <button
-              onClick={() => {
-                userScrolledRef.current = false;
-                scrollToBottom(true);
-                setShowNewMessage(false);
-              }}
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#0066FF] text-white px-3 py-1.5 rounded-full text-xs font-medium shadow-lg hover:bg-[#0052CC] transition-all duration-200 flex items-center gap-1.5 animate-in fade-in slide-in-from-bottom-2"
-            >
-              New message ↓
-            </button>
-          )}
         </div>
 
         {/* Input Area */}
@@ -420,8 +371,7 @@ const Chatbot = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          onScroll={handleScroll}
-          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth relative"
+          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth"
         >
           <div className="space-y-4">
             {messages.map((message, index) => (
@@ -493,20 +443,6 @@ const Chatbot = () => {
               </div>
             )}
           </div>
-
-          {/* New Message Indicator */}
-          {showNewMessage && (
-            <button
-              onClick={() => {
-                userScrolledRef.current = false;
-                scrollToBottom(true);
-                setShowNewMessage(false);
-              }}
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#0066FF] text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:bg-[#0052CC] transition-all duration-200 flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2"
-            >
-              New message ↓
-            </button>
-          )}
         </div>
 
         {/* Input Area */}
