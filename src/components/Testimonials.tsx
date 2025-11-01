@@ -12,7 +12,7 @@ const Testimonials = () => {
       rating: 5,
     },
     {
-      name: "Michael Rodriguez",
+      name: "Khalid bin Saleh",
       title: "Operations Manager, Zahrat Al Sharq Trading",
       avatar: "KS",
       content:
