@@ -34,22 +34,37 @@ const Chatbot = () => {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showTopicCards, setShowTopicCards] = useState(true);
+  const [showNewMessage, setShowNewMessage] = useState(false);
+  const [isAtBottom, setIsAtBottom] = useState(true);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const lastMessageTimeRef = useRef<number>(0);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (smooth = true) => {
     if (messagesContainerRef.current) {
-      setTimeout(() => {
-        messagesContainerRef.current?.scrollTo({
-          top: messagesContainerRef.current.scrollHeight,
-          behavior: 'smooth'
-        });
-      }, 100);
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: smooth ? 'smooth' : 'auto'
+      });
+    }
+  };
+
+  const checkIfAtBottom = () => {
+    if (messagesContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+      const atBottom = scrollHeight - scrollTop - clientHeight < 50;
+      setIsAtBottom(atBottom);
+      if (atBottom) {
+        setShowNewMessage(false);
+      }
     }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    if (isAtBottom) {
+      scrollToBottom();
+    } else if (messages.length > 0) {
+      setShowNewMessage(true);
+    }
   }, [messages, isTyping, showTopicCards]);
 
   useEffect(() => {
@@ -242,7 +257,8 @@ const Chatbot = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth"
+          onScroll={checkIfAtBottom}
+          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth relative"
           style={{
             scrollbarWidth: 'thin',
             scrollbarColor: 'rgba(0,0,0,0.2) transparent'
@@ -318,6 +334,19 @@ const Chatbot = () => {
               </div>
             )}
           </div>
+
+          {/* New Message Indicator */}
+          {showNewMessage && (
+            <button
+              onClick={() => {
+                scrollToBottom();
+                setShowNewMessage(false);
+              }}
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#0066FF] text-white px-3 py-1.5 rounded-full text-xs font-medium shadow-lg hover:bg-[#0052CC] transition-all duration-200 flex items-center gap-1.5 animate-in fade-in slide-in-from-bottom-2"
+            >
+              New message ↓
+            </button>
+          )}
         </div>
 
         {/* Input Area */}
@@ -371,7 +400,8 @@ const Chatbot = () => {
         {/* Messages Area */}
         <div 
           ref={messagesContainerRef}
-          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth"
+          onScroll={checkIfAtBottom}
+          className="flex-1 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth relative"
         >
           <div className="space-y-4">
             {messages.map((message, index) => (
@@ -443,6 +473,19 @@ const Chatbot = () => {
               </div>
             )}
           </div>
+
+          {/* New Message Indicator */}
+          {showNewMessage && (
+            <button
+              onClick={() => {
+                scrollToBottom();
+                setShowNewMessage(false);
+              }}
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#0066FF] text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:bg-[#0052CC] transition-all duration-200 flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2"
+            >
+              New message ↓
+            </button>
+          )}
         </div>
 
         {/* Input Area */}
