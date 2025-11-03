@@ -1,40 +1,109 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Vapi from "@vapi-ai/web";
-import { Phone, PhoneOff, Mic, MicOff, Check, Star } from "lucide-react";
+import { Phone, PhoneOff, Mic, MicOff, Check, Star, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
+interface LeadData {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  role: string;
+  consent: boolean;
+  timestamp?: number;
+}
+
+const WEBHOOKS = {
+  checkEligibility: "https://n8nlocal.supportagentblue.com/webhook/check-call-eligibility",
+  saveProfile: "https://n8nlocal.supportagentblue.com/webhook/save-user-profile",
+  lookupUser: "https://n8nlocal.supportagentblue.com/webhook/lookup-user",
+  saveCallRecord: "https://n8nlocal.supportagentblue.com/webhook/save-call-record",
+};
+
+const COUNTRY_CODES = [
+  { code: "+1", name: "USA" },
+  { code: "+44", name: "UK" },
+  { code: "+91", name: "India" },
+  { code: "+971", name: "UAE" },
+  { code: "+966", name: "Saudi Arabia" },
+  { code: "+61", name: "Australia" },
+  { code: "+49", name: "Germany" },
+  { code: "+33", name: "France" },
+];
+
+const ROLES = [
+  "Founder/CEO",
+  "Operations Manager",
+  "Operations Director",
+  "Marketing Director",
+  "Business Owner",
+  "IT Manager",
+  "Other",
+];
+
 const VoiceCallButton = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  // Modal states
+  const [showEmailLookup, setShowEmailLookup] = useState(false);
+  const [showLeadForm, setShowLeadForm] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [showIntroModal, setShowIntroModal] = useState(false);
   const [isCallActive, setIsCallActive] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  
+  // Call states
   const [callDuration, setCallDuration] = useState(0);
   const [callStatus, setCallStatus] = useState<"speaking" | "listening">("listening");
-  const [rating, setRating] = useState(0);
-  const [feedback, setFeedback] = useState("");
   const [isMuted, setIsMuted] = useState(false);
+  const [callStartTime, setCallStartTime] = useState<Date | null>(null);
+  const [vapiCallId, setVapiCallId] = useState<string>("");
+  
+  // Feedback states
+  const [rating, setRating] = useState(0);
+  const [feedbackText, setFeedbackText] = useState("");
+  const [autoCloseCountdown, setAutoCloseCountdown] = useState(10);
+  
+  // Form states
+  const [leadData, setLeadData] = useState<LeadData>({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    role: "",
+    consent: false,
+  });
+  const [countryCode, setCountryCode] = useState("+1");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [lookupEmail, setLookupEmail] = useState("");
+  const [formErrors, setFormErrors] = useState<Partial<Record<keyof LeadData | "phoneNumber", string>>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const vapiRef = useRef<Vapi | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const feedbackTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const { toast } = useToast();
 
+  // Initialize Vapi
   useEffect(() => {
-    // Initialize Vapi
     vapiRef.current = new Vapi("722c44f3-0bdb-48c0-b04f-7dee42b7f1ca");
-
-    // Set up event listeners
     const vapi = vapiRef.current;
 
     vapi.on("call-start", () => {
       console.log("Call started");
       setIsCallActive(true);
       setShowIntroModal(false);
+      setCallStartTime(new Date());
       document.body.style.overflow = "hidden";
       
-      // Start timer
       timerRef.current = setInterval(() => {
         setCallDuration((prev) => prev + 1);
       }, 1000);
@@ -42,24 +111,7 @@ const VoiceCallButton = () => {
 
     vapi.on("call-end", () => {
       console.log("Call ended");
-      setIsCallActive(false);
-      document.body.style.overflow = "auto";
-      
-      // Clear timer
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-      
-      setCallDuration(0);
-      setShowFeedbackModal(true);
-      
-      // Auto-dismiss feedback modal after 10 seconds
-      feedbackTimerRef.current = setTimeout(() => {
-        setShowFeedbackModal(false);
-        setRating(0);
-        setFeedback("");
-      }, 10000);
+      handleCallEnd();
     });
 
     vapi.on("speech-start", () => {
@@ -83,6 +135,12 @@ const VoiceCallButton = () => {
       document.body.style.overflow = "auto";
     });
 
+    vapi.on("message", (message: any) => {
+      if (message.type === "call-started" && message.call?.id) {
+        setVapiCallId(message.call.id);
+      }
+    });
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
@@ -90,9 +148,244 @@ const VoiceCallButton = () => {
     };
   }, [toast]);
 
+  // Auto-close countdown for feedback modal
+  useEffect(() => {
+    if (showFeedbackModal && autoCloseCountdown > 0) {
+      const timer = setTimeout(() => {
+        setAutoCloseCountdown(prev => prev - 1);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    } else if (showFeedbackModal && autoCloseCountdown === 0) {
+      handleCloseFeedback();
+    }
+  }, [showFeedbackModal, autoCloseCountdown]);
+
+  // Reset countdown on user interaction
+  const resetCountdown = () => {
+    setAutoCloseCountdown(10);
+  };
+
+  const handleButtonClick = () => {
+    // Check localStorage first
+    const savedUser = localStorage.getItem('agentblue_user');
+    
+    if (savedUser) {
+      try {
+        const userData = JSON.parse(savedUser);
+        setLeadData(userData);
+        setShowConfirmation(true);
+      } catch (error) {
+        console.error("Error parsing saved user data:", error);
+        setShowEmailLookup(true);
+      }
+    } else {
+      setShowEmailLookup(true);
+    }
+  };
+
+  const handleEmailLookup = async () => {
+    if (!lookupEmail || !lookupEmail.includes("@")) {
+      setFormErrors({ email: "Please enter a valid email address" });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormErrors({});
+
+    try {
+      const response = await fetch(WEBHOOKS.lookupUser, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: lookupEmail }),
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        if (userData && userData.name) {
+          // User found
+          setLeadData({
+            name: userData.name,
+            email: userData.email,
+            phone: userData.phone,
+            company: userData.company,
+            role: userData.role,
+            consent: true,
+          });
+          localStorage.setItem('agentblue_user', JSON.stringify(userData));
+          setShowEmailLookup(false);
+          setShowConfirmation(true);
+        } else {
+          // User not found, show full form
+          setLeadData(prev => ({ ...prev, email: lookupEmail }));
+          setShowEmailLookup(false);
+          setShowLeadForm(true);
+        }
+      } else {
+        // Webhook failed, show full form
+        setLeadData(prev => ({ ...prev, email: lookupEmail }));
+        setShowEmailLookup(false);
+        setShowLeadForm(true);
+      }
+    } catch (error) {
+      console.error("Email lookup error:", error);
+      // On error, show full form
+      setLeadData(prev => ({ ...prev, email: lookupEmail }));
+      setShowEmailLookup(false);
+      setShowLeadForm(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const errors: Partial<Record<keyof LeadData | "phoneNumber", string>> = {};
+
+    if (!leadData.name || leadData.name.length < 2) {
+      errors.name = "Name must be at least 2 characters";
+    }
+
+    if (!leadData.email || !leadData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      errors.email = "Please enter a valid email address";
+    }
+
+    if (!phoneNumber || phoneNumber.length < 7) {
+      errors.phoneNumber = "Please enter a valid phone number";
+    }
+
+    if (!leadData.company) {
+      errors.company = "Company name is required";
+    }
+
+    if (!leadData.role) {
+      errors.role = "Please select your role";
+    }
+
+    if (!leadData.consent) {
+      errors.consent = "You must agree to receive follow-up communication";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleFormSubmit = async () => {
+    if (!validateForm()) return;
+
+    const fullPhone = countryCode + phoneNumber;
+    const updatedLeadData = { ...leadData, phone: fullPhone, timestamp: Date.now() };
+    
+    setIsSubmitting(true);
+
+    // Save to localStorage
+    localStorage.setItem('agentblue_user', JSON.stringify(updatedLeadData));
+    setLeadData(updatedLeadData);
+
+    // Check rate limit
+    await checkRateLimit(updatedLeadData);
+  };
+
+  const checkRateLimit = async (userData: LeadData) => {
+    try {
+      // Check localStorage first for quick rate limit
+      const lastCall = localStorage.getItem('agentblue_last_call');
+      if (lastCall) {
+        const lastCallTime = parseInt(lastCall);
+        const timeSinceLastCall = Date.now() - lastCallTime;
+        const minutesSince = Math.floor(timeSinceLastCall / 60000);
+        
+        if (minutesSince < 60) {
+          const minutesRemaining = 60 - minutesSince;
+          toast({
+            title: "Please wait",
+            description: `Please wait ${minutesRemaining} minutes before your next call`,
+            variant: "destructive",
+          });
+          setIsSubmitting(false);
+          setShowLeadForm(false);
+          return;
+        }
+      }
+
+      // Check with webhook
+      const response = await fetch(WEBHOOKS.checkEligibility, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: userData.email,
+          phone: userData.phone,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        
+        if (!result.allowed) {
+          toast({
+            title: "Rate Limit Reached",
+            description: result.message || "Please wait before making another call",
+            variant: "destructive",
+          });
+          setIsSubmitting(false);
+          setShowLeadForm(false);
+          return;
+        }
+      } else {
+        console.log("Rate limit check failed, proceeding with localStorage fallback");
+      }
+
+      // Save profile
+      try {
+        await fetch(WEBHOOKS.saveProfile, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: userData.name,
+            email: userData.email,
+            phone: userData.phone,
+            company: userData.company,
+            role: userData.role,
+          }),
+        });
+      } catch (error) {
+        console.error("Error saving profile:", error);
+      }
+
+      // Proceed to intro modal
+      setIsSubmitting(false);
+      setShowLeadForm(false);
+      setShowConfirmation(false);
+      setShowIntroModal(true);
+    } catch (error) {
+      console.error("Rate limit check error:", error);
+      // On error, allow call to proceed (don't block users)
+      setIsSubmitting(false);
+      setShowLeadForm(false);
+      setShowIntroModal(true);
+    }
+  };
+
+  const handleConfirmedUser = async () => {
+    setShowConfirmation(false);
+    await checkRateLimit(leadData);
+  };
+
   const handleStartCall = async () => {
     try {
-      await vapiRef.current?.start("a2cc1d26-9117-436f-a991-15b6d80de3b1");
+      await vapiRef.current?.start("a2cc1d26-9117-436f-a991-15b6d80de3b1", {
+        metadata: {
+          userName: leadData.name,
+          userEmail: leadData.email,
+          companyName: leadData.company,
+          userRole: leadData.role,
+          userPhone: leadData.phone,
+          callSource: "website",
+        },
+      });
+      
+      // Save last call time
+      localStorage.setItem('agentblue_last_call', Date.now().toString());
     } catch (error) {
       console.error("Failed to start call:", error);
       toast({
@@ -108,6 +401,142 @@ const VoiceCallButton = () => {
     vapiRef.current?.stop();
   };
 
+  const handleCallEnd = () => {
+    setIsCallActive(false);
+    document.body.style.overflow = "auto";
+    
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    
+    const callEndTime = new Date();
+    
+    // Save call record immediately
+    saveCallRecord(callEndTime);
+    
+    // Show feedback modal
+    setShowFeedbackModal(true);
+    setAutoCloseCountdown(10);
+  };
+
+  const saveCallRecord = async (endTime: Date) => {
+    try {
+      await fetch(WEBHOOKS.saveCallRecord, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lead_data: {
+            name: leadData.name,
+            email: leadData.email,
+            phone: leadData.phone,
+            company: leadData.company,
+            role: leadData.role,
+          },
+          call_data: {
+            started_at: callStartTime?.toISOString(),
+            ended_at: endTime.toISOString(),
+            duration: formatTime(callDuration),
+            vapi_call_id: vapiCallId || null,
+          },
+          feedback: {
+            rating: rating || null,
+            comment: feedbackText || "",
+            next_action: null,
+          },
+        }),
+      });
+    } catch (error) {
+      console.error("Error saving call record:", error);
+    }
+  };
+
+  const handleFeedbackSubmit = async () => {
+    resetCountdown();
+    
+    // Update call record with feedback
+    try {
+      await fetch(WEBHOOKS.saveCallRecord, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lead_data: {
+            name: leadData.name,
+            email: leadData.email,
+            phone: leadData.phone,
+            company: leadData.company,
+            role: leadData.role,
+          },
+          call_data: {
+            started_at: callStartTime?.toISOString(),
+            ended_at: new Date().toISOString(),
+            duration: formatTime(callDuration),
+            vapi_call_id: vapiCallId || null,
+          },
+          feedback: {
+            rating: rating,
+            comment: feedbackText,
+            next_action: "submitted",
+          },
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating feedback:", error);
+    }
+    
+    toast({
+      title: "Thank you!",
+      description: "Your feedback has been recorded.",
+    });
+    
+    handleCloseFeedback();
+  };
+
+  const handleExploreServices = async () => {
+    resetCountdown();
+    
+    // Update call record with action
+    try {
+      await fetch(WEBHOOKS.saveCallRecord, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lead_data: {
+            name: leadData.name,
+            email: leadData.email,
+            phone: leadData.phone,
+            company: leadData.company,
+            role: leadData.role,
+          },
+          call_data: {
+            started_at: callStartTime?.toISOString(),
+            ended_at: new Date().toISOString(),
+            duration: formatTime(callDuration),
+            vapi_call_id: vapiCallId || null,
+          },
+          feedback: {
+            rating: rating || null,
+            comment: feedbackText || "",
+            next_action: "explore_services",
+          },
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating action:", error);
+    }
+    
+    setShowFeedbackModal(false);
+    navigate("/services");
+  };
+
+  const handleCloseFeedback = () => {
+    setShowFeedbackModal(false);
+    setRating(0);
+    setFeedbackText("");
+    setCallDuration(0);
+    setAutoCloseCountdown(10);
+  };
+
   const toggleMute = () => {
     if (vapiRef.current) {
       vapiRef.current.setMuted(!isMuted);
@@ -121,126 +550,269 @@ const VoiceCallButton = () => {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const handleFeedbackSubmit = () => {
-    // Save feedback (could send to webhook or localStorage)
-    console.log("Feedback submitted:", { rating, feedback });
-    
-    if (feedbackTimerRef.current) {
-      clearTimeout(feedbackTimerRef.current);
-    }
-    
-    setShowFeedbackModal(false);
-    setRating(0);
-    setFeedback("");
-    
-    toast({
-      title: "Thank you!",
-      description: "Your feedback has been recorded.",
-    });
-  };
-
-  const openChatbot = () => {
-    const chatButton = document.querySelector('[aria-label="Open chat support"]') as HTMLElement;
-    if (chatButton) {
-      chatButton.click();
-    }
-    setShowFeedbackModal(false);
-  };
-
   return (
     <>
-      {/* Floating Button - Initial State */}
+      {/* Floating Button */}
       {!isCallActive && (
         <button
-          onClick={() => setShowIntroModal(true)}
-          className="fixed bottom-6 left-6 z-[9997] bg-[#0066FF] hover:bg-[#0052CC] text-white rounded-full px-6 py-4 shadow-lg transition-all duration-300 hover:shadow-xl group"
+          onClick={handleButtonClick}
+          className="fixed bottom-6 left-6 z-[9997] bg-[#0066FF] hover:bg-[#0052CC] text-white rounded-full px-6 py-3 sm:py-4 shadow-lg transition-all duration-300 hover:shadow-xl group w-[120px] h-[44px] sm:w-[140px] sm:h-[48px]"
           aria-label="Talk to Sophia AI"
         >
-          <div className="flex items-center gap-3">
-            <Phone className="w-5 h-5" />
-            <div className="flex flex-col items-start">
-              <span className="font-semibold">Talk to Sophia</span>
-              <span className="text-xs text-white/80">2-min AI consultation</span>
+          <div className="flex items-center gap-2 sm:gap-3 justify-center">
+            <Phone className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+            <div className="flex flex-col items-start text-left">
+              <span className="font-semibold text-xs sm:text-sm leading-tight">Talk to Sophia</span>
+              <span className="text-[10px] sm:text-xs text-white/80 leading-tight whitespace-nowrap">2-min consultation</span>
             </div>
           </div>
         </button>
       )}
 
-      {/* During Call - Live Status Card */}
-      {isCallActive && (
-        <>
-          {/* Dark overlay */}
-          <div className="fixed inset-0 bg-black/50 z-[9996]" />
+      {/* Email Lookup Modal */}
+      <Dialog open={showEmailLookup} onOpenChange={setShowEmailLookup}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Welcome back!</DialogTitle>
+            <DialogDescription className="text-base pt-2">
+              Enter your email to continue
+            </DialogDescription>
+          </DialogHeader>
           
-          {/* Status Card */}
-          <div className="fixed bottom-6 left-6 z-[9997] bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl border-2 border-[#0066FF] animate-pulse-glow w-80">
-            <div className="space-y-4">
-              {/* Status Header */}
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  Connected to Sophia
-                </span>
-              </div>
-
-              {/* Waveform Animation */}
-              <div className="flex items-center justify-center gap-1 h-16">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-2 bg-[#0066FF] rounded-full animate-waveform"
-                    style={{
-                      animationDelay: `${i * 0.1}s`,
-                      height: "20px",
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Status Text */}
-              <div className="text-center space-y-2">
-                <div className="flex items-center justify-center gap-2 text-gray-700 dark:text-gray-300">
-                  {callStatus === "speaking" ? (
-                    <>
-                      <Mic className="w-4 h-4" />
-                      <span>Sophia is speaking...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Mic className="w-4 h-4 text-green-500" />
-                      <span>Listening to you...</span>
-                    </>
-                  )}
-                </div>
-                <div className="text-2xl font-mono text-gray-900 dark:text-white">
-                  {formatTime(callDuration)}
-                </div>
-              </div>
-
-              {/* Controls */}
-              <div className="flex gap-2">
-                <Button
-                  onClick={toggleMute}
-                  variant="outline"
-                  size="sm"
-                  className="flex-1"
-                >
-                  {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                </Button>
-                <Button
-                  onClick={handleEndCall}
-                  className="flex-1 bg-red-500 hover:bg-red-600 text-white"
-                >
-                  <PhoneOff className="w-4 h-4 mr-2" />
-                  End Call
-                </Button>
-              </div>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="lookup-email">Email Address</Label>
+              <Input
+                id="lookup-email"
+                type="email"
+                placeholder="john@company.com"
+                value={lookupEmail}
+                onChange={(e) => setLookupEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleEmailLookup()}
+                className={formErrors.email ? "border-red-500" : ""}
+              />
+              {formErrors.email && (
+                <p className="text-sm text-red-500">{formErrors.email}</p>
+              )}
             </div>
           </div>
-        </>
-      )}
 
-      {/* Before Call - Intro Modal */}
+          <div className="flex flex-col gap-3 pt-4">
+            <Button
+              onClick={handleEmailLookup}
+              disabled={isSubmitting}
+              className="w-full bg-[#0066FF] hover:bg-[#0052CC]"
+            >
+              {isSubmitting ? "Looking up..." : "Continue"}
+            </Button>
+            <Button
+              onClick={() => {
+                setShowEmailLookup(false);
+                setShowLeadForm(true);
+              }}
+              variant="ghost"
+              className="w-full"
+            >
+              I'm new here
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Lead Capture Form */}
+      <Dialog open={showLeadForm} onOpenChange={setShowLeadForm}>
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Connect with Sophia AI</DialogTitle>
+            <DialogDescription className="text-base pt-2">
+              Quick details to get started
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            {/* Full Name */}
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name *</Label>
+              <Input
+                id="name"
+                placeholder="John Smith"
+                value={leadData.name}
+                onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
+                className={formErrors.name ? "border-red-500" : ""}
+              />
+              {formErrors.name && (
+                <p className="text-sm text-red-500">{formErrors.name}</p>
+              )}
+            </div>
+
+            {/* Business Email */}
+            <div className="space-y-2">
+              <Label htmlFor="email">Business Email *</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="john@company.com"
+                value={leadData.email}
+                onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
+                className={formErrors.email ? "border-red-500" : ""}
+              />
+              {formErrors.email && (
+                <p className="text-sm text-red-500">{formErrors.email}</p>
+              )}
+            </div>
+
+            {/* Phone Number */}
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number *</Label>
+              <div className="flex gap-2">
+                <Select value={countryCode} onValueChange={setCountryCode}>
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {COUNTRY_CODES.map((country) => (
+                      <SelectItem key={country.code} value={country.code}>
+                        {country.code} ({country.name})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="2025551234"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
+                  className={formErrors.phoneNumber ? "border-red-500 flex-1" : "flex-1"}
+                />
+              </div>
+              {formErrors.phoneNumber && (
+                <p className="text-sm text-red-500">{formErrors.phoneNumber}</p>
+              )}
+              <p className="text-xs text-gray-500">
+                Combined: {countryCode} {phoneNumber}
+              </p>
+            </div>
+
+            {/* Company Name */}
+            <div className="space-y-2">
+              <Label htmlFor="company">Company Name *</Label>
+              <Input
+                id="company"
+                placeholder="Acme Inc."
+                value={leadData.company}
+                onChange={(e) => setLeadData({ ...leadData, company: e.target.value })}
+                className={formErrors.company ? "border-red-500" : ""}
+              />
+              {formErrors.company && (
+                <p className="text-sm text-red-500">{formErrors.company}</p>
+              )}
+            </div>
+
+            {/* Role */}
+            <div className="space-y-2">
+              <Label htmlFor="role">Your Role *</Label>
+              <Select
+                value={leadData.role}
+                onValueChange={(value) => setLeadData({ ...leadData, role: value })}
+              >
+                <SelectTrigger className={formErrors.role ? "border-red-500" : ""}>
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  {ROLES.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {formErrors.role && (
+                <p className="text-sm text-red-500">{formErrors.role}</p>
+              )}
+            </div>
+
+            {/* Consent */}
+            <div className="flex items-start space-x-2">
+              <Checkbox
+                id="consent"
+                checked={leadData.consent}
+                onCheckedChange={(checked) =>
+                  setLeadData({ ...leadData, consent: checked as boolean })
+                }
+              />
+              <label
+                htmlFor="consent"
+                className="text-sm leading-tight cursor-pointer"
+              >
+                I agree to receive follow-up communication from AgentBlue *
+              </label>
+            </div>
+            {formErrors.consent && (
+              <p className="text-sm text-red-500">{formErrors.consent}</p>
+            )}
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button
+              onClick={() => setShowLeadForm(false)}
+              variant="outline"
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleFormSubmit}
+              disabled={isSubmitting}
+              className="flex-1 bg-[#0066FF] hover:bg-[#0052CC]"
+            >
+              {isSubmitting ? "Processing..." : "Continue"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirmation Modal for Returning Users */}
+      <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Welcome back, {leadData.name}!</DialogTitle>
+            <DialogDescription className="text-base pt-2">
+              Ready to speak with Sophia?
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-3 py-4">
+            <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 space-y-2 text-sm">
+              <p><strong>Email:</strong> {leadData.email}</p>
+              <p><strong>Company:</strong> {leadData.company}</p>
+              <p><strong>Role:</strong> {leadData.role}</p>
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button
+              onClick={() => {
+                setShowConfirmation(false);
+                setShowLeadForm(true);
+              }}
+              variant="outline"
+              className="flex-1"
+            >
+              Update Info
+            </Button>
+            <Button
+              onClick={handleConfirmedUser}
+              className="flex-1 bg-[#0066FF] hover:bg-[#0052CC]"
+            >
+              <Phone className="w-4 h-4 mr-2" />
+              Start Call
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Intro Modal */}
       <Dialog open={showIntroModal} onOpenChange={setShowIntroModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -291,11 +863,82 @@ const VoiceCallButton = () => {
         </DialogContent>
       </Dialog>
 
-      {/* After Call - Feedback Modal */}
+      {/* During Call - Live Status Card */}
+      {isCallActive && (
+        <>
+          <div className="fixed inset-0 bg-black/40 z-[9996]" />
+          
+          <div className="fixed bottom-6 left-6 z-[9997] bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl border-2 border-[#0066FF] animate-pulse-glow w-[280px]">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  Connected to Sophia
+                </span>
+              </div>
+
+              <div className="flex items-center justify-center gap-1 h-16">
+                {[...Array(5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-2 bg-[#0066FF] rounded-full animate-waveform"
+                    style={{
+                      animationDelay: `${i * 0.1}s`,
+                      height: "20px",
+                    }}
+                  />
+                ))}
+              </div>
+
+              <div className="text-center space-y-2">
+                <div className="flex items-center justify-center gap-2 text-gray-700 dark:text-gray-300">
+                  {callStatus === "speaking" ? (
+                    <>
+                      <Mic className="w-4 h-4" />
+                      <span>Sophia is speaking...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="w-4 h-4 text-green-500" />
+                      <span>Listening to you...</span>
+                    </>
+                  )}
+                </div>
+                <div className="text-2xl font-mono text-gray-900 dark:text-white">
+                  {formatTime(callDuration)}
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  onClick={toggleMute}
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                >
+                  {isMuted ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                </Button>
+                <Button
+                  onClick={handleEndCall}
+                  className="flex-1 bg-red-500 hover:bg-red-600 text-white"
+                >
+                  <PhoneOff className="w-4 h-4 mr-2" />
+                  End Call
+                </Button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Feedback Modal */}
       <Dialog open={showFeedbackModal} onOpenChange={setShowFeedbackModal}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent 
+          className="sm:max-w-md"
+          onClick={resetCountdown}
+          onKeyDown={resetCountdown}
+        >
           <div className="text-center space-y-4 py-4">
-            {/* Thank You Section */}
             <div className="flex justify-center">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                 <Check className="w-8 h-8 text-green-600 dark:text-green-500" />
@@ -311,7 +954,6 @@ const VoiceCallButton = () => {
               </p>
             </div>
 
-            {/* Rating Section */}
             <div className="space-y-3 pt-4">
               <p className="font-medium text-gray-900 dark:text-white">
                 How was your experience?
@@ -320,7 +962,10 @@ const VoiceCallButton = () => {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
-                    onClick={() => setRating(star)}
+                    onClick={() => {
+                      setRating(star);
+                      resetCountdown();
+                    }}
                     className="transition-transform hover:scale-110"
                   >
                     <Star
@@ -335,56 +980,60 @@ const VoiceCallButton = () => {
               </div>
             </div>
 
-            {/* Feedback Text */}
             <div className="space-y-2 pt-2">
               <Textarea
                 placeholder="Any additional feedback? (optional)"
-                value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
+                value={feedbackText}
+                onChange={(e) => {
+                  setFeedbackText(e.target.value);
+                  resetCountdown();
+                }}
+                maxLength={500}
                 className="min-h-[80px]"
               />
+              <p className="text-xs text-gray-500 text-right">
+                {feedbackText.length}/500
+              </p>
             </div>
 
-            {/* CTAs */}
             <div className="space-y-3 pt-4">
               <Button
-                onClick={openChatbot}
+                onClick={handleExploreServices}
                 className="w-full bg-[#0066FF] hover:bg-[#0052CC]"
               >
-                Book Full Consultation
+                Explore Our Services
               </Button>
-              <Button
-                onClick={openChatbot}
-                variant="outline"
-                className="w-full"
-              >
-                Talk to Human Agent
-              </Button>
+              
               {rating > 0 && (
                 <Button
                   onClick={handleFeedbackSubmit}
-                  variant="ghost"
+                  variant="outline"
                   className="w-full"
                 >
-                  Submit & Close
+                  Submit Feedback
                 </Button>
               )}
             </div>
 
-            <button
-              onClick={() => setShowFeedbackModal(false)}
-              className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 pt-2"
-            >
-              Close
-            </button>
+            <div className="pt-2 space-y-2">
+              <p className="text-sm text-gray-500">
+                Closing in {autoCloseCountdown} seconds...
+              </p>
+              <button
+                onClick={handleCloseFeedback}
+                className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
 
       <style>{`
         @keyframes waveform {
-          0%, 100% { height: 20px; }
-          50% { height: 48px; }
+          0%, 100% { height: 8px; }
+          50% { height: 32px; }
         }
         
         @keyframes pulse-glow {
