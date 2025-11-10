@@ -1,5 +1,5 @@
 import agentblueLogo from "@/assets/agentblue-logo.png";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -52,12 +52,6 @@ const Footer = () => {
                 <Mail className="w-4 h-4" />
                 <a href="mailto:sophia@supportagentblue.in" className="hover:text-primary-foreground transition-colors">
                   sophia@supportagentblue.in
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                <a href="tel:+919934017786" className="hover:text-primary-foreground transition-colors">
-                  +91 99340 17786
                 </a>
               </div>
               <div className="flex items-center gap-2">

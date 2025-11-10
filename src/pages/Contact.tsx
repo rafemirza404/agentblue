@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Calendar, Mail, Phone, MessageCircle, Globe, Clock, Zap } from "lucide-react";
+import { Calendar, Mail, MessageCircle, Globe, Clock, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
@@ -181,22 +181,6 @@ const Contact = () => {
                 <Card>
                   <CardHeader>
                     <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 text-accent">
-                      <Phone className="w-6 h-6" />
-                    </div>
-                    <CardTitle className="text-2xl">Phone</CardTitle>
-                    <p className="text-muted-foreground">Speak directly with our team</p>
-                  </CardHeader>
-                  <CardContent>
-                    <a href="tel:+919934017786">
-                      <Button variant="outline" size="lg" className="w-full mb-2">+91 99340 17786</Button>
-                    </a>
-                    <p className="text-sm text-muted-foreground text-center">Mon-Fri, 9AM-6PM EST</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 text-accent">
                       <MessageCircle className="w-6 h-6" />
                     </div>
                     <CardTitle className="text-2xl">Live Chat</CardTitle>
@@ -328,14 +312,6 @@ const Contact = () => {
                         <div>
                           <p className="font-medium">Remote-First Consultancy</p>
                           <p className="text-sm text-muted-foreground">Serving clients globally via remote consultation</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3">
-                        <Clock className="w-5 h-5 text-accent mt-1" />
-                        <div>
-                          <p className="font-medium">Availability</p>
-                          <p className="text-sm text-muted-foreground">Mon-Fri: 9AM-6PM EST</p>
-                          <p className="text-sm text-muted-foreground">Sat: Limited | Sun: Closed</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">

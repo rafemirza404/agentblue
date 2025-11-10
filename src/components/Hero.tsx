@@ -57,7 +57,7 @@ const Hero = () => {
             <Button
               size="lg"
               variant="ghost"
-              className="text-lg px-8 text-foreground hover:text-accent"
+              className="text-lg px-8 text-foreground hover:text-accent hover:bg-accent/5 transition-colors"
               onClick={() => window.location.href = '/watch-demo'}
             >
               Watch Demo →

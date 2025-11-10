@@ -19,6 +19,7 @@ interface LeadData {
   role: string;
   consent: boolean;
   timestamp?: number;
+  website_form_filled?: boolean;
 }
 
 const WEBHOOKS = {
@@ -202,17 +203,19 @@ const VoiceCallButton = () => {
 
       if (response.ok) {
         const userData = await response.json();
-        if (userData && userData.name) {
+        if (userData && userData.found) {
           // User found
-          setLeadData({
-            name: userData.name,
-            email: userData.email,
-            phone: userData.phone,
-            company: userData.company,
-            role: userData.role,
+          const userProfile = {
+            name: userData.data.name,
+            email: userData.data.email,
+            phone: userData.data.phone,
+            company: userData.data.company,
+            role: userData.data.role,
             consent: true,
-          });
-          localStorage.setItem('agentblue_user', JSON.stringify(userData));
+            website_form_filled: userData.website_form_filled || false,
+          };
+          setLeadData(userProfile);
+          localStorage.setItem('agentblue_user', JSON.stringify(userProfile));
           setShowEmailLookup(false);
           setShowConfirmation(true);
         } else {
@@ -273,7 +276,7 @@ const VoiceCallButton = () => {
     if (!validateForm()) return;
 
     const fullPhone = countryCode + phoneNumber;
-    const updatedLeadData = { ...leadData, phone: fullPhone, timestamp: Date.now() };
+    const updatedLeadData = { ...leadData, phone: fullPhone, timestamp: Date.now(), website_form_filled: true };
     
     setIsSubmitting(true);
 
@@ -556,7 +559,7 @@ const VoiceCallButton = () => {
       {!isCallActive && (
         <button
           onClick={handleButtonClick}
-          className="fixed bottom-6 left-6 z-[9997] bg-[#0066FF] hover:bg-[#0052CC] text-white rounded-full px-6 py-3 sm:py-4 shadow-lg transition-all duration-300 hover:shadow-xl group w-[120px] h-[44px] sm:w-[140px] sm:h-[48px]"
+          className="fixed bottom-6 left-6 z-[9997] bg-[#0066FF] hover:bg-[#0052CC] text-white rounded-full px-4 py-2.5 sm:px-5 sm:py-3 shadow-lg transition-all duration-300 hover:shadow-xl group"
           aria-label="Talk to Sophia AI"
         >
           <div className="flex items-center gap-2 sm:gap-3 justify-center">
@@ -778,7 +781,9 @@ const VoiceCallButton = () => {
           <DialogHeader>
             <DialogTitle className="text-2xl">Welcome back, {leadData.name}!</DialogTitle>
             <DialogDescription className="text-base pt-2">
-              Ready to speak with Sophia?
+              {leadData.website_form_filled 
+                ? "Ready to speak with Sophia again?" 
+                : "We have your info from a previous interaction. Ready to speak with Sophia?"}
             </DialogDescription>
           </DialogHeader>
           
