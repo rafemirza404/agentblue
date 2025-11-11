@@ -393,15 +393,17 @@ const VoiceCallButton = () => {
       });
       
       await vapiRef.current?.start("a2cc1d26-9117-436f-a991-15b6d80de3b1", {
-        metadata: {
-          userName: leadData.name,
-          userEmail: leadData.email,
-          companyName: leadData.company,
-          userRole: leadData.role,
-          userPhone: leadData.phone,
-          callSource: "website",
+        assistantOverrides: {
+          variableValues: {
+            userName: leadData.name,
+            userEmail: leadData.email,
+            companyName: leadData.company,
+            userRole: leadData.role,
+            userPhone: leadData.phone,
+            callSource: "website",
+          },
         },
-      });
+      } as any);
       
       // Save last call time
       localStorage.setItem('agentblue_last_call', Date.now().toString());
