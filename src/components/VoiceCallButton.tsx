@@ -278,11 +278,15 @@ const VoiceCallButton = () => {
     const fullPhone = countryCode + phoneNumber;
     const updatedLeadData = { ...leadData, phone: fullPhone, timestamp: Date.now(), website_form_filled: true };
     
+    console.log("DEBUG - Form submitted with data:", updatedLeadData);
+    
     setIsSubmitting(true);
 
     // Save to localStorage
     localStorage.setItem('agentblue_user', JSON.stringify(updatedLeadData));
     setLeadData(updatedLeadData);
+    
+    console.log("DEBUG - Lead data state updated and saved to localStorage");
 
     // Check rate limit
     await checkRateLimit(updatedLeadData);
@@ -356,6 +360,7 @@ const VoiceCallButton = () => {
       }
 
       // Proceed to intro modal
+      console.log("DEBUG - Proceeding to intro modal with userData:", userData);
       setIsSubmitting(false);
       setShowLeadForm(false);
       setShowConfirmation(false);
@@ -370,12 +375,23 @@ const VoiceCallButton = () => {
   };
 
   const handleConfirmedUser = async () => {
+    console.log("DEBUG - Confirmed user, current leadData:", leadData);
     setShowConfirmation(false);
     await checkRateLimit(leadData);
   };
 
   const handleStartCall = async () => {
     try {
+      console.log("DEBUG - Lead Data before call:", leadData);
+      console.log("DEBUG - Metadata to send:", {
+        userName: leadData.name,
+        userEmail: leadData.email,
+        companyName: leadData.company,
+        userRole: leadData.role,
+        userPhone: leadData.phone,
+        callSource: "website",
+      });
+      
       await vapiRef.current?.start("a2cc1d26-9117-436f-a991-15b6d80de3b1", {
         metadata: {
           userName: leadData.name,
