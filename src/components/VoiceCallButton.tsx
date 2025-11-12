@@ -380,25 +380,25 @@ const VoiceCallButton = () => {
     await checkRateLimit(leadData);
   };
 
-  const handleStartCall = async () => {
+  const handleStartCall = async (callData = leadData) => {
     try {
-    console.log("DEBUG - Lead Data before call:", leadData);
+    console.log("DEBUG - Lead Data before call:", callData);
     console.log("DEBUG - Metadata to send:", {
-      name: leadData.name,
-      email: leadData.email,
-      company: leadData.company,
-      role: leadData.role,
-      phone: leadData.phone,
+      name: callData.name,
+      email: callData.email,
+      company: callData.company,
+      role: callData.role,
+      phone: callData.phone,
       callSource: "website",
     });
     
     const assistantOverrides = {
       variableValues: {
-        name: leadData.name,
-        email: leadData.email,
-        company: leadData.company,
-        role: leadData.role,
-        phone: leadData.phone,
+        name: callData.name,
+        email: callData.email,
+        company: callData.company,
+        role: callData.role,
+        phone: callData.phone,
         callSource: "website",
       },
     };
@@ -876,7 +876,7 @@ const VoiceCallButton = () => {
               Cancel
             </Button>
             <Button
-              onClick={handleStartCall}
+              onClick={() => handleStartCall(leadData)}
               className="flex-1 bg-[#0066FF] hover:bg-[#0052CC]"
             >
               <Phone className="w-4 h-4 mr-2" />
