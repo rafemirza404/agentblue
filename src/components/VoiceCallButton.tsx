@@ -392,7 +392,7 @@ const VoiceCallButton = () => {
       callSource: "website",
     });
     
-    await vapiRef.current?.start("a2cc1d26-9117-436f-a991-15b6d80de3b1", {
+    const assistantOverrides = {
       variableValues: {
         name: leadData.name,
         email: leadData.email,
@@ -401,7 +401,9 @@ const VoiceCallButton = () => {
         phone: leadData.phone,
         callSource: "website",
       },
-    });
+    };
+
+    await vapiRef.current?.start("a2cc1d26-9117-436f-a991-15b6d80de3b1", assistantOverrides);
       
       // Save last call time
       localStorage.setItem('agentblue_last_call', Date.now().toString());
