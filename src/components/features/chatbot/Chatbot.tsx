@@ -74,22 +74,6 @@ const Chatbot = () => {
   }, [messages, isUserScrolled]);
 
   /**
-   * Handle topic card click
-   */
-  const handleTopicCardClick = useCallback(
-    (message: string | null) => {
-      if (message === null) {
-        setShowTopicCards(false);
-        return;
-      }
-
-      setShowTopicCards(false);
-      handleSendMessage(message);
-    },
-    [handleSendMessage]
-  );
-
-  /**
    * Send message to chatbot
    */
   const handleSendMessage = useCallback(
@@ -149,6 +133,22 @@ const Chatbot = () => {
       }
     },
     [sessionId]
+  );
+
+  /**
+   * Handle topic card click
+   */
+  const handleTopicCardClick = useCallback(
+    (message: string | null) => {
+      if (message === null) {
+        setShowTopicCards(false);
+        return;
+      }
+
+      setShowTopicCards(false);
+      handleSendMessage(message);
+    },
+    [handleSendMessage]
   );
 
   /**

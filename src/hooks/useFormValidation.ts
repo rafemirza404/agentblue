@@ -52,7 +52,7 @@ export const useFormValidation = () => {
     return Object.keys(newErrors).length === 0;
   }, []);
 
-  const validateEmail = useCallback((email: string): boolean => {
+  const validateEmailInput = useCallback((email: string): boolean => {
     const newErrors: ValidationErrors = {};
 
     if (!email || !validateEmail(email)) {
@@ -78,7 +78,7 @@ export const useFormValidation = () => {
   return {
     errors,
     validateLeadForm,
-    validateEmail,
+    validateEmailInput,
     clearErrors,
     clearError,
   };
