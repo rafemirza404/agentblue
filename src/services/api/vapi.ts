@@ -56,7 +56,7 @@ export class VapiService {
   /**
    * Register event listeners
    */
-  setupEventListeners(handlers: VapiEventHandlers): void {
+  setupEventListeners(handlers: VapiEventHandlers): () => void {
     if (handlers.onCallStart) {
       this.client.on('call-start', handlers.onCallStart);
     }
@@ -75,6 +75,28 @@ export class VapiService {
     if (handlers.onError) {
       this.client.on('error', handlers.onError);
     }
+
+    // Return cleanup function
+    return () => {
+      if (handlers.onCallStart) {
+        this.client.removeListener('call-start', handlers.onCallStart);
+      }
+      if (handlers.onCallEnd) {
+        this.client.removeListener('call-end', handlers.onCallEnd);
+      }
+      if (handlers.onSpeechStart) {
+        this.client.removeListener('speech-start', handlers.onSpeechStart);
+      }
+      if (handlers.onSpeechEnd) {
+        this.client.removeListener('speech-end', handlers.onSpeechEnd);
+      }
+      if (handlers.onMessage) {
+        this.client.removeListener('message', handlers.onMessage);
+      }
+      if (handlers.onError) {
+        this.client.removeListener('error', handlers.onError);
+      }
+    };
   }
 
   /**
