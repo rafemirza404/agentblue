@@ -3,7 +3,7 @@
  * Post-call feedback collection
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -40,7 +40,7 @@ export const FeedbackModal = ({
 }: FeedbackModalProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [autoCloseCountdown, setAutoCloseCountdown] = React.useState(10);
+  const [autoCloseCountdown, setAutoCloseCountdown] = useState(10);
 
   // Auto-close countdown
   useEffect(() => {
