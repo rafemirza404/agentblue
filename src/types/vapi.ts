@@ -14,6 +14,11 @@ export interface VapiVariables {
 
 export interface VapiAssistantOverrides {
   variableValues: VapiVariables;
+  transcriber?: {
+    provider: string;
+    model?: string;
+    keywords?: string[];
+  };
 }
 
 export interface VapiCallStartMessage {

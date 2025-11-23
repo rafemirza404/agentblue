@@ -36,6 +36,19 @@ export const useVoiceCallFlow = () => {
   // Timers
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Refs for event handlers to access latest state
+  const callStateRef = useRef(callState);
+  const toastRef = useRef(toast);
+
+  // Update refs when values change
+  useEffect(() => {
+    callStateRef.current = callState;
+  }, [callState]);
+
+  useEffect(() => {
+    toastRef.current = toast;
+  }, [toast]);
+
   /**
    * Update lead data (syncs state + ref + localStorage)
    * This prevents stale closure issues
@@ -202,62 +215,117 @@ export const useVoiceCallFlow = () => {
   );
 
   /**
-   * Setup VAPI event listeners
+   * Setup VAPI event listeners - ONLY ONCE on mount
    */
   useEffect(() => {
-    vapiService.setupEventListeners({
-      onCallStart: () => {
-        console.log('[VAPI] Call started');
-        callState.transitionTo('connected');
-        setCallStartTime(new Date());
-        document.body.style.overflow = 'hidden';
+    const handleCallStart = () => {
+      console.log('[VAPI] Call started');
+      callStateRef.current.transitionTo('connected');
+      setCallStartTime(new Date());
+      document.body.style.overflow = 'hidden';
 
-        // Start call duration timer
-        timerRef.current = setInterval(() => {
-          setCallDuration((prev) => prev + 1);
-        }, 1000);
-      },
+      // Start call duration timer
+      timerRef.current = setInterval(() => {
+        setCallDuration((prev) => prev + 1);
+      }, 1000);
+    };
 
-      onCallEnd: () => {
-        console.log('[VAPI] Call ended');
-        callState.transitionTo('ended');
-        document.body.style.overflow = 'auto';
+    const handleCallEnd = async () => {
+      console.log('[VAPI] Call ended');
+      callStateRef.current.transitionTo('ended');
+      document.body.style.overflow = 'auto';
 
-        // Stop timer
-        if (timerRef.current) {
-          clearInterval(timerRef.current);
-          timerRef.current = null;
-        }
+      // Stop timer
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
 
-        // Save call record
-        const endTime = new Date();
-        saveCallRecord(endTime);
-      },
+      // Save call record using current state values
+      const currentData = leadDataRef.current;
+      if (!currentData) return;
 
-      onSpeechStart: () => {
-        setCallStatus('speaking');
-      },
+      // Access current state at the time of call end
+      const endTime = new Date();
 
-      onSpeechEnd: () => {
-        setCallStatus('listening');
-      },
+      setCallDuration((currentDuration) => {
+        setCallStartTime((currentStartTime) => {
+          setVapiCallId((currentVapiCallId) => {
+            setRating((currentRating) => {
+              setFeedbackText((currentFeedback) => {
+                // Save with all current values
+                const callData: CallData = {
+                  started_at: currentStartTime?.toISOString() || '',
+                  ended_at: endTime.toISOString(),
+                  duration: formatTime(currentDuration),
+                  vapi_call_id: currentVapiCallId || null,
+                };
 
-      onMessage: (message: any) => {
-        if (message.type === 'call-started' && message.call?.id) {
-          setVapiCallId(message.call.id);
-        }
-      },
+                const feedbackData: FeedbackData = {
+                  rating: currentRating || null,
+                  comment: currentFeedback || '',
+                  next_action: null,
+                };
 
-      onError: (error: Error) => {
-        console.error('[VAPI] Error:', error);
-        toast({
-          title: 'Call Error',
-          description: 'There was an issue with the call. Please try again.',
-          variant: 'destructive',
+                webhookService.saveCallRecord({
+                  lead_data: {
+                    name: currentData.name,
+                    email: currentData.email,
+                    phone: currentData.phone,
+                    company: currentData.company,
+                    role: currentData.role,
+                  },
+                  call_data: callData,
+                  feedback: feedbackData,
+                }).catch((error) => {
+                  console.error('[VoiceCallFlow] Failed to save call record:', error);
+                });
+
+                return currentFeedback;
+              });
+              return currentRating;
+            });
+            return currentVapiCallId;
+          });
+          return currentStartTime;
         });
-        callState.transitionTo('ended');
-        document.body.style.overflow = 'auto';
-      },
+        return currentDuration;
+      });
+    };
+
+    const handleSpeechStart = () => {
+      setCallStatus('speaking');
+    };
+
+    const handleSpeechEnd = () => {
+      setCallStatus('listening');
+    };
+
+    const handleMessage = (message: any) => {
+      if (message.type === 'call-started' && message.call?.id) {
+        setVapiCallId(message.call.id);
+      }
+    };
+
+    const handleError = (error: Error) => {
+      console.error('[VAPI] Error:', error);
+      toastRef.current({
+        title: 'Call Error',
+        description: 'There was an issue with the call. Please try again.',
+        variant: 'destructive',
+      });
+      callStateRef.current.transitionTo('ended');
+      document.body.style.overflow = 'auto';
+    };
+
+    // Set up listeners and get cleanup function
+    const removeListeners = vapiService.setupEventListeners({
+      onCallStart: handleCallStart,
+      onCallEnd: handleCallEnd,
+      onSpeechStart: handleSpeechStart,
+      onSpeechEnd: handleSpeechEnd,
+      onMessage: handleMessage,
+      onError: handleError,
     });
 
     // Cleanup
@@ -265,10 +333,10 @@ export const useVoiceCallFlow = () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
-      vapiService.stop();
+      removeListeners(); // Remove event listeners
       document.body.style.overflow = 'auto';
     };
-  }, [callState, toast, saveCallRecord]);
+  }, []); // Empty deps - only run once on mount
 
   /**
    * Reset call state

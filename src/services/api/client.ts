@@ -26,7 +26,10 @@ export class ApiClient {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const data = await response.json();
+      // Handle empty responses
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : null;
+
       return { data, status: response.status };
     } catch (error) {
       console.error('API request failed:', error);
