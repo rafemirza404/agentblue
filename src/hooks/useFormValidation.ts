@@ -28,8 +28,10 @@ export const useFormValidation = () => {
       newErrors.email = 'Please enter a valid email address';
     }
 
-    // Validate phone
-    if (!phoneNumber || !validatePhone(phoneNumber)) {
+    // FIX 4: Strict phone number validation - absolutely mandatory
+    if (!phoneNumber || phoneNumber.trim() === '') {
+      newErrors.phoneNumber = 'Phone number is required to continue';
+    } else if (!validatePhone(phoneNumber)) {
       newErrors.phoneNumber = 'Please enter a valid phone number (minimum 7 digits)';
     }
 

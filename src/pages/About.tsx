@@ -3,7 +3,6 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Scale, FileText, BarChart3, Linkedin } from "lucide-react";
-import sadiqueImage from "@/assets/sadique.jpeg";
 import rafeImage from "@/assets/rafe.png";
 
 const About = () => {
@@ -101,52 +100,28 @@ const About = () => {
         {/* Team Section */}
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-4">The Team Behind AgentBlue</h2>
-                <p className="text-xl text-muted-foreground">Two co-founders with complementary expertise</p>
+                <h2 className="text-4xl font-bold mb-4">The Founder</h2>
+                <p className="text-xl text-muted-foreground">Strategic vision meets technical execution</p>
               </div>
-              
-              <div className="grid md:grid-cols-2 gap-12">
-                <Card className="border-0 bg-background">
-                  <CardContent className="p-8 text-center">
-                    <img 
-                      src={sadiqueImage} 
-                      alt="Sadique Mirza"
-                      className="w-48 h-48 rounded-full mx-auto mb-6 object-cover"
-                    />
-                    <h3 className="text-2xl font-bold mb-2">Sadique Mirza</h3>
-                    <p className="text-accent font-medium mb-4">Co-Founder & Strategic Lead</p>
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
-                      Marketing strategist and automation consultant. Specializes in operational diagnosis, ROI modeling, and client-facing strategy. Ensures every automation delivers measurable business impact.
-                    </p>
-                    <a 
-                      href="https://www.linkedin.com/in/muhammadsadique/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-[#0077B5] hover:opacity-80 transition-opacity"
-                    >
-                      <Linkedin className="w-5 h-5" />
-                      Connect on LinkedIn
-                    </a>
-                  </CardContent>
-                </Card>
 
-                <Card className="border-0 bg-background">
+              <div className="flex justify-center">
+                <Card className="border-0 bg-background max-w-md w-full">
                   <CardContent className="p-8 text-center">
-                    <img 
-                      src={rafeImage} 
+                    <img
+                      src={rafeImage}
                       alt="Rafe Mirza"
                       className="w-48 h-48 rounded-full mx-auto mb-6 object-cover"
                     />
                     <h3 className="text-2xl font-bold mb-2">Rafe Mirza</h3>
-                    <p className="text-accent font-medium mb-4">Co-Founder & Technical Lead</p>
+                    <p className="text-accent font-medium mb-4">Founder</p>
                     <p className="text-muted-foreground mb-6 leading-relaxed">
-                      Technical architect and development specialist. Builds custom automation solutions, integrations, and AI implementations. Turns strategic blueprints into production-ready systems.
+                      Consultant and technical strategist specializing in automation, integrations, and AI solutions. Advises clients on operational workflows, ROI-driven strategies, and scalable technical implementations. Bridges the gap between business objectives and production-ready systems, ensuring every solution delivers measurable impact.
                     </p>
-                    <a 
-                      href="https://www.linkedin.com/in/rafe-mirza-3a952b2b5/" 
-                      target="_blank" 
+                    <a
+                      href="https://www.linkedin.com/in/rafe-mirza-3a952b2b5/"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-[#0077B5] hover:opacity-80 transition-opacity"
                     >
