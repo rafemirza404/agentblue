@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, Target, MessageSquare, Calendar, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { webhookService } from "@/services/api/webhooks";
 
 const WatchDemo = () => {
   const { toast } = useToast();
@@ -65,20 +66,19 @@ const WatchDemo = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      const response = await fetch('https://n8nlocal.supportagentblue.com/webhook/69731dc5-5d13-451a-a880-ff44ff2e0e35', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          source: 'watch-demo-page'
-        }),
+      // FIX ISSUE 2: Use centralized webhookService instead of hardcoded URL
+      const response = await webhookService.submitContactForm({
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        phone: formData.phone,
+        message: formData.message,
+        source: 'watch-demo-page'
       });
 
-      if (response.ok) {
+      if (response.data || response.status === 200) {
         toast({
           title: "Success!",
           description: "Thanks for your interest! We'll be in touch within 24 hours.",
