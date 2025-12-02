@@ -22,13 +22,32 @@ export class VapiService {
 
   /**
    * Start a call with the given variables
+   * FIX 7: Verify all metadata is present, especially phone number
    */
   async startCall(variables: VapiVariables): Promise<void> {
+    // FIX 7: Validate that phone number is always present
+    if (!variables.phone || variables.phone.trim() === '') {
+      const error = new Error('Phone number is required but missing in VAPI metadata');
+      console.error('[VAPI] CRITICAL:', error);
+      throw error;
+    }
+
+    // Verify all required fields are present
+    if (!variables.name || !variables.email || !variables.company || !variables.role) {
+      console.warn('[VAPI] Warning: Some metadata fields are missing:', {
+        name: !!variables.name,
+        email: !!variables.email,
+        phone: !!variables.phone,
+        company: !!variables.company,
+        role: !!variables.role,
+      });
+    }
+
     const assistantOverrides: VapiAssistantOverrides = {
       variableValues: variables,
     };
 
-    console.log('[VAPI] Starting call with variables:', variables);
+    console.log('[VAPI] Starting call with validated variables:', variables);
 
     try {
       await this.client.start(this.assistantId, assistantOverrides);

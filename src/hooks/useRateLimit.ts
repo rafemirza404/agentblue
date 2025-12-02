@@ -14,6 +14,9 @@ export const useRateLimit = () => {
   const { toast } = useToast();
 
   const checkRateLimit = useCallback(async (userData: LeadData): Promise<boolean> => {
+    // FIX 3: Disabled call eligibility check - only use client-side localStorage check
+    // No longer making API calls to check eligibility
+
     // Check localStorage first for quick client-side rate limit
     const lastCallTime = storageService.getLastCallTime();
 
@@ -32,29 +35,8 @@ export const useRateLimit = () => {
       }
     }
 
-    // Check with server-side webhook
-    try {
-      const response = await webhookService.checkEligibility({
-        email: userData.email,
-        phone: userData.phone,
-        timestamp: new Date().toISOString(),
-      });
-
-      if (response.data && !response.data.allowed) {
-        toast({
-          title: 'Rate Limit Reached',
-          description: response.data.message || 'Please wait before making another call',
-          variant: 'destructive',
-        });
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Rate limit check failed:', error);
-      // On error, allow call to proceed (don't block users)
-      return true;
-    }
+    // Server-side eligibility check disabled - proceed with call
+    return true;
   }, [toast]);
 
   const saveCallTime = useCallback(() => {

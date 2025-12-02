@@ -11,6 +11,7 @@ import { useRateLimit } from './useRateLimit';
 import { vapiService } from '@/services/api/vapi';
 import { webhookService } from '@/services/api/webhooks';
 import { storageService } from '@/services/storage/localStorage';
+import { mobileAudioHandler } from '@/utils/mobileAudioHandler';
 import type { LeadData, CallData, FeedbackData, CallStatus } from '@/types/models';
 
 export const useVoiceCallFlow = () => {
@@ -39,6 +40,9 @@ export const useVoiceCallFlow = () => {
   // Refs for event handlers to access latest state
   const callStateRef = useRef(callState);
   const toastRef = useRef(toast);
+
+  // FIX 1: Mobile audio handler cleanup function
+  const mobileAudioCleanupRef = useRef<(() => Promise<void>) | null>(null);
 
   // Update refs when values change
   useEffect(() => {
@@ -73,6 +77,7 @@ export const useVoiceCallFlow = () => {
 
   /**
    * Validate and check rate limit before initiating call
+   * FIX 5: Form submission is now fully asynchronous - no blocking
    */
   const validateAndCheckRateLimit = useCallback(async (): Promise<boolean> => {
     const currentData = leadDataRef.current;
@@ -86,13 +91,14 @@ export const useVoiceCallFlow = () => {
       return false;
     }
 
-    // Check rate limit
+    // Check rate limit (client-side only now)
     const isAllowed = await checkRateLimit(currentData);
     if (!isAllowed) {
       return false;
     }
 
-    // Save profile (fire and forget)
+    // FIX 5: Save profile asynchronously in background (fire and forget)
+    // User doesn't wait for n8n workflow - call starts immediately
     webhookService.saveProfile({
       name: currentData.name,
       email: currentData.email,
@@ -100,7 +106,8 @@ export const useVoiceCallFlow = () => {
       company: currentData.company,
       role: currentData.role,
     }).catch((error) => {
-      console.error('Failed to save profile:', error);
+      // Handle errors silently - don't block the call
+      console.error('[Background] Failed to save profile:', error);
     });
 
     return true;
@@ -119,6 +126,17 @@ export const useVoiceCallFlow = () => {
         description: 'User data not available. Please try again.',
         variant: 'destructive',
       });
+      return;
+    }
+
+    // FIX 4: Enforce phone number requirement - absolutely mandatory
+    if (!currentData.phone || currentData.phone.trim() === '') {
+      toast({
+        title: 'Phone Number Required',
+        description: 'Phone number is required to continue. Please fill out the form.',
+        variant: 'destructive',
+      });
+      callState.transitionTo('ended');
       return;
     }
 
@@ -218,11 +236,21 @@ export const useVoiceCallFlow = () => {
    * Setup VAPI event listeners - ONLY ONCE on mount
    */
   useEffect(() => {
-    const handleCallStart = () => {
+    const handleCallStart = async () => {
       console.log('[VAPI] Call started');
       callStateRef.current.transitionTo('connected');
       setCallStartTime(new Date());
       document.body.style.overflow = 'hidden';
+
+      // FIX 1: Start mobile audio handling to prevent microphone cutout
+      try {
+        const cleanup = await mobileAudioHandler.startCall();
+        mobileAudioCleanupRef.current = cleanup;
+        console.log('[MobileAudio] Mobile audio handling activated');
+      } catch (error) {
+        console.error('[MobileAudio] Failed to start mobile audio handling:', error);
+        // Don't block call if mobile audio fails
+      }
 
       // Start call duration timer
       timerRef.current = setInterval(() => {
@@ -234,6 +262,17 @@ export const useVoiceCallFlow = () => {
       console.log('[VAPI] Call ended');
       callStateRef.current.transitionTo('ended');
       document.body.style.overflow = 'auto';
+
+      // FIX 1: Clean up mobile audio handling
+      if (mobileAudioCleanupRef.current) {
+        try {
+          await mobileAudioCleanupRef.current();
+          mobileAudioCleanupRef.current = null;
+          console.log('[MobileAudio] Mobile audio handling deactivated');
+        } catch (error) {
+          console.error('[MobileAudio] Failed to cleanup mobile audio:', error);
+        }
+      }
 
       // Stop timer
       if (timerRef.current) {

@@ -39,28 +39,11 @@ export const EmailLookupModal = ({
 
     setIsLoading(true);
 
+    // FIX 2: Disabled lookup client function - proceed directly to form
+    // Let browser's native autofill handle returning user data
     try {
-      const response = await webhookService.lookupUser({ email });
-
-      if (response.data && response.data.found && response.data.data) {
-        // User found
-        const userProfile: LeadData = {
-          name: response.data.data.name,
-          email: response.data.data.email,
-          phone: response.data.data.phone,
-          company: response.data.data.company,
-          role: response.data.data.role,
-          consent: true,
-          website_form_filled: response.data.website_form_filled || false,
-        };
-        onUserFound(userProfile);
-      } else {
-        // User not found
-        onUserNotFound(email);
-      }
-    } catch (error) {
-      console.error('Email lookup error:', error);
-      // On error, proceed to form
+      // No longer calling webhookService.lookupUser
+      // Always proceed to form with email
       onUserNotFound(email);
     } finally {
       setIsLoading(false);
