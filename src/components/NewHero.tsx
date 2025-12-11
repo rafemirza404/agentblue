@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import heroImage from "@/assets/rafe.png";
 
 const NewHero = () => {
   const navigate = useNavigate();
@@ -33,16 +34,14 @@ const NewHero = () => {
             </div>
           </div>
 
-          {/* Right Column - Image Placeholder (40%) */}
+          {/* Right Column - Professional Image (40%) */}
           <div className="lg:col-span-2">
-            {/* Replace with actual image - similar style to acquisition.com hero image */}
-            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl shadow-lg flex items-center justify-center">
-              <div className="text-center p-8">
-                <p className="text-gray-700 text-xl font-semibold mb-2">Image Placeholder</p>
-                <p className="text-gray-500 text-base">
-                  Replace with automation dashboard or workflow visualization
-                </p>
-              </div>
+            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-xl shadow-lg overflow-hidden">
+              <img
+                src={heroImage}
+                alt="Rafe Mirza - AgentBlue Founder"
+                className="w-full h-full object-cover object-center"
+              />
             </div>
           </div>
         </div>
