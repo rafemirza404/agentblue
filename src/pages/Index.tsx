@@ -1,14 +1,11 @@
 import Navigation from "@/components/Navigation";
-import Hero from "@/components/Hero";
-import ProblemSection from "@/components/ProblemSection";
-import Services from "@/components/Services";
+import NewHero from "@/components/NewHero";
 import HowItWorks from "@/components/HowItWorks";
-import Testimonials from "@/components/Testimonials";
-import MiniCaseStudies from "@/components/MiniCaseStudies";
-import WhoItsFor from "@/components/WhoItsFor";
-import WhyNotDIY from "@/components/WhyNotDIY";
+import WhyDifferent from "@/components/WhyDifferent";
+import VideoDemo from "@/components/VideoDemo";
 import FAQ from "@/components/FAQ";
-import Contact from "@/components/Contact";
+import FinalCTA from "@/components/FinalCTA";
+import AssessmentForm from "@/components/AssessmentForm";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -16,27 +13,39 @@ const Index = () => {
     <div className="min-h-screen">
       <Navigation />
       <main>
+        {/* Section 1: Hero Section */}
         <section id="hero">
-          <Hero />
+          <NewHero />
         </section>
-        <section id="problem-section">
-          <ProblemSection />
-        </section>
-        <section id="services">
-          <Services />
-        </section>
+
+        {/* Section 2: Three Tiers - PRESERVED */}
         <section id="how-we-work">
           <HowItWorks />
         </section>
-        <Testimonials />
-        <section id="case-studies">
-          <MiniCaseStudies />
+
+        {/* Section 3: Why We're Different */}
+        <section id="why-different">
+          <WhyDifferent />
         </section>
-        <WhoItsFor />
-        <WhyNotDIY />
-        <FAQ />
+
+        {/* Section 4: Video/Demo Section with Gradient */}
+        <section id="video-demo">
+          <VideoDemo />
+        </section>
+
+        {/* Section 5: FAQ - PRESERVED */}
+        <section id="faq">
+          <FAQ />
+        </section>
+
+        {/* Section 6: Final CTA */}
+        <section id="final-cta">
+          <FinalCTA />
+        </section>
+
+        {/* Section 7: Assessment Form */}
         <section id="contact-form-section">
-          <Contact />
+          <AssessmentForm />
         </section>
       </main>
       <Footer />
