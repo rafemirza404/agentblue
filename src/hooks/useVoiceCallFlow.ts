@@ -156,8 +156,9 @@ export const useVoiceCallFlow = () => {
         callSource: 'website',
       });
 
-      // Save call time for rate limiting
-      saveCallTime();
+      // CRITICAL FIX: saveCallTime() moved to handleCallStart
+      // Only save call time AFTER call actually connects (not just after start() returns)
+      // This prevents rate-limiting users when their call fails to connect
 
       // State will transition to 'connected' via VAPI 'call-start' event
     } catch (error) {
@@ -167,11 +168,11 @@ export const useVoiceCallFlow = () => {
 
       toast({
         title: 'Failed to Start Call',
-        description: 'Please check your microphone permissions and try again.',
+        description: 'Unable to initialize call. Please check your microphone permissions and try again.',
         variant: 'destructive',
       });
     }
-  }, [callState, saveCallTime, toast]);
+  }, [callState, toast]);
 
   /**
    * End call
@@ -256,6 +257,11 @@ export const useVoiceCallFlow = () => {
       timerRef.current = setInterval(() => {
         setCallDuration((prev) => prev + 1);
       }, 1000);
+
+      // CRITICAL FIX: Save call time ONLY when call actually connects
+      // This ensures rate limit only applies to successful calls
+      saveCallTime();
+      console.log('[VoiceCallFlow] Call connected - rate limit timestamp saved');
     };
 
     const handleCallEnd = async () => {
@@ -357,6 +363,40 @@ export const useVoiceCallFlow = () => {
       document.body.style.overflow = 'auto';
     };
 
+    /**
+     * NEW: Handle call-start-failed event with detailed error info
+     * This provides exact stage and context where the call failed
+     */
+    const handleCallStartFailed = (event: any) => {
+      console.error('[VAPI] Call start failed:', {
+        stage: event.stage,
+        error: event.error,
+        duration: event.totalDuration,
+        context: event.context,
+      });
+
+      // Transition to ended state
+      callStateRef.current.transitionTo('ended');
+      document.body.style.overflow = 'auto';
+
+      // Show detailed error message to user
+      const stageMessages: Record<string, string> = {
+        'web-call-creation': 'Failed to connect to voice service',
+        'daily-call-object-creation': 'Failed to initialize call',
+        'mobile-permissions': 'Microphone permission issue',
+        'daily-call-join': 'Failed to join call',
+        'unknown': 'Call initialization failed',
+      };
+
+      const description = stageMessages[event.stage] || 'Unable to start call';
+
+      toastRef.current({
+        title: 'Call Failed',
+        description: `${description}. Please check your microphone permissions and internet connection, then try again.`,
+        variant: 'destructive',
+      });
+    };
+
     // Set up listeners and get cleanup function
     const removeListeners = vapiService.setupEventListeners({
       onCallStart: handleCallStart,
@@ -365,6 +405,7 @@ export const useVoiceCallFlow = () => {
       onSpeechEnd: handleSpeechEnd,
       onMessage: handleMessage,
       onError: handleError,
+      onCallStartFailed: handleCallStartFailed,
     });
 
     // Cleanup

@@ -28,13 +28,25 @@ export interface VapiCallStartMessage {
   };
 }
 
+export interface CallStartFailedEvent {
+  stage: string;
+  totalDuration: number;
+  error: string;
+  errorStack?: string;
+  timestamp: string;
+  context: Record<string, any>;
+}
+
 export type VapiEventType =
   | 'call-start'
   | 'call-end'
   | 'speech-start'
   | 'speech-end'
   | 'message'
-  | 'error';
+  | 'error'
+  | 'call-start-failed'
+  | 'call-start-progress'
+  | 'call-start-success';
 
 export interface VapiEventHandlers {
   onCallStart?: () => void;
@@ -42,5 +54,6 @@ export interface VapiEventHandlers {
   onSpeechStart?: () => void;
   onSpeechEnd?: () => void;
   onMessage?: (message: any) => void;
-  onError?: (error: Error) => void;
+  onError?: (error: Error | any) => void;
+  onCallStartFailed?: (event: CallStartFailedEvent) => void;
 }

@@ -22,10 +22,10 @@ export class VapiService {
 
   /**
    * Start a call with the given variables
-   * FIX 7: Verify all metadata is present, especially phone number
+   * FIX: Check for null return value from VAPI SDK
    */
   async startCall(variables: VapiVariables): Promise<void> {
-    // FIX 7: Validate that phone number is always present
+    // Validate that phone number is always present
     if (!variables.phone || variables.phone.trim() === '') {
       const error = new Error('Phone number is required but missing in VAPI metadata');
       console.error('[VAPI] CRITICAL:', error);
@@ -50,7 +50,17 @@ export class VapiService {
     console.log('[VAPI] Starting call with validated variables:', variables);
 
     try {
-      await this.client.start(this.assistantId, assistantOverrides);
+      // CRITICAL FIX: Check if start() returns null (indicates failure)
+      const result = await this.client.start(this.assistantId, assistantOverrides);
+
+      if (result === null) {
+        // Call failed to start - VAPI SDK will emit 'call-start-failed' event
+        const error = new Error('Call initialization failed. Check call-start-failed event for details.');
+        console.error('[VAPI] Call start returned null:', error);
+        throw error;
+      }
+
+      console.log('[VAPI] Call start initiated successfully');
     } catch (error) {
       console.error('[VAPI] Failed to start call:', error);
       throw error;
@@ -74,6 +84,7 @@ export class VapiService {
 
   /**
    * Register event listeners
+   * FIX: Added call-start-failed listener for detailed error tracking
    */
   setupEventListeners(handlers: VapiEventHandlers): () => void {
     if (handlers.onCallStart) {
@@ -93,6 +104,9 @@ export class VapiService {
     }
     if (handlers.onError) {
       this.client.on('error', handlers.onError);
+    }
+    if (handlers.onCallStartFailed) {
+      this.client.on('call-start-failed', handlers.onCallStartFailed);
     }
 
     // Return cleanup function
@@ -114,6 +128,9 @@ export class VapiService {
       }
       if (handlers.onError) {
         this.client.removeListener('error', handlers.onError);
+      }
+      if (handlers.onCallStartFailed) {
+        this.client.removeListener('call-start-failed', handlers.onCallStartFailed);
       }
     };
   }
