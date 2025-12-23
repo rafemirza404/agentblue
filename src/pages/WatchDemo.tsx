@@ -19,9 +19,50 @@ const WatchDemo = () => {
     if (metaDescription) {
       metaDescription.setAttribute('content', 'Watch a live 2-minute demo of our AI voice agent handling customer conversations, qualifying prospects, and booking meetings—24/7 without human intervention.');
     }
-    
+
     return () => {
       document.title = "AgentBlue - AI Automation Solutions for Modern Businesses";
+    };
+  }, []);
+
+  // Load Wistia video player scripts
+  useEffect(() => {
+    // Load Wistia player script
+    const playerScript = document.createElement('script');
+    playerScript.src = 'https://fast.wistia.com/player.js';
+    playerScript.async = true;
+    document.body.appendChild(playerScript);
+
+    // Load Wistia embed script for specific video
+    const embedScript = document.createElement('script');
+    embedScript.src = 'https://fast.wistia.com/embed/yfjl8nvujx.js';
+    embedScript.async = true;
+    embedScript.type = 'module';
+    document.body.appendChild(embedScript);
+
+    // Add Wistia loading styles
+    const style = document.createElement('style');
+    style.textContent = `
+      wistia-player[media-id='yfjl8nvujx']:not(:defined) {
+        background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/yfjl8nvujx/swatch');
+        display: block;
+        filter: blur(5px);
+        padding-top: 56.25%;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      // Cleanup scripts and styles on unmount
+      if (document.body.contains(playerScript)) {
+        document.body.removeChild(playerScript);
+      }
+      if (document.body.contains(embedScript)) {
+        document.body.removeChild(embedScript);
+      }
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
     };
   }, []);
 
@@ -125,12 +166,7 @@ const WatchDemo = () => {
             {/* Video Container - Centered */}
             <div className="max-w-[900px] mx-auto mb-12">
               <div className="relative rounded-xl overflow-hidden shadow-2xl">
-                <div className="aspect-video bg-gradient-to-br from-purple-600 via-blue-600 to-blue-700 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <p className="text-white text-xl md:text-2xl font-bold mb-2">Demo Video Coming Soon</p>
-                    <p className="text-white/90 text-base">Currently filming. Check back soon!</p>
-                  </div>
-                </div>
+                <wistia-player media-id="yfjl8nvujx" aspect="1.7777777777777777"></wistia-player>
               </div>
             </div>
 
