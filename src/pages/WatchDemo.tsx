@@ -31,20 +31,20 @@ const WatchDemo = () => {
     const playerScript = document.createElement('script');
     playerScript.src = 'https://fast.wistia.com/player.js';
     playerScript.async = true;
-    document.body.appendChild(playerScript);
+    document.head.appendChild(playerScript);
 
     // Load Wistia embed script for specific video
     const embedScript = document.createElement('script');
-    embedScript.src = 'https://fast.wistia.com/embed/yfjl8nvujx.js';
+    embedScript.src = 'https://fast.wistia.com/embed/aj1zk02ajs.js';
     embedScript.async = true;
     embedScript.type = 'module';
-    document.body.appendChild(embedScript);
+    document.head.appendChild(embedScript);
 
     // Add Wistia loading styles
     const style = document.createElement('style');
     style.textContent = `
-      wistia-player[media-id='yfjl8nvujx']:not(:defined) {
-        background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/yfjl8nvujx/swatch');
+      wistia-player[media-id='aj1zk02ajs']:not(:defined) {
+        background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/aj1zk02ajs/swatch');
         display: block;
         filter: blur(5px);
         padding-top: 56.25%;
@@ -54,11 +54,11 @@ const WatchDemo = () => {
 
     return () => {
       // Cleanup scripts and styles on unmount
-      if (document.body.contains(playerScript)) {
-        document.body.removeChild(playerScript);
+      if (document.head.contains(playerScript)) {
+        document.head.removeChild(playerScript);
       }
-      if (document.body.contains(embedScript)) {
-        document.body.removeChild(embedScript);
+      if (document.head.contains(embedScript)) {
+        document.head.removeChild(embedScript);
       }
       if (document.head.contains(style)) {
         document.head.removeChild(style);
@@ -164,9 +164,9 @@ const WatchDemo = () => {
             </p>
 
             {/* Video Container - Centered */}
-            <div className="max-w-[900px] mx-auto mb-12">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl">
-                <wistia-player media-id="yfjl8nvujx" aspect="1.7777777777777777"></wistia-player>
+            <div className="max-w-[700px] mx-auto mb-12">
+              <div className="relative overflow-hidden shadow-2xl">
+                <wistia-player media-id="aj1zk02ajs" aspect="1.7777777777777777"></wistia-player>
               </div>
             </div>
 
