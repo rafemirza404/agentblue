@@ -184,7 +184,7 @@ const Services = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <Badge variant="outline" className="mb-6">🎯 Strategy-First Consulting</Badge>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground animate-slide-up">
                 We Don't Sell Automation. We Architect Operational Excellence.
               </h1>
               <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
@@ -209,7 +209,7 @@ const Services = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <div className="text-center mb-16 animate-fade-in">
                 <h2 className="text-4xl font-bold mb-4">Most Automation Fails Because It Starts in the Wrong Place</h2>
                 <p className="text-xl text-muted-foreground">You don't have an automation problem. You have a strategy problem.</p>
               </div>
@@ -250,7 +250,7 @@ const Services = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <div className="text-center mb-16 animate-fade-in">
                 <h2 className="text-4xl font-bold mb-4">How We're Different: Consulting That Puts Strategy First</h2>
                 <p className="text-xl text-muted-foreground">Every engagement follows the same proven methodology</p>
               </div>
@@ -283,7 +283,7 @@ const Services = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <div className="text-center mb-16 animate-fade-in">
                 <h2 className="text-4xl font-bold mb-4">Three Tiers. One Mission: Fix Operations, Then Automate.</h2>
                 <p className="text-xl text-muted-foreground">Choose your entry point—but every path starts with strategic diagnosis</p>
               </div>
@@ -533,7 +533,24 @@ const Services = () => {
                 <p className="text-xl text-muted-foreground">The kind of results you get when strategy comes before automation</p>
               </div>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              {/* Mobile: Horizontal scroll */}
+              <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4 mb-12">
+                <div className="flex gap-6 min-w-max">
+                  {stats.map((stat, index) => (
+                    <Card key={index} className="border-0 bg-secondary/30 text-center w-[280px] flex-shrink-0">
+                      <CardContent className="p-8">
+                        <div className="text-accent mb-4 flex justify-center">{stat.icon}</div>
+                        <div className="text-4xl font-bold mb-2 text-accent">{stat.value}</div>
+                        <h3 className="text-sm font-semibold mb-2">{stat.label}</h3>
+                        <p className="text-xs text-muted-foreground">{stat.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+
+              {/* Desktop: Grid layout */}
+              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 {stats.map((stat, index) => (
                   <Card key={index} className="border-0 bg-secondary/30 text-center">
                     <CardContent className="p-8">

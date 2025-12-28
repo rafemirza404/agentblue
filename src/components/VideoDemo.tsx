@@ -22,7 +22,7 @@ const VideoDemo = () => {
           </p>
 
           {/* Main Headline */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight max-w-5xl mx-auto">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-6 leading-tight max-w-5xl mx-auto animate-fade-in">
             See Exactly Where $200K-$500K Leak from Your Operations (And How to Capture It)
           </h2>
 

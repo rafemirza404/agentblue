@@ -167,7 +167,7 @@ const WatchDemo = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto animate-slide-up">
               Watch our AI voice agent qualify leads, handle objections, and book meetings
             </h1>
 
@@ -220,7 +220,7 @@ const WatchDemo = () => {
       <section className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-900 mb-8">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-900 mb-8 animate-fade-in">
               Most Automation Projects Fail. Here's Why We're Different:
             </h2>
             
@@ -258,7 +258,7 @@ const WatchDemo = () => {
       <section className="py-20 md:py-32 bg-black">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight animate-fade-in">
               Ready to See How This Works for Your Business?
             </h2>
             

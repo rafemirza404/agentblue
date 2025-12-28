@@ -38,7 +38,7 @@ const About = () => {
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground animate-slide-up">
                 Strategic Operations Consultants for Solar & HVAC
               </h1>
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto leading-relaxed">
@@ -53,7 +53,7 @@ const About = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold mb-4 text-center">Why AgentBlue Exists</h2>
+              <h2 className="text-4xl font-bold mb-4 text-center animate-fade-in">Why AgentBlue Exists</h2>
               <p className="text-xl text-muted-foreground mb-8 text-center">Born from frustration with an industry that sells tools first and asks questions later</p>
               
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
@@ -75,7 +75,7 @@ const About = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <div className="text-center mb-16 animate-fade-in">
                 <h2 className="text-4xl font-bold mb-4">What We Believe</h2>
                 <p className="text-xl text-muted-foreground">The principles that guide every client engagement</p>
               </div>
