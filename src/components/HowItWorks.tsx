@@ -1,6 +1,7 @@
 import { Search, Ruler, Rocket } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ScrollIndicator, HorizontalScrollGradient } from "./ScrollIndicator";
 
 const HowItWorks = () => {
   const tiers = [
@@ -62,49 +63,53 @@ const HowItWorks = () => {
         </div>
 
         {/* Mobile: Horizontal scroll, Desktop: Grid */}
-        <div className="lg:hidden overflow-x-auto pb-4 -mx-4 px-4">
-          <div className="flex gap-6 min-w-max">
-            {tiers.map((tier, index) => (
-              <Card
-                key={index}
-                className="bg-gradient-to-b from-background to-secondary/30 border-border shadow-elegant hover-lift relative w-[320px] flex-shrink-0"
-              >
-                <CardContent className="p-8">
-                  {tier.optional && (
-                    <Badge className="absolute top-4 right-4 bg-accent text-accent-foreground">
-                      Optional
-                    </Badge>
-                  )}
+        <ScrollIndicator />
+        <div className="relative">
+          <HorizontalScrollGradient />
+          <div className="lg:hidden overflow-x-auto pb-4 -mx-4 px-4">
+            <div className="flex gap-6 min-w-max">
+              {tiers.map((tier, index) => (
+                <Card
+                  key={index}
+                  className="bg-gradient-to-b from-background to-secondary/30 border-border shadow-elegant hover-lift relative w-[320px] flex-shrink-0"
+                >
+                  <CardContent className="p-8">
+                    {tier.optional && (
+                      <Badge className="absolute top-4 right-4 bg-accent text-accent-foreground">
+                        Optional
+                      </Badge>
+                    )}
 
-                  <div className="flex flex-col items-center text-center mb-6">
-                    <div className="w-16 h-16 rounded-full bg-accent flex items-center justify-center mb-4">
-                      <span className="text-3xl font-bold text-white">
-                        {tier.number}
-                      </span>
-                    </div>
-                    <tier.icon className="w-12 h-12 text-accent mb-4" />
-                    <h3 className="text-2xl font-bold text-foreground mb-2">
-                      {tier.title}
-                    </h3>
-                    <p className="text-lg font-semibold text-accent mb-3">
-                      {tier.service}
-                    </p>
-                    <p className="text-muted-foreground mb-6">
-                      {tier.description}
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    {tier.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start text-left">
-                        <span className="text-accent mr-2 flex-shrink-0">✓</span>
-                        <span className="text-sm text-foreground">{feature}</span>
+                    <div className="flex flex-col items-center text-center mb-6">
+                      <div className="w-16 h-16 rounded-full bg-accent flex items-center justify-center mb-4">
+                        <span className="text-3xl font-bold text-white">
+                          {tier.number}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                      <tier.icon className="w-12 h-12 text-accent mb-4" />
+                      <h3 className="text-2xl font-bold text-foreground mb-2">
+                        {tier.title}
+                      </h3>
+                      <p className="text-lg font-semibold text-accent mb-3">
+                        {tier.service}
+                      </p>
+                      <p className="text-muted-foreground mb-6">
+                        {tier.description}
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      {tier.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-start text-left">
+                          <span className="text-accent mr-2 flex-shrink-0">✓</span>
+                          <span className="text-sm text-foreground">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
 
