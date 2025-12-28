@@ -25,22 +25,26 @@ const NewHero = () => {
                 onClick={() => navigate('/watch-demo')}
                 className="bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
               >
-                Talk to Sophia <ArrowRight className="ml-2 h-5 w-5 inline" />
+                Talk to Sophia - 2 Min AI Consultation <ArrowRight className="ml-2 h-5 w-5 inline" />
               </Button>
 
               <p className="text-sm text-gray-600">
-                2-minute AI consultation. See how our voice agent handles real conversations.
+                See how our voice agent handles real conversations.
               </p>
             </div>
           </div>
 
           {/* Right Column - Professional Image (40%) */}
           <div className="lg:col-span-2">
-            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-xl shadow-lg overflow-hidden">
+            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-xl shadow-lg overflow-hidden bg-gray-100">
               <img
                 src={heroImage}
                 alt="Rafe Mirza - AgentBlue Founder"
                 className="w-full h-full object-cover object-center"
+                loading="eager"
+                fetchpriority="high"
+                width="800"
+                height="1000"
               />
             </div>
           </div>

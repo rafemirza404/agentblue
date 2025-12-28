@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { 
-  Bot, 
-  Workflow, 
-  BarChart3, 
-  MessageSquare, 
-  FileText, 
+import {
+  Bot,
+  Workflow,
+  BarChart3,
+  MessageSquare,
+  FileText,
   Shield,
   Target,
   Scale,
@@ -20,7 +20,8 @@ import {
   DollarSign,
   Map,
   Wrench,
-  Rocket
+  Rocket,
+  Clock
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -132,10 +133,10 @@ const Services = () => {
   ];
 
   const stats = [
-    { value: "$100k+", label: "Average Annual Savings (Mid-Size Client)", icon: "💰", description: "From eliminating manual work & operational errors" },
-    { value: "85%", label: "Time Reclaimed from Repetitive Tasks", icon: "⚡", description: "Redirected to strategic work & growth initiatives" },
-    { value: "3-6 mo", label: "Average ROI Timeline", icon: "📈", description: "Most automations pay for themselves in under 6 months" },
-    { value: "95%", label: "Error Reduction on Automated Workflows", icon: "✅", description: "Manual processes replaced with consistent, reliable systems" }
+    { value: "$150K-$500K", label: "Typical annual revenue being lost to missed calls and slow response times", icon: <DollarSign className="w-10 h-10" strokeWidth={1.5} />, description: "Revenue leaking from operational gaps" },
+    { value: "60-90%", label: "Of leads currently falling through operational cracks can be recovered", icon: <TrendingUp className="w-10 h-10" strokeWidth={1.5} />, description: "With proper systems in place" },
+    { value: "24/7/365", label: "Response time with AI-powered systems", icon: <Clock className="w-10 h-10" strokeWidth={1.5} />, description: "vs 2-3 hour manual response" },
+    { value: "3-9 Months", label: "Typical payback period", icon: <BarChart3 className="w-10 h-10" strokeWidth={1.5} />, description: "Based on operational audits we've performed" }
   ];
 
   const faqs = [
@@ -482,7 +483,7 @@ const Services = () => {
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold mb-4">Our Proven Methodology: From Chaos to Clarity to Results</h2>
-                <p className="text-xl text-muted-foreground">The same strategic framework we use for every client—refined over 50+ implementations</p>
+                <p className="text-xl text-muted-foreground">A proven diagnostic framework for identifying revenue leaks in solar and HVAC operations—refined through real client engagements</p>
               </div>
               
               <div className="space-y-8">
@@ -536,7 +537,7 @@ const Services = () => {
                 {stats.map((stat, index) => (
                   <Card key={index} className="border-0 bg-secondary/30 text-center">
                     <CardContent className="p-8">
-                      <div className="text-4xl mb-2">{stat.icon}</div>
+                      <div className="text-accent mb-4 flex justify-center">{stat.icon}</div>
                       <div className="text-4xl font-bold mb-2 text-accent">{stat.value}</div>
                       <h3 className="text-sm font-semibold mb-2">{stat.label}</h3>
                       <p className="text-xs text-muted-foreground">{stat.description}</p>
@@ -567,10 +568,9 @@ const Services = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold mb-6">Built for Growing Businesses Ready to Scale</h2>
+              <h2 className="text-4xl font-bold mb-6">Built for Solar & HVAC Companies Ready to Scale</h2>
               <p className="text-xl text-muted-foreground mb-8">
-                We serve businesses with $500k+ revenue across professional services, e-commerce, education, and financial services. 
-                If manual chaos is holding you back from growth, we're built for you.
+                Built for residential solar and HVAC companies doing $1M-$5M annually—where growth is being choked by missed calls, slow response times, and broken follow-up systems.
               </p>
               <Button variant="outline" size="lg" asChild>
                 <Link to="/about">Learn more about our ideal clients →</Link>

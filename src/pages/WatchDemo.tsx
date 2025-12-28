@@ -25,22 +25,34 @@ const WatchDemo = () => {
     };
   }, []);
 
-  // Load Wistia video player scripts
+  // Load Wistia video player scripts - optimized for faster loading
   useEffect(() => {
-    // Load Wistia player script
-    const playerScript = document.createElement('script');
-    playerScript.src = 'https://fast.wistia.com/player.js';
-    playerScript.async = true;
-    document.head.appendChild(playerScript);
+    // Check if scripts already loaded to avoid duplicates
+    const existingPlayerScript = document.querySelector('script[src*="wistia.com/player.js"]');
+    const existingEmbedScript = document.querySelector('script[src*="aj1zk02ajs.js"]');
 
-    // Load Wistia embed script for specific video
-    const embedScript = document.createElement('script');
-    embedScript.src = 'https://fast.wistia.com/embed/aj1zk02ajs.js';
-    embedScript.async = true;
-    embedScript.type = 'module';
-    document.head.appendChild(embedScript);
+    // Load Wistia player script if not already loaded
+    let playerScript: HTMLScriptElement | null = null;
+    if (!existingPlayerScript) {
+      playerScript = document.createElement('script');
+      playerScript.src = 'https://fast.wistia.com/player.js';
+      playerScript.async = true;
+      playerScript.defer = true;
+      document.head.appendChild(playerScript);
+    }
 
-    // Add Wistia loading styles
+    // Load Wistia embed script for specific video if not already loaded
+    let embedScript: HTMLScriptElement | null = null;
+    if (!existingEmbedScript) {
+      embedScript = document.createElement('script');
+      embedScript.src = 'https://fast.wistia.com/embed/aj1zk02ajs.js';
+      embedScript.async = true;
+      embedScript.defer = true;
+      embedScript.type = 'module';
+      document.head.appendChild(embedScript);
+    }
+
+    // Add Wistia loading styles with thumbnail preview
     const style = document.createElement('style');
     style.textContent = `
       wistia-player[media-id='aj1zk02ajs']:not(:defined) {
@@ -53,11 +65,11 @@ const WatchDemo = () => {
     document.head.appendChild(style);
 
     return () => {
-      // Cleanup scripts and styles on unmount
-      if (document.head.contains(playerScript)) {
+      // Cleanup scripts and styles on unmount (only if we added them)
+      if (playerScript && document.head.contains(playerScript)) {
         document.head.removeChild(playerScript);
       }
-      if (document.head.contains(embedScript)) {
+      if (embedScript && document.head.contains(embedScript)) {
         document.head.removeChild(embedScript);
       }
       if (document.head.contains(style)) {

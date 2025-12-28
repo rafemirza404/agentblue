@@ -39,10 +39,10 @@ const About = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
-                We're Not Your Typical Automation Agency
+                Strategic Operations Consultants for Solar & HVAC
               </h1>
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto leading-relaxed">
-                We're strategic consultants who happen to be excellent at automation. The difference? We diagnose before we prescribe, recommend what's best for you (not us), and ensure every dollar you invest delivers measurable ROI.
+                We're strategic operations consultants for solar and HVAC companies. We diagnose first, design second, and only implement if you want us to.
               </p>
               <p className="text-lg font-medium text-foreground">Strategy first. Always.</p>
             </div>
@@ -113,6 +113,10 @@ const About = () => {
                       src={rafeImage}
                       alt="Rafe Mirza"
                       className="w-48 h-48 rounded-full mx-auto mb-6 object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      width="192"
+                      height="192"
                     />
                     <h3 className="text-2xl font-bold mb-2">Rafe Mirza</h3>
                     <p className="text-accent font-medium mb-4">Founder</p>
