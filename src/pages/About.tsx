@@ -1,9 +1,9 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Scale, FileText, BarChart3, Linkedin } from "lucide-react";
 import rafeImage from "@/assets/rafe.png";
+import { CalendarBooking } from "@/components/CalendarBooking";
 
 const About = () => {
   const beliefs = [
@@ -149,14 +149,10 @@ const About = () => {
               <p className="text-xl mb-8 opacity-90">
                 Let's start with an honest conversation about your business challenges.
               </p>
-              <Button 
-                variant="secondary" 
-                size="lg" 
-                className="bg-white text-primary hover:bg-white/90"
-                onClick={() => window.location.href = '/contact#contact-methods'}
-              >
-                Schedule Free Consultation
-              </Button>
+              <CalendarBooking
+                buttonText="Schedule Free Consultation"
+                buttonClassName="bg-white text-primary hover:bg-white/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8"
+              />
             </div>
           </div>
         </section>

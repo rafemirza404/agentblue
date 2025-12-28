@@ -25,7 +25,7 @@ const NewHero = () => {
                 onClick={() => navigate('/watch-demo')}
                 className="bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
               >
-                Talk to Sophia - 2 Min AI Consultation <ArrowRight className="ml-2 h-5 w-5 inline" />
+                Talk to Sophia <ArrowRight className="ml-2 h-5 w-5 inline" />
               </Button>
 
               <p className="text-sm text-gray-600">

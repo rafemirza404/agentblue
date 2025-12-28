@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { BarChart3, Settings, DollarSign } from "lucide-react";
+import { CalendarBooking } from "./CalendarBooking";
 
 const VideoDemo = () => {
   return (
@@ -99,15 +99,10 @@ const VideoDemo = () => {
 
           {/* Gold CTA Button */}
           <div className="text-center">
-            <Button
-              className="bg-[#F59E0B] hover:bg-[#F59E0B] text-white text-lg font-semibold px-10 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] mx-auto"
-              onClick={() => {
-                // Link to calendar/booking or contact form
-                document.getElementById('contact-form-section')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Get Your Free Operations Audit
-            </Button>
+            <CalendarBooking
+              buttonText="Schedule Your Free Call"
+              buttonClassName="bg-[#F59E0B] hover:bg-[#F59E0B] text-white text-lg font-semibold px-10 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] mx-auto"
+            />
 
             <p className="text-white/80 text-sm mt-3">
               See your specific numbers

@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, Target, MessageSquare, Calendar, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { webhookService } from "@/services/api/webhooks";
+import { CalendarBooking } from "@/components/CalendarBooking";
 
 const WatchDemo = () => {
   const { toast } = useToast();
@@ -266,15 +267,10 @@ const WatchDemo = () => {
               Book a 30-minute strategy call. We'll diagnose your biggest operational bottleneck and show you exactly how to fix it.
             </p>
 
-            <Button 
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-12 py-8 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
-              onClick={() => {
-                document.getElementById('assessment-form')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Schedule Your Free Call →
-            </Button>
+            <CalendarBooking
+              buttonText="Schedule Your Free Call →"
+              buttonClassName="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-12 py-8 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+            />
 
             <p className="text-gray-400 mt-6 text-lg">
               No sales pitch. Just strategic insights.
@@ -334,7 +330,7 @@ const WatchDemo = () => {
 
                   <div>
                     <label htmlFor="company" className="block text-base font-medium mb-2 text-gray-900">
-                      Company (optional)
+                      Company (required)
                     </label>
                     <Input
                       id="company"
@@ -343,6 +339,7 @@ const WatchDemo = () => {
                       onChange={handleChange}
                       placeholder="Your Company"
                       className="text-base py-4"
+                      required
                     />
                   </div>
 
