@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 
 // Cal.com configuration - Update these with your actual Cal.com details
-const CAL_USERNAME = "your-username"; // Replace with your Cal.com username
+const CAL_USERNAME = "agent-blue-lt5i92"; // Replace with your Cal.com username
 const CAL_EVENT_SLUG = "30min"; // Replace with your event slug
 
 interface CalendarBookingProps {
