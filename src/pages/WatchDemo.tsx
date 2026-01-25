@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, Target, MessageSquare, Calendar, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { webhookService } from "@/services/api/webhooks";
+import { CalendarBooking } from "@/components/CalendarBooking";
 
 const WatchDemo = () => {
   const { toast } = useToast();
@@ -25,22 +26,34 @@ const WatchDemo = () => {
     };
   }, []);
 
-  // Load Wistia video player scripts
+  // Load Wistia video player scripts - optimized for faster loading
   useEffect(() => {
-    // Load Wistia player script
-    const playerScript = document.createElement('script');
-    playerScript.src = 'https://fast.wistia.com/player.js';
-    playerScript.async = true;
-    document.head.appendChild(playerScript);
+    // Check if scripts already loaded to avoid duplicates
+    const existingPlayerScript = document.querySelector('script[src*="wistia.com/player.js"]');
+    const existingEmbedScript = document.querySelector('script[src*="aj1zk02ajs.js"]');
 
-    // Load Wistia embed script for specific video
-    const embedScript = document.createElement('script');
-    embedScript.src = 'https://fast.wistia.com/embed/aj1zk02ajs.js';
-    embedScript.async = true;
-    embedScript.type = 'module';
-    document.head.appendChild(embedScript);
+    // Load Wistia player script if not already loaded
+    let playerScript: HTMLScriptElement | null = null;
+    if (!existingPlayerScript) {
+      playerScript = document.createElement('script');
+      playerScript.src = 'https://fast.wistia.com/player.js';
+      playerScript.async = true;
+      playerScript.defer = true;
+      document.head.appendChild(playerScript);
+    }
 
-    // Add Wistia loading styles
+    // Load Wistia embed script for specific video if not already loaded
+    let embedScript: HTMLScriptElement | null = null;
+    if (!existingEmbedScript) {
+      embedScript = document.createElement('script');
+      embedScript.src = 'https://fast.wistia.com/embed/aj1zk02ajs.js';
+      embedScript.async = true;
+      embedScript.defer = true;
+      embedScript.type = 'module';
+      document.head.appendChild(embedScript);
+    }
+
+    // Add Wistia loading styles with thumbnail preview
     const style = document.createElement('style');
     style.textContent = `
       wistia-player[media-id='aj1zk02ajs']:not(:defined) {
@@ -53,11 +66,11 @@ const WatchDemo = () => {
     document.head.appendChild(style);
 
     return () => {
-      // Cleanup scripts and styles on unmount
-      if (document.head.contains(playerScript)) {
+      // Cleanup scripts and styles on unmount (only if we added them)
+      if (playerScript && document.head.contains(playerScript)) {
         document.head.removeChild(playerScript);
       }
-      if (document.head.contains(embedScript)) {
+      if (embedScript && document.head.contains(embedScript)) {
         document.head.removeChild(embedScript);
       }
       if (document.head.contains(style)) {
@@ -155,7 +168,7 @@ const WatchDemo = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto animate-slide-up">
               Watch our AI voice agent qualify leads, handle objections, and book meetings
             </h1>
 
@@ -208,7 +221,7 @@ const WatchDemo = () => {
       <section className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-900 mb-8">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-900 mb-8 animate-fade-in">
               Most Automation Projects Fail. Here's Why We're Different:
             </h2>
             
@@ -246,7 +259,7 @@ const WatchDemo = () => {
       <section className="py-20 md:py-32 bg-black">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight animate-fade-in">
               Ready to See How This Works for Your Business?
             </h2>
             
@@ -254,15 +267,10 @@ const WatchDemo = () => {
               Book a 30-minute strategy call. We'll diagnose your biggest operational bottleneck and show you exactly how to fix it.
             </p>
 
-            <Button 
-              size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-12 py-8 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
-              onClick={() => {
-                document.getElementById('assessment-form')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Schedule Your Free Call →
-            </Button>
+            <CalendarBooking
+              buttonText="Schedule Your Free Call →"
+              buttonClassName="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-12 py-8 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+            />
 
             <p className="text-gray-400 mt-6 text-lg">
               No sales pitch. Just strategic insights.
@@ -291,7 +299,7 @@ const WatchDemo = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-base font-medium mb-2 text-gray-900">
-                      Name (required)
+                      Name *
                     </label>
                     <Input
                       id="name"
@@ -306,7 +314,7 @@ const WatchDemo = () => {
 
                   <div>
                     <label htmlFor="email" className="block text-base font-medium mb-2 text-gray-900">
-                      Email (required)
+                      Email *
                     </label>
                     <Input
                       id="email"
@@ -322,7 +330,7 @@ const WatchDemo = () => {
 
                   <div>
                     <label htmlFor="company" className="block text-base font-medium mb-2 text-gray-900">
-                      Company (optional)
+                      Company *
                     </label>
                     <Input
                       id="company"
@@ -331,12 +339,13 @@ const WatchDemo = () => {
                       onChange={handleChange}
                       placeholder="Your Company"
                       className="text-base py-4"
+                      required
                     />
                   </div>
 
                   <div>
                     <label htmlFor="message" className="block text-base font-medium mb-2 text-gray-900">
-                      Challenge (required)
+                      Challenge *
                     </label>
                     <Textarea
                       id="message"

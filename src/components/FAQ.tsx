@@ -35,7 +35,7 @@ const FAQ = () => {
     {
       question: "What industries do you specialize in?",
       answer:
-        "Our sweet spot is growing businesses (₹50L+ revenue, 10-100 employees) across professional services, e-commerce, education, and financial services. But operational patterns are universal—we've successfully automated everything from manufacturing to healthcare.",
+        "Operational bottlenecks follow similar patterns regardless of industry—missed opportunities, repetitive admin work, slow response times, and manual data entry. We focus specifically on residential solar and HVAC companies because speed-to-lead and call capture are make-or-break in these industries.",
     },
   ];
 

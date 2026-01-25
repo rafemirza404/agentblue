@@ -1,9 +1,9 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Scale, FileText, BarChart3, Linkedin } from "lucide-react";
 import rafeImage from "@/assets/rafe.png";
+import { CalendarBooking } from "@/components/CalendarBooking";
 
 const About = () => {
   const beliefs = [
@@ -38,11 +38,11 @@ const About = () => {
         <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
-                We're Not Your Typical Automation Agency
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground animate-slide-up">
+                Strategic Operations Consultants for Solar & HVAC
               </h1>
               <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto leading-relaxed">
-                We're strategic consultants who happen to be excellent at automation. The difference? We diagnose before we prescribe, recommend what's best for you (not us), and ensure every dollar you invest delivers measurable ROI.
+                We're strategic operations consultants for solar and HVAC companies. We diagnose first, design second, and only implement if you want us to.
               </p>
               <p className="text-lg font-medium text-foreground">Strategy first. Always.</p>
             </div>
@@ -53,7 +53,7 @@ const About = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold mb-4 text-center">Why AgentBlue Exists</h2>
+              <h2 className="text-4xl font-bold mb-4 text-center animate-fade-in">Why AgentBlue Exists</h2>
               <p className="text-xl text-muted-foreground mb-8 text-center">Born from frustration with an industry that sells tools first and asks questions later</p>
               
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
@@ -75,7 +75,7 @@ const About = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <div className="text-center mb-16 animate-fade-in">
                 <h2 className="text-4xl font-bold mb-4">What We Believe</h2>
                 <p className="text-xl text-muted-foreground">The principles that guide every client engagement</p>
               </div>
@@ -113,6 +113,10 @@ const About = () => {
                       src={rafeImage}
                       alt="Rafe Mirza"
                       className="w-48 h-48 rounded-full mx-auto mb-6 object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      width="192"
+                      height="192"
                     />
                     <h3 className="text-2xl font-bold mb-2">Rafe Mirza</h3>
                     <p className="text-accent font-medium mb-4">Founder</p>
@@ -145,14 +149,10 @@ const About = () => {
               <p className="text-xl mb-8 opacity-90">
                 Let's start with an honest conversation about your business challenges.
               </p>
-              <Button 
-                variant="secondary" 
-                size="lg" 
-                className="bg-white text-primary hover:bg-white/90"
-                onClick={() => window.location.href = '/contact#contact-methods'}
-              >
-                Schedule Free Consultation
-              </Button>
+              <CalendarBooking
+                buttonText="Schedule Free Consultation"
+                buttonClassName="bg-white text-primary hover:bg-white/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8"
+              />
             </div>
           </div>
         </section>

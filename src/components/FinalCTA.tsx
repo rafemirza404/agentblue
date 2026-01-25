@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { CalendarBooking } from "./CalendarBooking";
 
 const FinalCTA = () => {
   return (
@@ -17,15 +17,14 @@ const FinalCTA = () => {
           </p>
 
           {/* Blue CTA Button */}
-          <Button
-            className="bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
-            onClick={() => {
-              // Link to calendar/booking system
-              document.getElementById('assessment-form')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Schedule Your Free Call <ArrowRight className="ml-2 h-5 w-5 inline" />
-          </Button>
+          <CalendarBooking
+            buttonText={
+              <>
+                Schedule Your Free Call <ArrowRight className="ml-2 h-5 w-5 inline" />
+              </>
+            }
+            buttonClassName="bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
+          />
 
           {/* Small text below */}
           <p className="text-sm text-[#9CA3AF] mt-3">

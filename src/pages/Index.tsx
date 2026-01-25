@@ -8,6 +8,9 @@ import FinalCTA from "@/components/FinalCTA";
 import AssessmentForm from "@/components/AssessmentForm";
 import Footer from "@/components/Footer";
 
+// Toggle this to show/hide the VideoDemo section (set to true when VSL is ready)
+const SHOW_VIDEO_DEMO = false;
+
 const Index = () => {
   return (
     <div className="min-h-screen">
@@ -28,10 +31,12 @@ const Index = () => {
           <WhyDifferent />
         </section>
 
-        {/* Section 4: Video/Demo Section with Gradient */}
-        <section id="video-demo">
-          <VideoDemo />
-        </section>
+        {/* Section 4: Video/Demo Section with Gradient - CONDITIONAL */}
+        {SHOW_VIDEO_DEMO && (
+          <section id="video-demo">
+            <VideoDemo />
+          </section>
+        )}
 
         {/* Section 5: FAQ - PRESERVED */}
         <section id="faq">

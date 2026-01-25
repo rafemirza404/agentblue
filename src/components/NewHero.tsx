@@ -12,11 +12,11 @@ const NewHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
           {/* Left Column - Text Content (60%) */}
           <div className="lg:col-span-3 space-y-8">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight animate-slide-up">
               Stop automating without strategy. Start fixing what's actually broken.
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-600 leading-relaxed animate-slide-up-subtle animate-delay-100">
               We diagnose your operations, design the blueprint, and show you exactly what to automate—before you waste another dollar on tools that don't solve real problems.
             </p>
 
@@ -29,18 +29,22 @@ const NewHero = () => {
               </Button>
 
               <p className="text-sm text-gray-600">
-                2-minute AI consultation. See how our voice agent handles real conversations.
+                See how our voice agent handles real conversations.
               </p>
             </div>
           </div>
 
           {/* Right Column - Professional Image (40%) */}
           <div className="lg:col-span-2">
-            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-xl shadow-lg overflow-hidden">
+            <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-xl shadow-lg overflow-hidden bg-gray-100">
               <img
                 src={heroImage}
                 alt="Rafe Mirza - AgentBlue Founder"
                 className="w-full h-full object-cover object-center"
+                loading="eager"
+                fetchpriority="high"
+                width="800"
+                height="1000"
               />
             </div>
           </div>

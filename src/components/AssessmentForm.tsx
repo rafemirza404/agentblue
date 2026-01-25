@@ -105,7 +105,7 @@ const AssessmentForm = () => {
             {/* Name Field */}
             <div>
               <label htmlFor="name" className="block text-base font-medium text-gray-900 mb-2">
-                Name (required)
+                Name *
               </label>
               <Input
                 id="name"
@@ -122,7 +122,7 @@ const AssessmentForm = () => {
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-base font-medium text-gray-900 mb-2">
-                Email (required)
+                Email *
               </label>
               <Input
                 id="email"
@@ -139,7 +139,7 @@ const AssessmentForm = () => {
             {/* Company Field */}
             <div>
               <label htmlFor="company" className="block text-base font-medium text-gray-900 mb-2">
-                Company (optional)
+                Company
               </label>
               <Input
                 id="company"
@@ -155,7 +155,7 @@ const AssessmentForm = () => {
             {/* Challenge Field */}
             <div>
               <label htmlFor="challenge" className="block text-base font-medium text-gray-900 mb-2">
-                Challenge (required)
+                Challenge *
               </label>
               <Textarea
                 id="challenge"

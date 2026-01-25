@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { 
-  Bot, 
-  Workflow, 
-  BarChart3, 
-  MessageSquare, 
-  FileText, 
+import {
+  Bot,
+  Workflow,
+  BarChart3,
+  MessageSquare,
+  FileText,
   Shield,
   Target,
   Scale,
@@ -20,11 +20,24 @@ import {
   DollarSign,
   Map,
   Wrench,
-  Rocket
+  Rocket,
+  Clock
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CalendarBooking } from "@/components/CalendarBooking";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { ScrollIndicator, HorizontalScrollGradient } from "@/components/ScrollIndicator";
 
 const Services = () => {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.96]);
+
   const capabilities = [
     {
       icon: <Bot className="w-8 h-8" />,
@@ -132,10 +145,10 @@ const Services = () => {
   ];
 
   const stats = [
-    { value: "$100k+", label: "Average Annual Savings (Mid-Size Client)", icon: "💰", description: "From eliminating manual work & operational errors" },
-    { value: "85%", label: "Time Reclaimed from Repetitive Tasks", icon: "⚡", description: "Redirected to strategic work & growth initiatives" },
-    { value: "3-6 mo", label: "Average ROI Timeline", icon: "📈", description: "Most automations pay for themselves in under 6 months" },
-    { value: "95%", label: "Error Reduction on Automated Workflows", icon: "✅", description: "Manual processes replaced with consistent, reliable systems" }
+    { value: "$150K-$500K", label: "Typical annual revenue being lost to missed calls and slow response times", icon: <DollarSign className="w-10 h-10" strokeWidth={1.5} />, description: "Revenue leaking from operational gaps" },
+    { value: "60-90%", label: "Of leads currently falling through operational cracks can be recovered", icon: <TrendingUp className="w-10 h-10" strokeWidth={1.5} />, description: "With proper systems in place" },
+    { value: "24/7/365", label: "Response time with AI-powered systems", icon: <Clock className="w-10 h-10" strokeWidth={1.5} />, description: "vs 2-3 hour manual response" },
+    { value: "3-9 Months", label: "Typical payback period", icon: <BarChart3 className="w-10 h-10" strokeWidth={1.5} />, description: "Based on operational audits we've performed" }
   ];
 
   const faqs = [
@@ -179,17 +192,42 @@ const Services = () => {
       
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
+        <motion.section
+          ref={heroRef}
+          className="py-20 bg-white relative overflow-hidden"
+          style={{ opacity: heroOpacity }}
+        >
+          <motion.div className="container mx-auto px-4" style={{ scale: heroScale }}>
             <div className="max-w-4xl mx-auto text-center">
-              <Badge variant="outline" className="mb-6">🎯 Strategy-First Consulting</Badge>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Badge variant="outline" className="mb-6">🎯 Strategy-First Consulting</Badge>
+              </motion.div>
+              <motion.h1
+                className="text-5xl md:text-6xl font-bold mb-6 text-foreground"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
                 We Don't Sell Automation. We Architect Operational Excellence.
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+              </motion.h1>
+              <motion.p
+                className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
                 Three tiers of strategic consulting—from diagnosing operational chaos to delivering turnkey automation that actually works. No vendor lock-in. No cookie-cutter solutions. Just measurable business results.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              </motion.p>
+              <motion.div
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
                 <Button asChild size="lg">
                   <Link to="/contact">Start With an Audit</Link>
                 </Button>
@@ -199,47 +237,58 @@ const Services = () => {
                 <Button variant="ghost" size="lg" asChild>
                   <Link to="/watch-demo">See Demo in Action →</Link>
                 </Button>
-              </div>
+              </motion.div>
             </div>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
         {/* The Problem Section */}
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
                 <h2 className="text-4xl font-bold mb-4">Most Automation Fails Because It Starts in the Wrong Place</h2>
                 <p className="text-xl text-muted-foreground">You don't have an automation problem. You have a strategy problem.</p>
-              </div>
-              
+              </motion.div>
+
               <div className="grid md:grid-cols-3 gap-8">
-                <Card className="border-0 bg-background">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-bold mb-4">Tools Without Strategy</h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Companies buy platforms first, then figure out implementation. Result? Expensive software sitting unused while manual chaos continues.
-                    </p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="border-0 bg-background">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-bold mb-4">Building What's Easy, Not What Matters</h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Freelancers automate whatever's simple to build. We prioritize what actually moves your business metrics—ROI first, always.
-                    </p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="border-0 bg-background">
-                  <CardContent className="p-8">
-                    <h3 className="text-xl font-bold mb-4">Vendor Lock-In Disguised as Consulting</h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Most 'consultants' push tools they're certified in or earn commissions from. We're platform-agnostic—we recommend what's genuinely best for you.
-                    </p>
-                  </CardContent>
-                </Card>
+                {[
+                  {
+                    title: "Tools Without Strategy",
+                    description: "Companies buy platforms first, then figure out implementation. Result? Expensive software sitting unused while manual chaos continues."
+                  },
+                  {
+                    title: "Building What's Easy, Not What Matters",
+                    description: "Freelancers automate whatever's simple to build. We prioritize what actually moves your business metrics—ROI first, always."
+                  },
+                  {
+                    title: "Vendor Lock-In Disguised as Consulting",
+                    description: "Most 'consultants' push tools they're certified in or earn commissions from. We're platform-agnostic—we recommend what's genuinely best for you."
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                  >
+                    <Card className="border-0 bg-background h-full hover-lift">
+                      <CardContent className="p-8">
+                        <h3 className="text-xl font-bold mb-4">{item.title}</h3>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {item.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </div>
@@ -249,29 +298,43 @@ const Services = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
                 <h2 className="text-4xl font-bold mb-4">How We're Different: Consulting That Puts Strategy First</h2>
                 <p className="text-xl text-muted-foreground">Every engagement follows the same proven methodology</p>
-              </div>
-              
+              </motion.div>
+
               <div className="grid md:grid-cols-2 gap-8">
                 {differentiators.map((item, index) => (
-                  <Card key={index} className="border-0 bg-secondary/30">
-                    <CardContent className="p-8">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 text-white">
-                          {item.icon}
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                  >
+                    <Card className="border-0 bg-secondary/30 h-full">
+                      <CardContent className="p-8">
+                        <div className="flex items-start gap-4 mb-4">
+                          <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 text-white">
+                            {item.icon}
+                          </div>
+                          <div>
+                            {item.badge && (
+                              <Badge variant="secondary" className="mb-2">{item.badge}</Badge>
+                            )}
+                            <h3 className="text-xl font-bold">{item.title}</h3>
+                          </div>
                         </div>
-                        <div>
-                          {item.badge && (
-                            <Badge variant="secondary" className="mb-2">{item.badge}</Badge>
-                          )}
-                          <h3 className="text-xl font-bold">{item.title}</h3>
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-                    </CardContent>
-                  </Card>
+                        <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -282,10 +345,16 @@ const Services = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
                 <h2 className="text-4xl font-bold mb-4">Three Tiers. One Mission: Fix Operations, Then Automate.</h2>
                 <p className="text-xl text-muted-foreground">Choose your entry point—but every path starts with strategic diagnosis</p>
-              </div>
+              </motion.div>
               
               <div className="grid lg:grid-cols-3 gap-8">
                 {/* Tier 1 */}
@@ -325,10 +394,11 @@ const Services = () => {
                     <p className="text-sm text-muted-foreground mb-6 italic">
                       You receive a detailed strategic roadmap. You can implement yourself, hire anyone to execute it, or engage us for Tier 2 (Blueprint) or Tier 3 (Full Implementation). Totally your choice.
                     </p>
-                    
-                    <Button asChild className="w-full mb-4">
-                      <Link to="/contact">Schedule Diagnostic Call</Link>
-                    </Button>
+
+                    <CalendarBooking
+                      buttonText="Schedule Diagnostic Call"
+                      buttonClassName="w-full mb-4 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                    />
                     
                     <p className="text-xs text-muted-foreground">
                       Perfect for: Businesses unsure where to start, or those burned by failed automation attempts.
@@ -441,35 +511,49 @@ const Services = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
                 <h2 className="text-4xl font-bold mb-4">Automation Capabilities We Deliver Through Our 3-Tier Model</h2>
                 <p className="text-xl text-muted-foreground">
                   These are examples of the automation types we architect for clients—delivered through strategic diagnosis, blueprinting, and optional implementation.
                 </p>
-              </div>
-              
+              </motion.div>
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {capabilities.map((service, index) => (
-                  <Card key={index} className="border-0 bg-secondary/30">
-                    <CardHeader>
-                      <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center mb-4 text-white">
-                        {service.icon}
-                      </div>
-                      <CardTitle className="text-xl">{service.title}</CardTitle>
-                      <p className="text-muted-foreground">{service.description}</p>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2 mb-4">
-                        {service.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-accent" />
-                            <span className="text-sm">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-xs text-muted-foreground italic">Delivered via Tier 2 or Tier 3 engagements</p>
-                    </CardContent>
-                  </Card>
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                  >
+                    <Card className="border-0 bg-secondary/30 h-full">
+                      <CardHeader>
+                        <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center mb-4 text-white">
+                          {service.icon}
+                        </div>
+                        <CardTitle className="text-xl">{service.title}</CardTitle>
+                        <p className="text-muted-foreground">{service.description}</p>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-2 mb-4">
+                          {service.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-accent" />
+                              <span className="text-sm">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-xs text-muted-foreground italic">Delivered via Tier 2 or Tier 3 engagements</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -480,43 +564,57 @@ const Services = () => {
         <section id="process" className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
                 <h2 className="text-4xl font-bold mb-4">Our Proven Methodology: From Chaos to Clarity to Results</h2>
-                <p className="text-xl text-muted-foreground">The same strategic framework we use for every client—refined over 50+ implementations</p>
-              </div>
-              
+                <p className="text-xl text-muted-foreground">A proven diagnostic framework for identifying revenue leaks in solar and HVAC operations—refined through real client engagements</p>
+              </motion.div>
+
               <div className="space-y-8">
                 {phases.map((phase, index) => (
-                  <Card key={index} className="border-0 bg-background">
-                    <CardContent className="p-8">
-                      <div className="flex flex-col md:flex-row gap-6">
-                        <div className="flex-shrink-0">
-                          <div className="text-6xl font-bold text-muted-foreground/20 mb-4">{phase.number}</div>
-                          <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center text-white">
-                            {phase.icon}
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                  >
+                    <Card className="border-0 bg-background">
+                      <CardContent className="p-8">
+                        <div className="flex flex-col md:flex-row gap-6">
+                          <div className="flex-shrink-0">
+                            <div className="text-6xl font-bold text-muted-foreground/20 mb-4">{phase.number}</div>
+                            <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center text-white">
+                              {phase.icon}
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between mb-4">
+                              <h3 className="text-2xl font-bold">{phase.name}</h3>
+                              <Badge variant="outline">{phase.timeline}</Badge>
+                            </div>
+                            <p className="text-muted-foreground mb-4 leading-relaxed">{phase.description}</p>
+                            <div className="space-y-2">
+                              <p className="text-sm font-medium">Key Activities:</p>
+                              <ul className="space-y-1">
+                                {phase.activities.map((activity, idx) => (
+                                  <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
+                                    <span className="text-accent mt-1">•</span>
+                                    <span>{activity}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between mb-4">
-                            <h3 className="text-2xl font-bold">{phase.name}</h3>
-                            <Badge variant="outline">{phase.timeline}</Badge>
-                          </div>
-                          <p className="text-muted-foreground mb-4 leading-relaxed">{phase.description}</p>
-                          <div className="space-y-2">
-                            <p className="text-sm font-medium">Key Activities:</p>
-                            <ul className="space-y-1">
-                              {phase.activities.map((activity, idx) => (
-                                <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
-                                  <span className="text-accent mt-1">•</span>
-                                  <span>{activity}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -527,21 +625,56 @@ const Services = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
                 <h2 className="text-4xl font-bold mb-4">Real Clients. Measurable Outcomes.</h2>
                 <p className="text-xl text-muted-foreground">The kind of results you get when strategy comes before automation</p>
+              </motion.div>
+
+              {/* Mobile: Horizontal scroll */}
+              <ScrollIndicator />
+              <div className="relative">
+                <HorizontalScrollGradient />
+                <div className="md:hidden overflow-x-auto pb-4 -mx-4 px-4 mb-12">
+                  <div className="flex gap-6 min-w-max">
+                    {stats.map((stat, index) => (
+                      <Card key={index} className="border-0 bg-secondary/30 text-center w-[280px] flex-shrink-0">
+                        <CardContent className="p-8">
+                          <div className="text-accent mb-4 flex justify-center">{stat.icon}</div>
+                          <div className="text-4xl font-bold mb-2 text-accent">{stat.value}</div>
+                          <h3 className="text-sm font-semibold mb-2">{stat.label}</h3>
+                          <p className="text-xs text-muted-foreground">{stat.description}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+
+              {/* Desktop: Grid layout */}
+              <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 {stats.map((stat, index) => (
-                  <Card key={index} className="border-0 bg-secondary/30 text-center">
-                    <CardContent className="p-8">
-                      <div className="text-4xl mb-2">{stat.icon}</div>
-                      <div className="text-4xl font-bold mb-2 text-accent">{stat.value}</div>
-                      <h3 className="text-sm font-semibold mb-2">{stat.label}</h3>
-                      <p className="text-xs text-muted-foreground">{stat.description}</p>
-                    </CardContent>
-                  </Card>
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                  >
+                    <Card className="border-0 bg-secondary/30 text-center h-full">
+                      <CardContent className="p-8">
+                        <div className="text-accent mb-4 flex justify-center">{stat.icon}</div>
+                        <div className="text-4xl font-bold mb-2 text-accent">{stat.value}</div>
+                        <h3 className="text-sm font-semibold mb-2">{stat.label}</h3>
+                        <p className="text-xs text-muted-foreground">{stat.description}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 ))}
               </div>
               
@@ -567,10 +700,9 @@ const Services = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold mb-6">Built for Growing Businesses Ready to Scale</h2>
+              <h2 className="text-4xl font-bold mb-6">Built for Solar & HVAC Companies Ready to Scale</h2>
               <p className="text-xl text-muted-foreground mb-8">
-                We serve businesses with $500k+ revenue across professional services, e-commerce, education, and financial services. 
-                If manual chaos is holding you back from growth, we're built for you.
+                Built for residential solar and HVAC companies doing $1M-$5M annually—where growth is being choked by missed calls, slow response times, and broken follow-up systems.
               </p>
               <Button variant="outline" size="lg" asChild>
                 <Link to="/about">Learn more about our ideal clients →</Link>
@@ -583,9 +715,15 @@ const Services = () => {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-16">
+              <motion.div
+                className="text-center mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
                 <h2 className="text-4xl font-bold mb-4">Questions About Our Services? We've Got Answers.</h2>
-              </div>
+              </motion.div>
               
               <Accordion type="single" collapsible className="w-full space-y-4">
                 {faqs.map((faq, index) => (
@@ -652,10 +790,11 @@ const Services = () => {
                   </p>
                 </CardContent>
               </Card>
-              
-              <Button size="lg" variant="secondary" asChild className="bg-white text-accent hover:bg-white/90 mb-6">
-                <Link to="/contact">Schedule Diagnostic Call</Link>
-              </Button>
+
+              <CalendarBooking
+                buttonText="Schedule Diagnostic Call"
+                buttonClassName="bg-white text-accent hover:bg-white/90 mb-6 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8"
+              />
               
               <div className="flex flex-wrap justify-center gap-6 text-sm">
                 <div className="flex items-center gap-2">

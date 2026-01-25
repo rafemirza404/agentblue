@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Calendar, Mail, MessageCircle, Globe, Clock, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { webhookService } from "@/services/api/webhooks";
+import { CalendarBooking } from "@/components/CalendarBooking";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -124,9 +125,10 @@ const Contact = () => {
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
                 Schedule your free 30-minute diagnostic call and discover what's really holding your business back—no sales pitch, just strategic guidance.
               </p>
-              <Button size="lg" onClick={scrollToContactMethods}>
-                Schedule Free Consultation
-              </Button>
+              <CalendarBooking
+                buttonText="Schedule Free Consultation"
+                buttonClassName="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
+              />
             </div>
           </div>
         </section>
@@ -151,10 +153,11 @@ const Contact = () => {
                     <p className="text-muted-foreground">Book a 30-minute diagnostic call with our strategists</p>
                   </CardHeader>
                   <CardContent>
-                    <Button size="lg" className="w-full bg-accent hover:bg-accent/90 mb-2" onClick={scrollToContactForm}>
-                      Book Free Call
-                    </Button>
-                    <p className="text-sm text-muted-foreground text-center">No sales pitch—just operational insights</p>
+                    <CalendarBooking
+                      buttonText="Book Free Call"
+                      buttonClassName="w-full bg-accent hover:bg-accent/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8"
+                    />
+                    <p className="text-sm text-muted-foreground text-center mt-2">No sales pitch—just operational insights</p>
                   </CardContent>
                 </Card>
 
@@ -183,13 +186,17 @@ const Contact = () => {
                     <p className="text-muted-foreground">Get instant AI-powered responses</p>
                   </CardHeader>
                   <CardContent>
-                    <Button 
-                      variant="outline" 
-                      size="lg" 
+                    <Button
+                      variant="outline"
+                      size="lg"
                       className="w-full mb-2"
                       onClick={() => {
-                        const chatButton = document.querySelector('[aria-label="Open chat"]') as HTMLButtonElement;
-                        if (chatButton) chatButton.click();
+                        const chatButton = document.querySelector('[aria-label="Open chat support"]') as HTMLButtonElement;
+                        if (chatButton) {
+                          chatButton.click();
+                        } else {
+                          console.error('Chat button not found');
+                        }
                       }}
                     >
                       Chat Now
@@ -252,13 +259,14 @@ const Contact = () => {
                           />
                         </div>
                         <div>
-                          <Label htmlFor="company">Company</Label>
-                          <Input 
-                            id="company" 
+                          <Label htmlFor="company">Company *</Label>
+                          <Input
+                            id="company"
                             name="company"
                             value={formData.company}
                             onChange={handleChange}
                             placeholder="Your Company Name"
+                            required
                           />
                         </div>
                         <div>
@@ -330,14 +338,10 @@ const Contact = () => {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-bold mb-4">Prefer to Schedule Directly?</h2>
             <p className="text-xl mb-8 opacity-90">Book your free 30-minute consultation now</p>
-            <Button 
-              variant="secondary" 
-              size="lg" 
-              className="bg-white text-primary hover:bg-white/90"
-              onClick={scrollToContactMethods}
-            >
-              Schedule Free Call
-            </Button>
+            <CalendarBooking
+              buttonText="Schedule Free Call"
+              buttonClassName="bg-white text-primary hover:bg-white/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8"
+            />
           </div>
         </section>
       </main>

@@ -205,4 +205,75 @@ html {
   .glass-card {
     @apply bg-card/80 backdrop-blur-lg border border-border/50 shadow-card;
   }
+
+  /* Subtle scroll animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-up-subtle {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Animation classes */
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.8s ease-out forwards;
+  }
+
+  .animate-slide-up-subtle {
+    animation: slide-up-subtle 0.6s ease-out forwards;
+  }
+
+  /* Staggered animations for lists */
+  .animate-delay-100 {
+    animation-delay: 0.1s;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 0.4s;
+  }
+
+  /* Scroll-triggered animation (starts hidden) */
+  .scroll-animate {
+    opacity: 0;
+  }
+
+  .scroll-animate.visible {
+    animation: slide-up 0.8s ease-out forwards;
+  }
 }
