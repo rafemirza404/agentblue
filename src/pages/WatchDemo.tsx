@@ -299,7 +299,7 @@ const WatchDemo = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-base font-medium mb-2 text-gray-900">
-                      Name (required)
+                      Name *
                     </label>
                     <Input
                       id="name"
@@ -314,7 +314,7 @@ const WatchDemo = () => {
 
                   <div>
                     <label htmlFor="email" className="block text-base font-medium mb-2 text-gray-900">
-                      Email (required)
+                      Email *
                     </label>
                     <Input
                       id="email"
@@ -330,7 +330,7 @@ const WatchDemo = () => {
 
                   <div>
                     <label htmlFor="company" className="block text-base font-medium mb-2 text-gray-900">
-                      Company (required)
+                      Company *
                     </label>
                     <Input
                       id="company"
@@ -345,7 +345,7 @@ const WatchDemo = () => {
 
                   <div>
                     <label htmlFor="message" className="block text-base font-medium mb-2 text-gray-900">
-                      Challenge (required)
+                      Challenge *
                     </label>
                     <Textarea
                       id="message"
