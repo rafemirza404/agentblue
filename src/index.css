@@ -123,17 +123,21 @@ html {
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Typography enhancements */
+  /* Typography — Inter-based, consistent across all sections */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
   }
-
-  h1 { @apply text-4xl md:text-6xl lg:text-7xl leading-none; }
-  h2 { @apply text-3xl md:text-4xl lg:text-5xl; }
-  h3 { @apply text-2xl md:text-3xl; }
 }
 
 @layer components {
@@ -238,17 +242,18 @@ html {
     }
   }
 
-  /* Animation classes */
+  /* Animation classes — use `both` fill mode so elements stay at their `from`
+     state during animation-delay (prevents flash of full-opacity content) */
   .animate-fade-in {
-    animation: fade-in 0.8s ease-out forwards;
+    animation: fade-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .animate-slide-up {
-    animation: slide-up 0.8s ease-out forwards;
+    animation: slide-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .animate-slide-up-subtle {
-    animation: slide-up-subtle 0.6s ease-out forwards;
+    animation: slide-up-subtle 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   /* Staggered animations for lists */
@@ -261,11 +266,11 @@ html {
   }
 
   .animate-delay-300 {
-    animation-delay: 0.3s;
+    animation-delay: 0.35s;
   }
 
   .animate-delay-400 {
-    animation-delay: 0.4s;
+    animation-delay: 0.5s;
   }
 
   /* Scroll-triggered animation (starts hidden) */
@@ -275,5 +280,37 @@ html {
 
   .scroll-animate.visible {
     animation: slide-up 0.8s ease-out forwards;
+  }
+
+  /* Nav slide-down on initial load */
+  @keyframes nav-slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-nav-in {
+    animation: nav-slide-down 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Stagger children animations */
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }

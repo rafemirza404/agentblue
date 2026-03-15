@@ -21,22 +21,15 @@ import {
   Map,
   Wrench,
   Rocket,
-  Clock
+  Clock,
+  ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CalendarBooking } from "@/components/CalendarBooking";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { ScrollIndicator, HorizontalScrollGradient } from "@/components/ScrollIndicator";
 
 const Services = () => {
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.96]);
 
   const capabilities = [
     {
@@ -192,55 +185,29 @@ const Services = () => {
       
       <main className="pt-20">
         {/* Hero Section */}
-        <motion.section
-          ref={heroRef}
-          className="py-20 bg-white relative overflow-hidden"
-          style={{ opacity: heroOpacity }}
-        >
-          <motion.div className="container mx-auto px-4" style={{ scale: heroScale }}>
-            <div className="max-w-4xl mx-auto text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Badge variant="outline" className="mb-6">🎯 Strategy-First Consulting</Badge>
-              </motion.div>
-              <motion.h1
-                className="text-5xl md:text-6xl font-bold mb-6 text-foreground"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                We Don't Sell Automation. We Architect Operational Excellence.
-              </motion.h1>
-              <motion.p
-                className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                Three tiers of strategic consulting—from diagnosing operational chaos to delivering turnkey automation that actually works. No vendor lock-in. No cookie-cutter solutions. Just measurable business results.
-              </motion.p>
-              <motion.div
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <Button asChild size="lg">
-                  <Link to="/contact">Start With an Audit</Link>
-                </Button>
-                <Button variant="outline" size="lg" asChild>
-                  <a href="#process">View Our Process</a>
-                </Button>
-                <Button variant="ghost" size="lg" asChild>
-                  <Link to="/watch-demo">See Demo in Action →</Link>
-                </Button>
-              </motion.div>
+        <section className="bg-[#EEF4FF] py-24 md:py-36">
+          <div className="container mx-auto px-4 max-w-5xl flex flex-col items-center text-center">
+            <div className="bg-white border border-gray-200 rounded-full px-4 py-1.5 text-sm text-gray-600 inline-flex items-center gap-2 shadow-sm mb-8 animate-fade-in">
+              Strategy-First Consulting
+              <ArrowRight className="h-3.5 w-3.5" />
             </div>
-          </motion.div>
-        </motion.section>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight animate-slide-up mb-6">
+              We Don't Sell Automation. We Architect Operational Excellence.
+            </h1>
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-slide-up-subtle animate-delay-100 mb-10">
+              Three tiers of strategic consulting—from diagnosing operational chaos to delivering turnkey automation that actually works. No vendor lock-in. No cookie-cutter solutions.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4 animate-slide-up-subtle animate-delay-200">
+              <CalendarBooking
+                buttonText="Start With an Audit"
+                buttonClassName="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] inline-flex items-center justify-center gap-2"
+              />
+              <Link to="/watch-demo" className="flex items-center gap-2 text-gray-700 font-semibold text-base hover:text-black transition-colors duration-200 cursor-pointer">
+                See Demo in Action <ArrowRight className="h-5 w-5" />
+              </Link>
+            </div>
+          </div>
+        </section>
 
         {/* The Problem Section */}
         <section className="py-20 bg-secondary/30">
@@ -253,8 +220,8 @@ const Services = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-4xl font-bold mb-4">Most Automation Fails Because It Starts in the Wrong Place</h2>
-                <p className="text-xl text-muted-foreground">You don't have an automation problem. You have a strategy problem.</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">Most Automation Fails Because It Starts in the Wrong Place</h2>
+                <p className="text-base md:text-lg text-gray-600">You don't have an automation problem. You have a strategy problem.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-3 gap-8">
@@ -305,8 +272,8 @@ const Services = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-4xl font-bold mb-4">How We're Different: Consulting That Puts Strategy First</h2>
-                <p className="text-xl text-muted-foreground">Every engagement follows the same proven methodology</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">How We're Different: Consulting That Puts Strategy First</h2>
+                <p className="text-base md:text-lg text-gray-600">Every engagement follows the same proven methodology</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-8">
@@ -352,8 +319,8 @@ const Services = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-4xl font-bold mb-4">Three Tiers. One Mission: Fix Operations, Then Automate.</h2>
-                <p className="text-xl text-muted-foreground">Choose your entry point—but every path starts with strategic diagnosis</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">Three Tiers. One Mission: Fix Operations, Then Automate.</h2>
+                <p className="text-base md:text-lg text-gray-600">Choose your entry point—but every path starts with strategic diagnosis</p>
               </motion.div>
               
               <div className="grid lg:grid-cols-3 gap-8">
@@ -364,7 +331,7 @@ const Services = () => {
                   </div>
                   <CardContent className="p-8 pt-12">
                     <Badge className="mb-4">TIER 1</Badge>
-                    <h3 className="text-2xl font-bold mb-2">Operations Intelligence Audit</h3>
+                    <h3 className="text-xl font-bold text-black mb-2">Operations Intelligence Audit</h3>
                     <p className="text-muted-foreground mb-4">Diagnose operational chaos. Quantify the bleeding.</p>
                     <Badge variant="outline" className="mb-6">2 weeks</Badge>
                     
@@ -413,7 +380,7 @@ const Services = () => {
                   </div>
                   <CardContent className="p-8 pt-12">
                     <Badge className="mb-4" variant="secondary">TIER 2</Badge>
-                    <h3 className="text-2xl font-bold mb-2">Automation Infrastructure Blueprint</h3>
+                    <h3 className="text-xl font-bold text-black mb-2">Automation Infrastructure Blueprint</h3>
                     <p className="text-muted-foreground mb-4">Technical roadmaps any developer can execute.</p>
                     <Badge variant="outline" className="mb-6">3-4 weeks</Badge>
                     
@@ -462,7 +429,7 @@ const Services = () => {
                   </div>
                   <CardContent className="p-8 pt-12">
                     <Badge className="mb-4" variant="secondary">TIER 3</Badge>
-                    <h3 className="text-2xl font-bold mb-2">Turnkey Implementation</h3>
+                    <h3 className="text-xl font-bold text-black mb-2">Turnkey Implementation</h3>
                     <p className="text-muted-foreground mb-4">We build, test, train, and stabilize. You see results.</p>
                     <Badge variant="outline" className="mb-6">8-10 weeks</Badge>
                     
@@ -518,8 +485,8 @@ const Services = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-4xl font-bold mb-4">Automation Capabilities We Deliver Through Our 3-Tier Model</h2>
-                <p className="text-xl text-muted-foreground">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">Automation Capabilities We Deliver Through Our 3-Tier Model</h2>
+                <p className="text-base md:text-lg text-gray-600">
                   These are examples of the automation types we architect for clients—delivered through strategic diagnosis, blueprinting, and optional implementation.
                 </p>
               </motion.div>
@@ -571,8 +538,8 @@ const Services = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-4xl font-bold mb-4">Our Proven Methodology: From Chaos to Clarity to Results</h2>
-                <p className="text-xl text-muted-foreground">A proven diagnostic framework for identifying revenue leaks in solar and HVAC operations—refined through real client engagements</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">Our Proven Methodology: From Chaos to Clarity to Results</h2>
+                <p className="text-base md:text-lg text-gray-600">A proven diagnostic framework for identifying revenue leaks in solar and HVAC operations—refined through real client engagements</p>
               </motion.div>
 
               <div className="space-y-8">
@@ -595,7 +562,7 @@ const Services = () => {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-start justify-between mb-4">
-                              <h3 className="text-2xl font-bold">{phase.name}</h3>
+                              <h3 className="text-xl font-bold text-black">{phase.name}</h3>
                               <Badge variant="outline">{phase.timeline}</Badge>
                             </div>
                             <p className="text-muted-foreground mb-4 leading-relaxed">{phase.description}</p>
@@ -632,8 +599,8 @@ const Services = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-4xl font-bold mb-4">Real Clients. Measurable Outcomes.</h2>
-                <p className="text-xl text-muted-foreground">The kind of results you get when strategy comes before automation</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">Real Clients. Measurable Outcomes.</h2>
+                <p className="text-base md:text-lg text-gray-600">The kind of results you get when strategy comes before automation</p>
               </motion.div>
 
               {/* Mobile: Horizontal scroll */}
@@ -680,11 +647,11 @@ const Services = () => {
               
               <Card className="border-0 bg-accent text-white">
                 <CardContent className="p-12 text-center">
-                  <h3 className="text-3xl font-bold mb-4">See How We've Transformed Operations</h3>
-                  <p className="text-xl mb-6 opacity-90">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4">See How We've Transformed Operations</h3>
+                  <p className="text-base md:text-lg mb-6 opacity-90">
                     From 8-hour onboarding processes to 45 minutes. From 15% complaints to under 2%. Real businesses, transformative results.
                   </p>
-                  <p className="text-lg mb-8">
+                  <p className="text-base mb-8">
                     We've helped 50+ businesses escape operational chaos and achieve measurable ROI through strategic automation.
                   </p>
                   <Button variant="secondary" size="lg" asChild className="bg-white text-accent hover:bg-white/90">
@@ -700,8 +667,8 @@ const Services = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold mb-6">Built for Solar & HVAC Companies Ready to Scale</h2>
-              <p className="text-xl text-muted-foreground mb-8">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">Built for Solar & HVAC Companies Ready to Scale</h2>
+              <p className="text-base md:text-lg text-gray-600 mb-8">
                 Built for residential solar and HVAC companies doing $1M-$5M annually—where growth is being choked by missed calls, slow response times, and broken follow-up systems.
               </p>
               <Button variant="outline" size="lg" asChild>
@@ -722,7 +689,7 @@ const Services = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="text-4xl font-bold mb-4">Questions About Our Services? We've Got Answers.</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">Questions About Our Services? We've Got Answers.</h2>
               </motion.div>
               
               <Accordion type="single" collapsible className="w-full space-y-4">
@@ -742,13 +709,13 @@ const Services = () => {
         </section>
 
         {/* Final CTA */}
-        <section className="py-20 bg-accent text-white">
+        <section className="py-20 bg-[#1a1f35] text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold mb-6">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
                 Ready to Stop Guessing and Start Fixing Operations?
               </h2>
-              <p className="text-xl mb-8 opacity-90">
+              <p className="text-base md:text-lg mb-8 opacity-90">
                 Schedule your Operations Intelligence Audit and get a clear, ROI-ranked roadmap to operational excellence
               </p>
               

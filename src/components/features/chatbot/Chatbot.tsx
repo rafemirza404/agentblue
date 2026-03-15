@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { X, MessageCircle, Send } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import { useChatScroll } from '@/hooks/useChatScroll';
 import { webhookService } from '@/services/api/webhooks';
 import { storageService } from '@/services/storage/localStorage';
@@ -28,6 +28,8 @@ const Chatbot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showTopicCards, setShowTopicCards] = useState(true);
   const [hasNewMessage, setHasNewMessage] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [promptDismissed, setPromptDismissed] = useState(false);
 
   const lastMessageTimeRef = useRef<number>(0);
   const sessionId = useMemo(() => storageService.getChatSessionId(), []);
@@ -191,16 +193,53 @@ const Chatbot = () => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, handleClose]);
 
+  // Show prompt bubble after 4s, auto-hide after 8s
+  useEffect(() => {
+    if (isOpen || promptDismissed) return;
+    const show = setTimeout(() => setShowPrompt(true), 4000);
+    const hide = setTimeout(() => setShowPrompt(false), 12000);
+    return () => { clearTimeout(show); clearTimeout(hide); };
+  }, [isOpen, promptDismissed]);
+
   // Closed state
   if (!isOpen) {
     return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-[52px] h-[52px] bg-[#0066FF] rounded-full shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_6px_28px_rgba(0,102,255,0.4)] hover:scale-105 transition-all duration-300 z-[9998] flex items-center justify-center"
-        aria-label="Open chat support"
-      >
-        <MessageCircle className="w-6 h-6 text-white" />
-      </button>
+      <div className="fixed bottom-6 right-6 z-[9998] flex flex-col items-end gap-3">
+
+        {/* Prompt bubble */}
+        {showPrompt && !promptDismissed && (
+          <div className="flex items-start gap-2 animate-in slide-in-from-bottom-2 fade-in duration-300">
+            <div className="relative bg-white rounded-2xl rounded-br-sm px-4 py-3 shadow-[0_4px_24px_rgba(0,0,0,0.12)] max-w-[200px]">
+              <button
+                onClick={() => { setShowPrompt(false); setPromptDismissed(true); }}
+                className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-500 text-[10px] flex items-center justify-center leading-none transition-colors"
+              >×</button>
+              <p className="text-[13px] font-medium text-gray-800 leading-snug">
+                Have a question? 👋
+              </p>
+              <p className="text-[12px] text-gray-500 mt-0.5">We're here to help.</p>
+            </div>
+          </div>
+        )}
+
+        {/* Button with pulse */}
+        <div className="relative">
+          <span className="absolute inset-0 rounded-full bg-[#4F7CFF] opacity-30 animate-ping" style={{ animationDuration: '2.5s' }} />
+          <button
+            onClick={() => { setIsOpen(true); setShowPrompt(false); }}
+            className="relative w-[52px] h-[52px] bg-[#4F7CFF] rounded-full shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.5)] hover:scale-105 transition-all duration-300 flex items-center justify-center"
+            aria-label="Open chat support"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                fill="white"
+              />
+            </svg>
+          </button>
+        </div>
+
+      </div>
     );
   }
 
@@ -268,7 +307,7 @@ const Chatbot = () => {
                       {[0, 200, 400].map((delay) => (
                         <span
                           key={delay}
-                          className="w-1.5 h-1.5 bg-[#0066FF] rounded-full animate-bounce"
+                          className="w-1.5 h-1.5 bg-[#4F7CFF] rounded-full animate-bounce"
                           style={{ animationDelay: `${delay}ms`, animationDuration: '1.4s' }}
                         />
                       ))}
@@ -288,7 +327,7 @@ const Chatbot = () => {
                   setHasNewMessage(false);
                   scrollToBottom();
                 }}
-                className="bg-[#0066FF] text-white px-4 py-2 rounded-full shadow-lg text-sm font-medium hover:bg-[#0052CC] transition-all flex items-center gap-2"
+                className="bg-[#4F7CFF] text-white px-4 py-2 rounded-full shadow-lg text-sm font-medium hover:bg-[#3B6AE8] transition-all flex items-center gap-2"
               >
                 <span>↓</span> New message
               </button>
@@ -304,12 +343,12 @@ const Chatbot = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-12 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
+            className="flex-1 h-12 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.1)]"
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-[0_4px_12px_rgba(0,102,255,0.3)] disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="w-12 h-12 bg-[#4F7CFF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-[0_4px_12px_rgba(79,124,255,0.3)] disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             aria-label="Send message"
           >
             <Send className="w-5 h-5 text-white" />
@@ -371,7 +410,7 @@ const Chatbot = () => {
                       {[0, 200, 400].map((delay) => (
                         <span
                           key={delay}
-                          className="w-1.5 h-1.5 bg-[#0066FF] rounded-full animate-bounce"
+                          className="w-1.5 h-1.5 bg-[#4F7CFF] rounded-full animate-bounce"
                           style={{ animationDelay: `${delay}ms`, animationDuration: '1.4s' }}
                         />
                       ))}
@@ -391,7 +430,7 @@ const Chatbot = () => {
                   setHasNewMessage(false);
                   scrollToBottom();
                 }}
-                className="bg-[#0066FF] text-white px-4 py-2 rounded-full shadow-lg text-sm font-medium hover:bg-[#0052CC] transition-all flex items-center gap-2"
+                className="bg-[#4F7CFF] text-white px-4 py-2 rounded-full shadow-lg text-sm font-medium hover:bg-[#3B6AE8] transition-all flex items-center gap-2"
               >
                 <span>↓</span> New message
               </button>
@@ -407,13 +446,13 @@ const Chatbot = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#0066FF] focus:shadow-[0_0_0_3px_rgba(0,102,255,0.1)]"
+            className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.1)]"
             style={{ fontSize: '16px' }}
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-[#0066FF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-12 h-12 bg-[#4F7CFF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Send message"
           >
             <Send className="w-5 h-5 text-white" />

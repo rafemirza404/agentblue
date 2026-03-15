@@ -1,16 +1,25 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import agentblueLogo from "@/assets/agentblue-logo.png";
+const agentblueLogo = "/agentblue-logo.png";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Check if we're on the watch demo page
   const isDemoPage = location.pathname === '/watch-demo';
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 16);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
     { name: "Services", href: "/services" },
@@ -19,94 +28,120 @@ const Navigation = () => {
     { name: "Contact", href: "/contact" },
   ];
 
+  const handleNavClick = (href: string) => {
+    if (location.pathname === href) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   const handleGetStarted = () => {
     if (location.pathname === '/' || location.pathname === '/home') {
-      // Scroll to contact form on homepage
       const contactSection = document.getElementById('contact-form-section');
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
-      // Navigate to contact page with hash to contact methods section
       navigate('/contact#contact-methods');
     }
     setIsOpen(false);
   };
 
+  const navBg = isDemoPage
+    ? 'bg-black/95 border-b border-gray-800'
+    : scrolled
+      ? 'bg-white border-b border-gray-100 shadow-[0_1px_12px_rgba(0,0,0,0.06)]'
+      : 'bg-white/0 border-b border-transparent';
+
   return (
-    <nav className={`fixed top-0 w-full backdrop-blur-lg border-b z-50 ${
-      isDemoPage
-        ? 'bg-black/95 border-gray-800'
-        : 'bg-background/80 border-border/50'
-    }`}>
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+    <nav
+      className={`fixed top-0 w-full backdrop-blur-xl z-50 transition-all duration-300 ${navBg}`}
+    >
+      <div className="container mx-auto px-6 max-w-7xl">
+        <div className="flex justify-between items-center h-[68px]">
+
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-smooth">
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1">
+          <Link
+            to="/"
+            onClick={() => handleNavClick('/')}
+            className="flex items-center space-x-2.5 hover:opacity-80 transition-opacity duration-200"
+          >
+            <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center p-1 shadow-sm border border-gray-100">
               <img
                 src={agentblueLogo}
                 alt="AgentBlue Logo"
                 className="w-full h-full object-contain"
               />
             </div>
-            <span className={`text-xl font-bold ${isDemoPage ? 'text-white' : 'text-foreground'}`}>
+            <span className={`text-[17px] font-bold tracking-tight ${isDemoPage ? 'text-white' : 'text-gray-900'}`}>
               AgentBlue
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={isDemoPage
-                  ? 'text-gray-300 hover:text-white transition-smooth'
-                  : 'text-muted-foreground hover:text-foreground transition-smooth'
-                }
+                onClick={() => handleNavClick(item.href)}
+                className={`px-4 py-2 rounded-lg text-[14px] font-medium transition-colors duration-150 ${
+                  isDemoPage
+                    ? 'text-gray-300 hover:text-white hover:bg-white/10'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                }`}
               >
                 {item.name}
               </Link>
             ))}
-            <Button variant="hero" size="sm" onClick={handleGetStarted}>
+          </div>
+
+          {/* CTA */}
+          <div className="hidden md:flex items-center gap-3">
+            <Button
+              onClick={handleGetStarted}
+              className="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-[14px] font-semibold px-5 py-2 h-9 rounded-full transition-all duration-200 shadow-[0_0_0_0_rgba(79,124,255,0)] hover:shadow-[0_0_20px_rgba(79,124,255,0.35)]"
+            >
               Get Started
             </Button>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={() => setIsOpen(!isOpen)}
-              className={isDemoPage ? 'text-white hover:text-gray-300' : ''}
+              className={`p-2 rounded-lg transition-colors ${isDemoPage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-100'}`}
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className={`md:hidden py-4 border-t ${isDemoPage ? 'border-gray-800' : 'border-border/50'}`}>
-            <div className="flex flex-col space-y-4">
+          <div className={`md:hidden py-4 border-t ${isDemoPage ? 'border-gray-800' : 'border-gray-100'}`}>
+            <div className="flex flex-col space-y-1">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={isDemoPage
-                    ? 'text-gray-300 hover:text-white transition-smooth py-2'
-                    : 'text-muted-foreground hover:text-foreground transition-smooth py-2'
-                  }
-                  onClick={() => setIsOpen(false)}
+                  className={`px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                    isDemoPage
+                      ? 'text-gray-300 hover:text-white hover:bg-white/10'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                  onClick={() => { handleNavClick(item.href); setIsOpen(false); }}
                 >
                   {item.name}
                 </Link>
               ))}
-              <Button variant="hero" size="sm" className="w-fit" onClick={handleGetStarted}>
-                Get Started
-              </Button>
+              <div className="pt-3">
+                <Button
+                  onClick={handleGetStarted}
+                  className="w-full bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white font-semibold rounded-full"
+                >
+                  Get Started
+                </Button>
+              </div>
             </div>
           </div>
         )}

@@ -8,7 +8,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -32,6 +32,35 @@ const queryClient = new QueryClient({
   },
 });
 
+const GlobalWidgets = () => {
+  const location = useLocation();
+  if (location.pathname === '/watch-demo') return null;
+
+  return (
+    <>
+      <ErrorBoundary
+        fallback={
+          <div className="fixed bottom-6 right-6 bg-red-100 text-red-700 px-4 py-2 rounded-lg shadow-lg text-sm">
+            Chat unavailable
+          </div>
+        }
+      >
+        <Chatbot />
+      </ErrorBoundary>
+
+      <ErrorBoundary
+        fallback={
+          <div className="fixed bottom-6 left-6 bg-red-100 text-red-700 px-4 py-2 rounded-lg shadow-lg text-sm">
+            Voice call unavailable
+          </div>
+        }
+      >
+        <VoiceCallButton />
+      </ErrorBoundary>
+    </>
+  );
+};
+
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
@@ -52,26 +81,8 @@ const App = () => (
             </Routes>
           </Suspense>
 
-          {/* Global Components with Error Boundaries */}
-          <ErrorBoundary
-            fallback={
-              <div className="fixed bottom-6 right-6 bg-red-100 text-red-700 px-4 py-2 rounded-lg shadow-lg text-sm">
-                Chat unavailable
-              </div>
-            }
-          >
-            <Chatbot />
-          </ErrorBoundary>
-
-          <ErrorBoundary
-            fallback={
-              <div className="fixed bottom-6 left-6 bg-red-100 text-red-700 px-4 py-2 rounded-lg shadow-lg text-sm">
-                Voice call unavailable
-              </div>
-            }
-          >
-            <VoiceCallButton />
-          </ErrorBoundary>
+          {/* Global Components — hidden on /watch-demo */}
+          <GlobalWidgets />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

@@ -26,58 +26,21 @@ const WatchDemo = () => {
     };
   }, []);
 
-  // Load Wistia video player scripts - optimized for faster loading
+  // Load Wistia E-v1.js
   useEffect(() => {
-    // Check if scripts already loaded to avoid duplicates
-    const existingPlayerScript = document.querySelector('script[src*="wistia.com/player.js"]');
-    const existingEmbedScript = document.querySelector('script[src*="aj1zk02ajs.js"]');
-
-    // Load Wistia player script if not already loaded
-    let playerScript: HTMLScriptElement | null = null;
-    if (!existingPlayerScript) {
-      playerScript = document.createElement('script');
-      playerScript.src = 'https://fast.wistia.com/player.js';
-      playerScript.async = true;
-      playerScript.defer = true;
-      document.head.appendChild(playerScript);
+    const existing = document.querySelector('script[src*="E-v1.js"]');
+    let script: HTMLScriptElement | null = null;
+    if (!existing) {
+      script = document.createElement('script');
+      script.src = 'https://fast.wistia.net/assets/external/E-v1.js';
+      script.async = true;
+      document.head.appendChild(script);
     }
-
-    // Load Wistia embed script for specific video if not already loaded
-    let embedScript: HTMLScriptElement | null = null;
-    if (!existingEmbedScript) {
-      embedScript = document.createElement('script');
-      embedScript.src = 'https://fast.wistia.com/embed/aj1zk02ajs.js';
-      embedScript.async = true;
-      embedScript.defer = true;
-      embedScript.type = 'module';
-      document.head.appendChild(embedScript);
-    }
-
-    // Add Wistia loading styles with thumbnail preview
-    const style = document.createElement('style');
-    style.textContent = `
-      wistia-player[media-id='aj1zk02ajs']:not(:defined) {
-        background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/aj1zk02ajs/swatch');
-        display: block;
-        filter: blur(5px);
-        padding-top: 56.25%;
-      }
-    `;
-    document.head.appendChild(style);
-
     return () => {
-      // Cleanup scripts and styles on unmount (only if we added them)
-      if (playerScript && document.head.contains(playerScript)) {
-        document.head.removeChild(playerScript);
-      }
-      if (embedScript && document.head.contains(embedScript)) {
-        document.head.removeChild(embedScript);
-      }
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
+      if (script && document.head.contains(script)) document.head.removeChild(script);
     };
   }, []);
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -168,47 +131,61 @@ const WatchDemo = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white text-center mb-8 leading-tight max-w-5xl mx-auto animate-slide-up">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-6 leading-tight max-w-5xl mx-auto animate-slide-up">
               Watch our AI voice agent qualify leads, handle objections, and book meetings
             </h1>
 
-            <p className="text-xl md:text-2xl text-blue-400 text-center mb-16 max-w-3xl mx-auto">
+            <p className="text-base md:text-lg text-blue-400 text-center mb-16 max-w-3xl mx-auto">
               See how our AI handles real conversations in under 2 minutes
             </p>
 
             {/* Video Container - Centered */}
-            <div className="max-w-[700px] mx-auto mb-12">
-              <div className="relative overflow-hidden shadow-2xl">
-                <wistia-player media-id="aj1zk02ajs" aspect="1.7777777777777777"></wistia-player>
+            <div className="max-w-[520px] mx-auto mb-12">
+              <div className="wistia_responsive_padding" style={{ padding: '56.25% 0 0 0', position: 'relative' }}>
+                <div className="wistia_responsive_wrapper" style={{ height: '100%', left: 0, position: 'absolute', top: 0, width: '100%' }}>
+                  <iframe
+                    src="https://fast.wistia.net/embed/iframe/aj1zk02ajs?seo=true&videoFoam=true"
+                    title="finalforembed Video"
+                    allow="autoplay; fullscreen"
+                    allowTransparency={true}
+                    frameBorder={0}
+                    scrolling="no"
+                    className="wistia_embed"
+                    name="wistia_embed"
+                    width="100%"
+                    height="100%"
+                    style={{ borderRadius: 0, display: 'block' }}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Key Points - Below Video */}
-            <div className="max-w-[700px] mx-auto space-y-6 text-center">
+            <div className="max-w-[520px] mx-auto space-y-6 text-center">
               <div className="flex items-center justify-center gap-5">
                 <MessageSquare className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
-                <p className="text-xl text-white font-normal">
+                <p className="text-base md:text-lg text-white font-normal">
                   Real Customer Conversations
                 </p>
               </div>
 
               <div className="flex items-center justify-center gap-5">
                 <Target className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
-                <p className="text-xl text-white font-normal">
+                <p className="text-base md:text-lg text-white font-normal">
                   Natural Language Understanding
                 </p>
               </div>
 
               <div className="flex items-center justify-center gap-5">
                 <Calendar className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
-                <p className="text-xl text-white font-normal">
+                <p className="text-base md:text-lg text-white font-normal">
                   Seamless Appointment Setting
                 </p>
               </div>
 
               <div className="flex items-center justify-center gap-5">
                 <CheckCircle className="w-8 h-8 text-blue-400 flex-shrink-0" strokeWidth={1.5} />
-                <p className="text-xl text-white font-normal">
+                <p className="text-base md:text-lg text-white font-normal">
                   24/7 Lead Qualification
                 </p>
               </div>
@@ -221,32 +198,32 @@ const WatchDemo = () => {
       <section className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-900 mb-8 animate-fade-in">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-6 animate-fade-in">
               Most Automation Projects Fail. Here's Why We're Different:
             </h2>
-            
-            <p className="text-xl text-gray-700 text-center mb-12 leading-relaxed max-w-4xl mx-auto">
+
+            <p className="text-base md:text-lg text-gray-600 text-center mb-12 leading-relaxed max-w-4xl mx-auto">
               The problem isn't tools—it's strategy. Businesses rush to automate before understanding their operations. We diagnose first, design second, build third. Every engagement starts with a comprehensive audit because you can't fix what you don't understand.
             </p>
 
             <div className="space-y-6 max-w-3xl mx-auto">
               <div className="flex items-start gap-4">
                 <span className="text-2xl text-green-600 flex-shrink-0">✓</span>
-                <p className="text-xl text-gray-800 pt-1">
+                <p className="text-base md:text-lg text-gray-700 pt-1">
                   <strong className="font-bold">Strategy before tools</strong> - We audit your operations before recommending solutions
                 </p>
               </div>
               
               <div className="flex items-start gap-4">
                 <span className="text-2xl text-green-600 flex-shrink-0">✓</span>
-                <p className="text-xl text-gray-800 pt-1">
+                <p className="text-base md:text-lg text-gray-700 pt-1">
                   <strong className="font-bold">Platform-agnostic</strong> - No vendor bias, no commissions—just what works best for you
                 </p>
               </div>
               
               <div className="flex items-start gap-4">
                 <span className="text-2xl text-green-600 flex-shrink-0">✓</span>
-                <p className="text-xl text-gray-800 pt-1">
+                <p className="text-base md:text-lg text-gray-700 pt-1">
                   <strong className="font-bold">You own everything</strong> - Blueprints, specs, roadmaps—all yours to implement however you want
                 </p>
               </div>
@@ -259,20 +236,20 @@ const WatchDemo = () => {
       <section className="py-20 md:py-32 bg-black">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight animate-fade-in">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight animate-fade-in">
               Ready to See How This Works for Your Business?
             </h2>
-            
-            <p className="text-xl md:text-2xl text-white mb-12 leading-relaxed">
+
+            <p className="text-base md:text-lg text-white mb-10 leading-relaxed">
               Book a 30-minute strategy call. We'll diagnose your biggest operational bottleneck and show you exactly how to fix it.
             </p>
 
             <CalendarBooking
-              buttonText="Schedule Your Free Call →"
-              buttonClassName="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl px-12 py-8 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+              buttonText="Schedule Your Free Call"
+              buttonClassName="bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)] inline-flex items-center gap-2"
             />
 
-            <p className="text-gray-400 mt-6 text-lg">
+            <p className="text-gray-400 mt-4 text-sm">
               No sales pitch. Just strategic insights.
             </p>
           </div>
@@ -284,10 +261,10 @@ const WatchDemo = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
                 Get a Personalized Automation Assessment
               </h2>
-              <p className="text-xl md:text-2xl text-gray-700 leading-relaxed">
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed">
                 Tell us about your biggest operational challenge. We'll send you a custom analysis within 48 hours.
               </p>
             </div>
@@ -361,7 +338,7 @@ const WatchDemo = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="w-full bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white font-semibold py-4 text-base rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
                   >
                     {isSubmitting ? "Sending..." : "Get My Free Assessment →"}
                   </Button>

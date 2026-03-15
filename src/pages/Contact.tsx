@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Calendar, Mail, MessageCircle, Globe, Clock, Zap } from "lucide-react";
+import { Calendar, Mail, MessageCircle, Globe, Clock, Zap, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { webhookService } from "@/services/api/webhooks";
 import { CalendarBooking } from "@/components/CalendarBooking";
@@ -116,20 +116,25 @@ const Contact = () => {
       
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
-                Ready to Fix Operations the Right Way?
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                Schedule your free 30-minute diagnostic call and discover what's really holding your business back—no sales pitch, just strategic guidance.
-              </p>
-              <CalendarBooking
-                buttonText="Schedule Free Consultation"
-                buttonClassName="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
-              />
+        <section className="bg-[#EEF4FF] py-24 md:py-36">
+          <div className="container mx-auto px-4 max-w-5xl flex flex-col items-center text-center">
+            <div className="bg-white border border-gray-200 rounded-full px-4 py-1.5 text-sm text-gray-600 inline-flex items-center gap-2 shadow-sm mb-8 animate-fade-in">
+              No sales pitch—just strategic guidance.
+              <ArrowRight className="h-3.5 w-3.5" />
             </div>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight animate-slide-up mb-6">
+              Ready to Fix Operations the Right Way?
+            </h1>
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-slide-up-subtle animate-delay-100 mb-10">
+              Schedule your free 30-minute diagnostic call and discover what's really holding your business back.
+            </p>
+            <CalendarBooking
+              buttonText="Schedule Free Consultation"
+              buttonClassName="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] inline-flex items-center justify-center gap-2"
+            />
+            <p className="text-sm text-gray-500 mt-4 animate-slide-up-subtle animate-delay-200">
+              Free 30-minute call. No commitment required.
+            </p>
           </div>
         </section>
 
@@ -138,8 +143,8 @@ const Contact = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4">Choose Your Preferred Way to Connect</h2>
-                <p className="text-xl text-muted-foreground">We're a remote-first consultancy serving clients globally</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">Choose Your Preferred Way to Connect</h2>
+                <p className="text-base md:text-lg text-gray-600">We're a remote-first consultancy serving clients globally</p>
               </div>
               
               <div className="grid md:grid-cols-2 gap-6">
@@ -149,7 +154,7 @@ const Contact = () => {
                     <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mb-4 text-white">
                       <Calendar className="w-6 h-6" />
                     </div>
-                    <CardTitle className="text-2xl">Schedule Free Consultation</CardTitle>
+                    <CardTitle className="text-xl font-bold text-black">Schedule Free Consultation</CardTitle>
                     <p className="text-muted-foreground">Book a 30-minute diagnostic call with our strategists</p>
                   </CardHeader>
                   <CardContent>
@@ -166,7 +171,7 @@ const Contact = () => {
                     <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 text-accent">
                       <Mail className="w-6 h-6" />
                     </div>
-                    <CardTitle className="text-2xl">Email</CardTitle>
+                    <CardTitle className="text-xl font-bold text-black">Email</CardTitle>
                     <p className="text-muted-foreground">Get detailed responses to your questions</p>
                   </CardHeader>
                   <CardContent>
@@ -182,7 +187,7 @@ const Contact = () => {
                     <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 text-accent">
                       <MessageCircle className="w-6 h-6" />
                     </div>
-                    <CardTitle className="text-2xl">Live Chat</CardTitle>
+                    <CardTitle className="text-xl font-bold text-black">Live Chat</CardTitle>
                     <p className="text-muted-foreground">Get instant AI-powered responses</p>
                   </CardHeader>
                   <CardContent>
@@ -217,8 +222,8 @@ const Contact = () => {
                 <div className="lg:col-span-3">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-3xl">Send Us a Message</CardTitle>
-                      <p className="text-muted-foreground">Tell us about your operational challenges and we'll get back to you within 48 hours.</p>
+                      <CardTitle className="text-2xl font-bold text-black">Send Us a Message</CardTitle>
+                      <p className="text-base text-gray-600">Tell us about your operational challenges and we'll get back to you within 48 hours.</p>
                     </CardHeader>
                     <CardContent>
                       <form onSubmit={handleSubmit} className="space-y-6">
@@ -334,10 +339,10 @@ const Contact = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-accent text-white">
+        <section className="py-20 bg-[#1a1f35] text-white">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-bold mb-4">Prefer to Schedule Directly?</h2>
-            <p className="text-xl mb-8 opacity-90">Book your free 30-minute consultation now</p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">Prefer to Schedule Directly?</h2>
+            <p className="text-base md:text-lg mb-8 opacity-90">Book your free 30-minute consultation now</p>
             <CalendarBooking
               buttonText="Schedule Free Call"
               buttonClassName="bg-white text-primary hover:bg-white/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8"

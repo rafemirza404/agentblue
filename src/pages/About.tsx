@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Target, Scale, FileText, BarChart3, Linkedin } from "lucide-react";
+import { Target, Scale, FileText, BarChart3, Linkedin, ArrowRight } from "lucide-react";
 import rafeImage from "@/assets/rafe.png";
 import { CalendarBooking } from "@/components/CalendarBooking";
 
@@ -35,17 +35,18 @@ const About = () => {
       
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground animate-slide-up">
-                Strategic Operations Consultants for Solar & HVAC
-              </h1>
-              <p className="text-xl text-muted-foreground mb-6 max-w-3xl mx-auto leading-relaxed">
-                We're strategic operations consultants for solar and HVAC companies. We diagnose first, design second, and only implement if you want us to.
-              </p>
-              <p className="text-lg font-medium text-foreground">Strategy first. Always.</p>
+        <section className="bg-[#EEF4FF] py-24 md:py-36">
+          <div className="container mx-auto px-4 max-w-5xl flex flex-col items-center text-center">
+            <div className="bg-white border border-gray-200 rounded-full px-4 py-1.5 text-sm text-gray-600 inline-flex items-center gap-2 shadow-sm mb-8 animate-fade-in">
+              Strategy first. Always.
+              <ArrowRight className="h-3.5 w-3.5" />
             </div>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight animate-slide-up mb-6">
+              Strategic Operations Consultants for Solar & HVAC
+            </h1>
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-slide-up-subtle animate-delay-100">
+              We diagnose first, design second, and only implement if you want us to. No vendor bias, no lock-in—just honest strategy.
+            </p>
           </div>
         </section>
 
@@ -53,10 +54,10 @@ const About = () => {
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold mb-4 text-center animate-fade-in">Why AgentBlue Exists</h2>
-              <p className="text-xl text-muted-foreground mb-8 text-center">Born from frustration with an industry that sells tools first and asks questions later</p>
-              
-              <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4 text-center animate-fade-in">Why AgentBlue Exists</h2>
+              <p className="text-base md:text-lg text-gray-600 mb-8 text-center">Born from frustration with an industry that sells tools first and asks questions later</p>
+
+              <div className="space-y-6 text-base md:text-lg text-gray-600 leading-relaxed">
                 <p>
                   We've seen it too many times: businesses buy automation platforms after watching a flashy demo, then struggle for months trying to make them work. They hire freelancers who build whatever's easiest, not what actually matters. They work with 'consultants' who recommend tools they're certified in—not what's genuinely best.
                 </p>
@@ -76,8 +77,8 @@ const About = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16 animate-fade-in">
-                <h2 className="text-4xl font-bold mb-4">What We Believe</h2>
-                <p className="text-xl text-muted-foreground">The principles that guide every client engagement</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">What We Believe</h2>
+                <p className="text-base md:text-lg text-gray-600">The principles that guide every client engagement</p>
               </div>
               
               <div className="grid md:grid-cols-2 gap-8">
@@ -87,8 +88,8 @@ const About = () => {
                       <div className="w-16 h-16 bg-accent rounded-xl flex items-center justify-center mb-6 text-white">
                         {belief.icon}
                       </div>
-                      <h3 className="text-2xl font-bold mb-4">{belief.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{belief.description}</p>
+                      <h3 className="text-xl font-bold text-black mb-4">{belief.title}</h3>
+                      <p className="text-base text-gray-600 leading-relaxed">{belief.description}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -102,8 +103,8 @@ const About = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold mb-4">The Founder</h2>
-                <p className="text-xl text-muted-foreground">Strategic vision meets technical execution</p>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">The Founder</h2>
+                <p className="text-base md:text-lg text-gray-600">Strategic vision meets technical execution</p>
               </div>
 
               <div className="flex justify-center">
@@ -118,9 +119,9 @@ const About = () => {
                       width="192"
                       height="192"
                     />
-                    <h3 className="text-2xl font-bold mb-2">Rafe Mirza</h3>
-                    <p className="text-accent font-medium mb-4">Founder</p>
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    <h3 className="text-xl font-bold text-black mb-2">Rafe Mirza</h3>
+                    <p className="text-[#4F7CFF] font-medium mb-4">Founder</p>
+                    <p className="text-base text-gray-600 mb-6 leading-relaxed">
                       Consultant and technical strategist specializing in automation, integrations, and AI solutions. Advises clients on operational workflows, ROI-driven strategies, and scalable technical implementations. Bridges the gap between business objectives and production-ready systems, ensuring every solution delivers measurable impact.
                     </p>
                     <a
@@ -140,13 +141,13 @@ const About = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-accent text-white">
+        <section className="py-20 bg-[#1a1f35] text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold mb-6">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
                 Ready to Transform Your Operations?
               </h2>
-              <p className="text-xl mb-8 opacity-90">
+              <p className="text-base md:text-lg mb-8 opacity-90">
                 Let's start with an honest conversation about your business challenges.
               </p>
               <CalendarBooking
