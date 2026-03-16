@@ -26,19 +26,15 @@ const WatchDemo = () => {
     };
   }, []);
 
-  // Load Wistia E-v1.js
+  // Load Wistia player.js
   useEffect(() => {
-    const existing = document.querySelector('script[src*="E-v1.js"]');
-    let script: HTMLScriptElement | null = null;
+    const existing = document.querySelector('script[src="https://fast.wistia.net/player.js"]');
     if (!existing) {
-      script = document.createElement('script');
-      script.src = 'https://fast.wistia.net/assets/external/E-v1.js';
+      const script = document.createElement('script');
+      script.src = 'https://fast.wistia.net/player.js';
       script.async = true;
       document.head.appendChild(script);
     }
-    return () => {
-      if (script && document.head.contains(script)) document.head.removeChild(script);
-    };
   }, []);
 
 
@@ -135,6 +131,7 @@ const WatchDemo = () => {
               Watch our AI voice agent qualify leads, handle objections, and book meetings
             </h1>
 
+
             <p className="text-base md:text-lg text-blue-400 text-center mb-16 max-w-3xl mx-auto">
               See how our AI handles real conversations in under 2 minutes
             </p>
@@ -144,7 +141,7 @@ const WatchDemo = () => {
               <div className="wistia_responsive_padding" style={{ padding: '56.25% 0 0 0', position: 'relative' }}>
                 <div className="wistia_responsive_wrapper" style={{ height: '100%', left: 0, position: 'absolute', top: 0, width: '100%' }}>
                   <iframe
-                    src="https://fast.wistia.net/embed/iframe/aj1zk02ajs?seo=true&videoFoam=true"
+                    src="https://fast.wistia.net/embed/iframe/aj1zk02ajs?web_component=true&seo=true"
                     title="finalforembed Video"
                     allow="autoplay; fullscreen"
                     allowTransparency={true}
@@ -246,7 +243,7 @@ const WatchDemo = () => {
 
             <CalendarBooking
               buttonText="Schedule Your Free Call"
-              buttonClassName="bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)] inline-flex items-center gap-2"
+              buttonClassName="bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-base md:text-lg font-semibold px-6 md:px-8 py-3 md:py-7 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_20px_rgba(79,124,255,0.4)] hover:shadow-[0_0_30px_rgba(79,124,255,0.6)] inline-flex items-center gap-2"
             />
 
             <p className="text-gray-400 mt-4 text-sm">
@@ -338,7 +335,7 @@ const WatchDemo = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white font-semibold py-4 text-base rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
+                    className="w-full bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white font-semibold py-3.5 text-base rounded-full transition-all duration-300 hover:scale-[1.02] shadow-[0_0_20px_rgba(79,124,255,0.4)] hover:shadow-[0_0_30px_rgba(79,124,255,0.6)]"
                   >
                     {isSubmitting ? "Sending..." : "Get My Free Assessment →"}
                   </Button>

@@ -4,6 +4,23 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* Backdrop blur is very expensive on mobile GPUs — disable */
+  nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* Faster tap response */
+  button, a, [role="button"] {
+    touch-action: manipulation;
+  }
 }
 
 /* AgentBlue Design System - Clean, professional AI automation company */

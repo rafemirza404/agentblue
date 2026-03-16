@@ -89,16 +89,16 @@ const AssessmentForm = () => {
   };
 
   return (
-    <section className="bg-white py-20 md:py-28" id="assessment-form">
+    <section className="bg-white py-12 md:py-24" id="assessment-form">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
           {/* Headline */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-black mb-4">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-center text-black mb-4">
             Get a Personalized Automation Assessment
           </h2>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-gray-600 text-center mb-12 leading-relaxed">
+          <p className="text-base md:text-lg text-gray-600 text-center mb-8 md:mb-12 leading-relaxed">
             Tell us about your biggest operational challenge. We'll send you a custom analysis within 48 hours.
           </p>
 
@@ -176,7 +176,7 @@ const AssessmentForm = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-300 hover:scale-[1.02] shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
+                className="w-full bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-base md:text-lg font-semibold px-6 py-3.5 md:py-5 rounded-full transition-all duration-300 hover:scale-[1.02] shadow-[0_0_20px_rgba(79,124,255,0.4)] hover:shadow-[0_0_30px_rgba(79,124,255,0.6)]"
               >
                 {isSubmitting ? "Sending..." : "Get Your Assessment"} <ArrowRight className="ml-2 h-5 w-5 inline" />
               </Button>

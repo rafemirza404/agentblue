@@ -49,30 +49,34 @@ interface TopicCardsProps {
 }
 
 export const TopicCards = ({ onCardClick, isMobile = false }: TopicCardsProps) => {
+  if (isMobile) {
+    return (
+      <div className="flex flex-col gap-1.5 mt-3 animate-in fade-in duration-500">
+        {TOPIC_CARDS.map((card) => (
+          <button
+            key={card.id}
+            onClick={() => onCardClick(card.message)}
+            className="w-full bg-white border border-[#E5E7EB] rounded-full px-4 py-2 text-left text-[12px] font-medium text-[#1a1a2e] hover:border-[#4F7CFF] hover:bg-[#F0F7FF] transition-all duration-200 truncate"
+          >
+            {card.title}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`grid ${
-        isMobile ? 'grid-cols-1 gap-2.5' : 'grid-cols-2 gap-3'
-      } mt-4 animate-in fade-in duration-500`}
-    >
+    <div className="grid grid-cols-2 gap-3 mt-4 animate-in fade-in duration-500">
       {TOPIC_CARDS.map((card) => {
         const Icon = card.icon;
         return (
           <button
             key={card.id}
             onClick={() => onCardClick(card.message)}
-            className={`bg-white border-2 border-[#E5E7EB] rounded-xl ${
-              isMobile ? 'p-3.5' : 'p-4'
-            } cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] ${
-              isMobile ? '' : 'hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)]'
-            } text-left flex flex-col gap-2 ${
-              isMobile ? '' : 'col-span-2 last:col-span-2'
-            }`}
+            className="bg-white border-2 border-[#E5E7EB] rounded-xl p-4 cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)] text-left flex flex-col gap-2 col-span-2 last:col-span-2"
           >
             <Icon className="w-8 h-8 text-[#0066FF] mb-1" />
-            <div className="text-[15px] font-semibold text-[#1a1a2e] leading-tight">
-              {card.title}
-            </div>
+            <div className="text-[15px] font-semibold text-[#1a1a2e] leading-tight">{card.title}</div>
             <div className="text-[13px] text-[#6B7280] leading-snug">{card.description}</div>
           </button>
         );

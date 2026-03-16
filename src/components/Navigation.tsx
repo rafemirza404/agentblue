@@ -54,7 +54,7 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full backdrop-blur-xl z-50 transition-all duration-300 ${navBg}`}
+      className={`${isDemoPage ? 'relative' : 'fixed top-0'} w-full md:backdrop-blur-xl z-50 transition-all duration-300 ${navBg}`}
     >
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="flex justify-between items-center h-[68px]">

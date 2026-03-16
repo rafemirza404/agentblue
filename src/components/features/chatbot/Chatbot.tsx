@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { X, Send } from 'lucide-react';
+import { X, Send, ChevronDown } from 'lucide-react';
 import { useChatScroll } from '@/hooks/useChatScroll';
 import { webhookService } from '@/services/api/webhooks';
 import { storageService } from '@/services/storage/localStorage';
@@ -64,16 +64,24 @@ const Chatbot = () => {
   }, [isOpen]);
 
   /**
-   * Show new message notification if user scrolled up
+   * Show notification only when a NEW bot message arrives while user is scrolled up
    */
   useEffect(() => {
-    if (isUserScrolled && messages.length > 1) {
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.isBot) {
-        setHasNewMessage(true);
-      }
+    if (messages.length <= 1) return;
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage.isBot && isUserScrolled) {
+      setHasNewMessage(true);
     }
-  }, [messages, isUserScrolled]);
+  }, [messages]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Clear notification when user scrolls back to bottom
+   */
+  useEffect(() => {
+    if (!isUserScrolled) {
+      setHasNewMessage(false);
+    }
+  }, [isUserScrolled]);
 
   /**
    * Send message to chatbot
@@ -245,6 +253,17 @@ const Chatbot = () => {
 
   return (
     <>
+      {/* Chevron-down close button - desktop only, below chat window */}
+      <div className="hidden md:flex fixed bottom-6 right-6 z-[10000]">
+        <button
+          onClick={handleClose}
+          className="w-[52px] h-[52px] bg-[#4F7CFF] rounded-full shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.5)] hover:scale-105 transition-all duration-300 flex items-center justify-center"
+          aria-label="Close chat"
+        >
+          <ChevronDown className="w-6 h-6 text-white" />
+        </button>
+      </div>
+
       {/* Desktop Chat Modal */}
       <div className="hidden md:flex fixed bottom-[90px] right-6 w-[360px] max-w-[360px] h-[580px] max-h-[580px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
         {/* Header */}
@@ -356,26 +375,33 @@ const Chatbot = () => {
         </div>
       </div>
 
-      {/* Mobile Full-Screen Chat */}
-      <div className="md:hidden fixed inset-0 bg-white z-[10000] flex flex-col animate-in slide-in-from-bottom duration-350">
+      {/* Mobile Chat - Bottom Sheet */}
+      <div className="md:hidden fixed inset-x-0 bottom-0 top-[5vh] bg-white z-[10000] flex flex-col animate-in slide-in-from-bottom duration-300 rounded-t-3xl shadow-[0_-8px_40px_rgba(0,0,0,0.18)] overflow-hidden">
+
+        {/* Drag handle */}
+        <div className="flex justify-center pt-3 pb-1 flex-shrink-0">
+          <div className="w-10 h-1 bg-gray-300 rounded-full" />
+        </div>
+
         {/* Header */}
-        <div className="h-[70px] bg-white px-5 py-4 flex items-center justify-between border-b border-[#E5E7EB]">
+        <div className="px-5 py-3 flex items-center justify-between border-b border-[#F3F4F6] flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] flex items-center justify-center p-1.5 flex-shrink-0">
               <img src={agentblueLogo} alt="AgentBlue" className="w-full h-full object-contain" />
             </div>
             <div>
               <h3 className="text-[#1a1a2e] font-semibold text-base leading-tight">
                 {ENV.app.name}
               </h3>
-              <p className="text-[#6B7280] text-xs mt-0.5">
-                We architect operational excellence
-              </p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full inline-block" />
+                <p className="text-[#6B7280] text-xs">Online · Ready to help</p>
+              </div>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="text-[#6B7280] hover:bg-[#F3F4F6] rounded-lg p-1.5 transition-colors"
+            className="text-[#6B7280] hover:bg-[#F3F4F6] rounded-xl p-2 transition-colors"
             aria-label="Close chat"
           >
             <X className="w-5 h-5" />
@@ -387,9 +413,9 @@ const Chatbot = () => {
           <div
             ref={containerRef}
             onScroll={handleScroll}
-            className="absolute inset-0 bg-[#F8F9FA] p-4 overflow-y-auto scroll-smooth"
+            className="absolute inset-0 bg-[#F8F9FA] p-3 overflow-y-auto scroll-smooth"
           >
-            <div className="space-y-4">
+            <div className="space-y-2">
               {messages.map((message, index) => (
                 <ChatMessage key={index} message={message} logo={agentblueLogo} />
               ))}
@@ -402,11 +428,11 @@ const Chatbot = () => {
               {/* Typing Indicator */}
               {isTyping && (
                 <div className="flex justify-start animate-in fade-in duration-200">
-                  <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-3 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
+                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
                     <img src={agentblueLogo} alt="Bot" className="w-full h-full object-contain" />
                   </div>
-                  <div className="max-w-[80px] bg-[#F3F4F6] px-5 py-3 rounded-2xl rounded-tl-[4px]">
-                    <div className="flex gap-1.5 items-center">
+                  <div className="bg-[#F3F4F6] px-3 py-2 rounded-2xl rounded-tl-[4px]">
+                    <div className="flex gap-1 items-center">
                       {[0, 200, 400].map((delay) => (
                         <span
                           key={delay}
@@ -439,23 +465,23 @@ const Chatbot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-white px-4 py-3 border-t border-[#E5E7EB] flex gap-3 items-center">
+        <div className="bg-white px-4 py-3 border-t border-[#F3F4F6] flex gap-3 items-center" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.1)]"
+            className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-4 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.1)]"
             style={{ fontSize: '16px' }}
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-[#4F7CFF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-11 h-11 bg-[#4F7CFF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
             aria-label="Send message"
           >
-            <Send className="w-5 h-5 text-white" />
+            <Send className="w-4 h-4 text-white" />
           </button>
         </div>
       </div>

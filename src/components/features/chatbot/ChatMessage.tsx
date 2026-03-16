@@ -21,7 +21,7 @@ export const ChatMessage = ({ message, logo }: ChatMessageProps) => {
         </div>
       )}
       <div
-        className={`max-w-[85%] md:max-w-[85%] px-4 py-3 whitespace-pre-line text-sm leading-relaxed ${
+        className={`max-w-[85%] px-3 py-2 whitespace-pre-line text-[13px] leading-normal ${
           message.isBot
             ? 'bg-[#F3F4F6] text-[#1a1a2e] rounded-2xl rounded-tl-[4px]'
             : 'bg-[#0066FF] text-white rounded-2xl rounded-tr-[4px]'

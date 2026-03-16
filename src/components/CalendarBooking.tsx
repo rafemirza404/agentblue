@@ -21,6 +21,15 @@ export const CalendarBooking = ({
 }: CalendarBookingProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleOpen = () => {
+    // On mobile, open in new tab for reliable experience
+    if (window.innerWidth < 768) {
+      window.open(`https://cal.com/${CAL_USERNAME}/${CAL_EVENT_SLUG}`, '_blank');
+    } else {
+      setIsOpen(true);
+    }
+  };
+
   const handleBookingSuccess = () => {
     console.log("Booking created successfully");
     if (onBookingSuccess) {
@@ -32,12 +41,12 @@ export const CalendarBooking = ({
   return (
     <>
       {trigger ? (
-        <div onClick={() => setIsOpen(true)}>
+        <div onClick={handleOpen}>
           {trigger}
         </div>
       ) : (
         <Button
-          onClick={() => setIsOpen(true)}
+          onClick={handleOpen}
           className={buttonClassName}
         >
           {buttonText}
@@ -50,7 +59,6 @@ export const CalendarBooking = ({
             <DialogTitle>Schedule Your Free Consultation</DialogTitle>
           </DialogHeader>
           <div className="mt-4">
-            {/* Embed Cal.com using iframe until we configure @calcom/atoms properly */}
             <iframe
               src={`https://cal.com/${CAL_USERNAME}/${CAL_EVENT_SLUG}`}
               width="100%"

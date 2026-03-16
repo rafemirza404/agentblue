@@ -44,7 +44,7 @@ const FinalCTA = () => {
                   Schedule Your Free Call <ArrowRight className="ml-2 h-5 w-5 inline" />
                 </>
               }
-              buttonClassName="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-lg font-semibold px-8 py-7 rounded-full transition-all duration-200 hover:scale-[1.02] shadow-[0_0_30px_rgba(79,124,255,0.4)] hover:shadow-[0_0_40px_rgba(79,124,255,0.6)]"
+              buttonClassName="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-base md:text-lg font-semibold px-6 md:px-8 py-3 md:py-7 rounded-full transition-all duration-200 hover:scale-[1.02] shadow-[0_0_20px_rgba(79,124,255,0.4)] hover:shadow-[0_0_30px_rgba(79,124,255,0.6)]"
             />
 
             <p className="text-sm text-[#9CA3AF] mt-4">

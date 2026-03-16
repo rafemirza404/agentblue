@@ -21,7 +21,7 @@ const WhyDifferent = () => {
   ];
 
   return (
-    <section className="bg-white py-20 md:py-32">
+    <section className="bg-white py-14 md:py-28">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
 
