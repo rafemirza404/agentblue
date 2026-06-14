@@ -83,6 +83,50 @@
   font-display: swap;
 }
 
+/* Libre Caslon Condensed — headings & sub-headings site-wide */
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -229,19 +273,25 @@ html {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Typography — Helvetica Neue, consistent across all sections */
+  /* Typography — headings use Libre Caslon Condensed site-wide */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Libre Caslon Condensed', 'Helvetica Neue', Helvetica, Arial, serif;
+    letter-spacing: -0.01em;
     line-height: 1.15;
+  }
+
+  /* Sub-heading helper — apply to the supporting copy under a heading */
+  .subheading {
+    font-family: 'Libre Caslon Condensed', 'Helvetica Neue', Helvetica, Arial, serif;
   }
 }
 
-/* Force all headings to Helvetica Neue Medium (500) — a softer weight than
-   the default bold, overriding inline Tailwind font-bold/semibold/etc.
-   utilities. Placed outside @layer so it wins the cascade. */
+/* Force all headings to Libre Caslon Condensed SemiBold (600), overriding
+   inline Tailwind font-bold/semibold/etc. utilities. Placed outside @layer
+   so it wins the cascade. */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 500 !important;
+  font-family: 'Libre Caslon Condensed', 'Helvetica Neue', Helvetica, Arial, serif !important;
+  font-weight: 600 !important;
 }
 
 @layer components {
