@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import NewHero from "@/components/NewHero";
+import IntegrationCarousel from "@/components/IntegrationCarousel";
 import LaunchVideo from "@/components/LaunchVideo";
 import HowItWorks from "@/components/HowItWorks";
 import WhyDifferent from "@/components/WhyDifferent";
@@ -23,7 +24,12 @@ const Index = () => {
           <NewHero />
         </section>
 
-        {/* Section 2: Launch Video */}
+        {/* Section 2: Integrations */}
+        <section id="integrations">
+          <IntegrationCarousel />
+        </section>
+
+        {/* Section 3: Launch Video */}
         <section id="launch-video">
           <LaunchVideo />
         </section>
