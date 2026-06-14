@@ -11,7 +11,11 @@ export function HeroShowcase() {
     window.dispatchEvent(new CustomEvent("openVoiceCall"));
 
   return (
-    <div className="relative mx-auto -mt-10 flex max-w-7xl flex-col items-center justify-center px-4">
+    <div className="relative bg-white">
+      {/* soft fade so the gradient hero blends smoothly into this section */}
+      <div className="pointer-events-none absolute -top-24 left-0 h-24 w-full bg-gradient-to-b from-transparent to-white" />
+
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center px-4 pt-4">
       {/* left vertical accent line */}
       <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/80">
         <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-[#4F7CFF] to-transparent" />
@@ -87,6 +91,7 @@ export function HeroShowcase() {
             <DashboardPreview />
           </div>
         </motion.div>
+      </div>
       </div>
     </div>
   );

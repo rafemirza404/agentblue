@@ -68,7 +68,7 @@ export function HeroSection({
 
   return (
     <section
-      className={`relative w-full min-h-screen overflow-hidden bg-background flex items-center justify-center ${className}`}
+      className={`relative w-full overflow-hidden bg-background flex items-center justify-center py-28 md:py-32 ${className}`}
     >
       <div className="absolute inset-0 w-full h-full">
         {mounted && (
@@ -91,14 +91,19 @@ export function HeroSection({
 
       <div className={`relative z-10 ${maxWidth} mx-auto px-6 w-full`}>
         <div className="text-center">
-          <h1
-            className={`text-balance text-4xl sm:text-5xl md:text-6xl xl:text-[80px] leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-[1.1] mb-6 lg:text-7xl text-[#0A2540] ${titleClassName}`}
+          {/* Not an <h1> so the global Libre Caslon heading rule doesn't
+              override the hero's Helvetica Neue font. */}
+          <div
+            role="heading"
+            aria-level={1}
+            className={`text-balance text-4xl sm:text-5xl md:text-6xl xl:text-[80px] leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-[1.1] mb-6 lg:text-7xl ${titleClassName}`}
             style={{ fontFamily, fontWeight }}
           >
-            {title} <span className="text-[#4F7CFF]">{highlightText}</span>
-          </h1>
+            {title} <span>{highlightText}</span>
+          </div>
           <p
-            className={`text-lg sm:text-xl text-pretty max-w-2xl mx-auto leading-relaxed mb-10 px-4 text-[#3a4a63] ${descriptionClassName}`}
+            className={`text-lg sm:text-xl text-pretty max-w-2xl mx-auto leading-relaxed mb-10 px-4 ${descriptionClassName}`}
+            style={{ fontFamily }}
           >
             {description}
           </p>

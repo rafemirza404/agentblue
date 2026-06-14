@@ -1,105 +1,85 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import React from "react";
-import { CalendarBooking } from "@/components/CalendarBooking";
-import { ArrowRight } from "lucide-react";
 
-// Full-color logos via jsDelivr simple-icons package
 const ICONS_ROW1 = [
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/hubspot.svg",      label: "HubSpot",    color: "#FF7A59" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/salesforce.svg",   label: "Salesforce", color: "#00A1E0" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/slack.svg",        label: "Slack",      color: "#4A154B" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlesheets.svg", label: "Sheets",     color: "#34A853" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/zapier.svg",       label: "Zapier",     color: "#FF4A00" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/twilio.svg",       label: "Twilio",     color: "#F22F46" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/notion.svg",       label: "Notion",     color: "#000000" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlemeet.svg",   label: "Meet",       color: "#00897B" },
+  "https://cdn-icons-png.flaticon.com/512/5968/5968854.png",
+  "https://cdn-icons-png.flaticon.com/512/732/732221.png",
+  "https://cdn-icons-png.flaticon.com/512/733/733609.png",
+  "https://cdn-icons-png.flaticon.com/512/732/732084.png",
+  "https://cdn-icons-png.flaticon.com/512/733/733585.png",
+  "https://cdn-icons-png.flaticon.com/512/281/281763.png",
+  "https://cdn-icons-png.flaticon.com/512/888/888879.png",
 ];
 
 const ICONS_ROW2 = [
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/gmail.svg",        label: "Gmail",      color: "#EA4335" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/airtable.svg",     label: "Airtable",   color: "#18BFFF" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/stripe.svg",       label: "Stripe",     color: "#635BFF" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg",     label: "WhatsApp",   color: "#25D366" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googledrive.svg",  label: "Drive",      color: "#4285F4" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/calendly.svg",     label: "Calendly",   color: "#006BFF" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/monday.svg",       label: "Monday",     color: "#FF3D57" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/googlecalendar.svg", label: "Calendar", color: "#4285F4" },
+  "https://cdn-icons-png.flaticon.com/512/174/174857.png",
+  "https://cdn-icons-png.flaticon.com/512/906/906324.png",
+  "https://cdn-icons-png.flaticon.com/512/888/888841.png",
+  "https://cdn-icons-png.flaticon.com/512/5968/5968875.png",
+  "https://cdn-icons-png.flaticon.com/512/906/906361.png",
+  "https://cdn-icons-png.flaticon.com/512/732/732190.png",
+  "https://cdn-icons-png.flaticon.com/512/888/888847.png",
 ];
 
-// Utility to repeat icons enough times for a seamless loop
-const repeatedIcons = <T,>(icons: T[], repeat = 4): T[] =>
+// Utility to repeat icons enough times
+const repeatedIcons = (icons: string[], repeat = 4) =>
   Array.from({ length: repeat }).flatMap(() => icons);
-
-const IconPill = ({ src, label, color }: { src: string; label: string; color: string }) => (
-  <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-white shadow-md">
-    <div
-      className="flex h-10 w-10 items-center justify-center rounded-full"
-      style={{ backgroundColor: color }}
-    >
-      <img
-        src={src}
-        alt={label}
-        className="h-6 w-6 object-contain"
-        style={{ filter: "brightness(0) invert(1)" }}
-      />
-    </div>
-  </div>
-);
 
 export default function IntegrationCarousel() {
   return (
-    <section className="relative overflow-hidden bg-white py-24 md:py-32">
+    <section className="relative py-32 overflow-hidden bg-white dark:bg-black">
       {/* Light grid background */}
-      <div className="absolute inset-0 [background-image:radial-gradient(circle_at_center,rgba(0,0,0,0.04)_1px,transparent_1px)] [background-size:24px_24px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.04)_1px,transparent_1px)] [background-size:24px_24px]" />
 
       {/* Content */}
-      <div className="relative mx-auto max-w-7xl px-6 text-center">
-        {/* eyebrow */}
-        <span className="mb-4 inline-block rounded-full border border-[#E6E6E6] bg-white px-3.5 py-1 text-sm text-[#425466] shadow-sm">
+      <div className="relative max-w-7xl mx-auto px-6 text-center">
+        <span className="inline-block px-3 py-1 mb-4 text-sm rounded-full border border-gray-200 dark:border-gray-700 bg-white dark:bg-black text-black dark:text-white">
           ⚡ Integrations
         </span>
-
-        {/* heading */}
-        <h2 className="text-[2rem] leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.75rem]">
-          Plug into the tools your team already uses
-        </h2>
-
-        {/* subheading */}
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#425466] md:text-lg">
-          AgentBlue connects with 50+ platforms — CRMs, dialers, calendars,
-          spreadsheets — so automation fits your stack, not the other way around.
+        <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
+          Integrate with favorite tools
+        </h1>
+        <p className="mt-4 text-lg text-gray-500 dark:text-white max-w-xl mx-auto">
+          250+ top apps are available to integrate seamlessly with your workflow.
         </p>
-
-        {/* CTA */}
-        <CalendarBooking
-          trigger={
-            <button className="group mt-8 inline-flex h-[46px] items-center gap-2 rounded-full bg-[#0A2540] px-7 text-[15px] font-semibold text-white shadow-[0_8px_22px_-8px_rgba(10,37,64,0.5)] transition-all duration-300 hover:bg-[#0d2e50] hover:shadow-[0_12px_28px_-8px_rgba(10,37,64,0.6)]">
-              Book a strategy call
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </button>
-          }
-        />
+        <Button
+          variant="default"
+          className="mt-8 px-6 py-3 rounded-lg bg-black text-white font-medium hover:bg-gray-800 transition"
+        >
+          Get started
+        </Button>
 
         {/* Carousel */}
-        <div className="relative mt-12 overflow-hidden pb-2">
-          {/* Row 1 — scrolls left */}
+        <div className="mt-12 overflow-hidden relative pb-2">
+          {/* Row 1 */}
           <div className="flex gap-10 whitespace-nowrap integration-scroll-left">
-            {repeatedIcons(ICONS_ROW1, 4).map((icon, i) => (
-              <IconPill key={i} {...icon} />
+            {repeatedIcons(ICONS_ROW1, 4).map((src, i) => (
+              <div
+                key={i}
+                className="h-16 w-16 flex-shrink-0 rounded-full bg-white dark:bg-gray-300 shadow-md flex items-center justify-center"
+              >
+                <img src={src} alt="icon" className="h-10 w-10 object-contain" />
+              </div>
             ))}
           </div>
 
-          {/* Row 2 — scrolls right */}
-          <div className="mt-6 flex gap-10 whitespace-nowrap integration-scroll-right">
-            {repeatedIcons(ICONS_ROW2, 4).map((icon, i) => (
-              <IconPill key={i} {...icon} />
+          {/* Row 2 */}
+          <div className="flex gap-10 whitespace-nowrap mt-6 integration-scroll-right">
+            {repeatedIcons(ICONS_ROW2, 4).map((src, i) => (
+              <div
+                key={i}
+                className="h-16 w-16 flex-shrink-0 rounded-full bg-white dark:bg-gray-300 shadow-md flex items-center justify-center"
+              >
+                <img src={src} alt="icon" className="h-10 w-10 object-contain" />
+              </div>
             ))}
           </div>
 
           {/* Fade overlays */}
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-white to-transparent" />
-          <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-white to-transparent" />
+          <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-white dark:from-black to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-white dark:from-black to-transparent pointer-events-none" />
         </div>
       </div>
     </section>

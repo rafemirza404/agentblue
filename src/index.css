@@ -291,7 +291,7 @@ html {
    so it wins the cascade. */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Libre Caslon Condensed', 'Helvetica Neue', Helvetica, Arial, serif !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;
 }
 
 @layer components {
@@ -517,10 +517,28 @@ h1, h2, h3, h4, h5, h6 {
     }
   }
 
+  /* Integration carousel scroll animations */
+  @keyframes integration-scroll-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes integration-scroll-right {
+    0%   { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+  .integration-scroll-left {
+    animation: integration-scroll-left 30s linear infinite;
+  }
+  .integration-scroll-right {
+    animation: integration-scroll-right 30s linear infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero-wave,
     .live-blip,
-    .hero-ring {
+    .hero-ring,
+    .integration-scroll-left,
+    .integration-scroll-right {
       animation: none;
     }
   }

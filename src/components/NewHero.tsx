@@ -17,8 +17,11 @@ const NewHero = () => {
         highlightText="Revenue Leaks"
         description="For operations-heavy businesses. Audit, identify the leaks, automate the fix — first call in 30 minutes, revenue flowing in 90 days."
         maxWidth="max-w-5xl"
-        className="min-h-[88vh]"
-        veilOpacity="bg-white/35"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontWeight={700}
+        titleClassName="text-white"
+        descriptionClassName="text-white/90 font-normal"
+        veilOpacity="bg-black/10"
       >
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
           <button
