@@ -3,6 +3,7 @@ import NewHero from "@/components/NewHero";
 import LaunchVideo from "@/components/LaunchVideo";
 import HowItWorks from "@/components/HowItWorks";
 import WhyDifferent from "@/components/WhyDifferent";
+import ModularSolutions from "@/components/ModularSolutions";
 import VideoDemo from "@/components/VideoDemo";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -35,6 +36,11 @@ const Index = () => {
         {/* Section 3: Why We're Different */}
         <section id="why-different">
           <WhyDifferent />
+        </section>
+
+        {/* Section 3b: Modular Solutions (Stripe-style bento) */}
+        <section id="modular-solutions">
+          <ModularSolutions />
         </section>
 
         {/* Section 4: Video/Demo Section with Gradient - CONDITIONAL */}

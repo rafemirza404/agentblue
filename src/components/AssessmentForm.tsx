@@ -88,100 +88,112 @@ const AssessmentForm = () => {
     }
   };
 
+  const inputClass =
+    "w-full rounded-xl border border-[#E3E8EE] bg-white px-4 py-3.5 text-base text-[#0A2540] placeholder:text-[#9AA5B1] transition-all focus:border-[#635BFF] focus:ring-4 focus:ring-[#635BFF]/10";
+
   return (
     <section className="bg-white py-12 md:py-24" id="assessment-form">
       <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto">
-          {/* Headline */}
-          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-center text-black mb-4">
-            Get a Personalized Automation Assessment
-          </h2>
-
-          {/* Subheadline */}
-          <p className="text-base md:text-lg text-gray-600 text-center mb-8 md:mb-12 leading-relaxed">
-            Tell us about your biggest operational challenge. We'll send you a custom analysis within 48 hours.
-          </p>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name Field */}
-            <div>
-              <label htmlFor="name" className="block text-base font-medium text-gray-900 mb-2">
-                Name *
-              </label>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="John Doe"
-                required
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-4 text-base focus:border-[#4F7CFF] focus:ring-4 focus:ring-[#4F7CFF]/10 transition-all"
-              />
+        <div className="mx-auto max-w-2xl">
+          {/* Card on a soft pastel wash */}
+          <div className="relative overflow-hidden rounded-[2rem] border border-[#E6E6E6] bg-[radial-gradient(125%_120%_at_50%_0%,#FFE7D6_0%,#FFF1F6_38%,#FFFFFF_72%)] p-6 shadow-[0_30px_70px_-32px_rgba(20,20,40,0.3)] md:p-10">
+            {/* Eyebrow + heading */}
+            <div className="mb-8 text-center md:mb-10">
+              <span className="mb-3 block text-sm font-semibold text-[#635BFF]">
+                Free assessment
+              </span>
+              <h2 className="text-2xl tracking-tight text-[#0A2540] md:text-[2.25rem] md:leading-[1.1]">
+                Get a personalized automation assessment
+              </h2>
+              <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-[#425466]">
+                Tell us about your biggest operational challenge. We'll send a
+                custom analysis within 48 hours.
+              </p>
             </div>
 
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-base font-medium text-gray-900 mb-2">
-                Email *
-              </label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="john@example.com"
-                required
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-4 text-base focus:border-[#4F7CFF] focus:ring-4 focus:ring-[#4F7CFF]/10 transition-all"
-              />
-            </div>
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Name + Email side by side on larger screens */}
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="name" className="mb-2 block text-sm font-semibold text-[#0A2540]">
+                    Name *
+                  </label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="John Doe"
+                    required
+                    className={inputClass}
+                  />
+                </div>
 
-            {/* Company Field */}
-            <div>
-              <label htmlFor="company" className="block text-base font-medium text-gray-900 mb-2">
-                Company
-              </label>
-              <Input
-                id="company"
-                name="company"
-                type="text"
-                value={formData.company}
-                onChange={handleChange}
-                placeholder="Your Company"
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-4 text-base focus:border-[#4F7CFF] focus:ring-4 focus:ring-[#4F7CFF]/10 transition-all"
-              />
-            </div>
+                <div>
+                  <label htmlFor="email" className="mb-2 block text-sm font-semibold text-[#0A2540]">
+                    Email *
+                  </label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="john@example.com"
+                    required
+                    className={inputClass}
+                  />
+                </div>
+              </div>
 
-            {/* Challenge Field */}
-            <div>
-              <label htmlFor="challenge" className="block text-base font-medium text-gray-900 mb-2">
-                Challenge *
-              </label>
-              <Textarea
-                id="challenge"
-                name="challenge"
-                value={formData.challenge}
-                onChange={handleChange}
-                placeholder="Briefly, what is the primary operational challenge you're hoping to solve?"
-                rows={5}
-                required
-                className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-4 text-base focus:border-[#4F7CFF] focus:ring-4 focus:ring-[#4F7CFF]/10 transition-all resize-none"
-              />
-            </div>
+              {/* Company Field */}
+              <div>
+                <label htmlFor="company" className="mb-2 block text-sm font-semibold text-[#0A2540]">
+                  Company
+                </label>
+                <Input
+                  id="company"
+                  name="company"
+                  type="text"
+                  value={formData.company}
+                  onChange={handleChange}
+                  placeholder="Your Company"
+                  className={inputClass}
+                />
+              </div>
 
-            {/* Submit Button */}
-            <div className="pt-2">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-base md:text-lg font-semibold px-6 py-3.5 md:py-5 rounded-full transition-all duration-300 hover:scale-[1.02] shadow-[0_0_20px_rgba(79,124,255,0.4)] hover:shadow-[0_0_30px_rgba(79,124,255,0.6)]"
-              >
-                {isSubmitting ? "Sending..." : "Get Your Assessment"} <ArrowRight className="ml-2 h-5 w-5 inline" />
-              </Button>
-            </div>
-          </form>
+              {/* Challenge Field */}
+              <div>
+                <label htmlFor="challenge" className="mb-2 block text-sm font-semibold text-[#0A2540]">
+                  Challenge *
+                </label>
+                <Textarea
+                  id="challenge"
+                  name="challenge"
+                  value={formData.challenge}
+                  onChange={handleChange}
+                  placeholder="Briefly, what is the primary operational challenge you're hoping to solve?"
+                  rows={5}
+                  required
+                  className={`${inputClass} resize-none`}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="pt-2">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full rounded-full bg-[#4F7CFF] px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_20px_rgba(79,124,255,0.4)] transition-all duration-300 hover:scale-[1.02] hover:bg-[#4F7CFF] hover:shadow-[0_0_30px_rgba(79,124,255,0.6)] md:py-5 md:text-lg"
+                >
+                  {isSubmitting ? "Sending..." : "Get Your Assessment"}{" "}
+                  <ArrowRight className="ml-2 inline h-5 w-5" />
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>

@@ -17,37 +17,52 @@ const LaunchVideo = () => {
   }, []);
 
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <motion.h2
-          className="text-2xl md:text-3xl font-bold text-center text-black mb-10"
+    <section className="bg-white py-16 md:py-24">
+      <div className="container mx-auto px-4 max-w-5xl">
+        <motion.div
+          className="mb-10 text-center md:mb-12"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease }}
         >
-          Watch How It Works
-        </motion.h2>
+          <span className="mb-3 block text-sm font-semibold text-[#635BFF]">
+            See it in action
+          </span>
+          <h2 className="text-3xl tracking-tight text-[#0A2540] md:text-[2.5rem]">
+            Watch how it works
+          </h2>
+        </motion.div>
 
+        {/* Framed video on a soft pastel wash */}
         <motion.div
           initial={{ opacity: 0, y: 32, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1, ease }}
+          className="rounded-[2rem] border border-[#E6E6E6] bg-[radial-gradient(120%_120%_at_50%_0%,#E9DEFF_0%,#F3ECFF_40%,#FFFFFF_100%)] p-3 shadow-[0_30px_70px_-30px_rgba(20,20,40,0.3)] md:p-5"
         >
-          <div className="wistia_responsive_padding" style={{ padding: '56.25% 0 0 0', position: 'relative', background: 'transparent' }}>
-            <div className="wistia_responsive_wrapper" style={{ height: '100%', left: 0, position: 'absolute', top: 0, width: '100%', background: 'transparent' }}>
-              <iframe
-                src="https://fast.wistia.net/embed/iframe/bv6pk5lq2w?web_component=true&seo=true"
-                title="0223 Video"
-                allow="autoplay; fullscreen"
-                allowTransparency={true}
-                frameBorder={0}
-                scrolling="no"
-                className="wistia_embed"
-                name="wistia_embed"
-                width="100%"
-                height="100%"
-                style={{ border: 'none', display: 'block' }}
-              />
+          <div className="overflow-hidden rounded-2xl border border-[#EBEBF0] bg-white shadow-[0_18px_44px_-24px_rgba(20,20,40,0.25)]">
+            <div
+              className="wistia_responsive_padding"
+              style={{ padding: "56.25% 0 0 0", position: "relative", background: "transparent" }}
+            >
+              <div
+                className="wistia_responsive_wrapper"
+                style={{ height: "100%", left: 0, position: "absolute", top: 0, width: "100%", background: "transparent" }}
+              >
+                <iframe
+                  src="https://fast.wistia.net/embed/iframe/bv6pk5lq2w?web_component=true&seo=true"
+                  title="0223 Video"
+                  allow="autoplay; fullscreen"
+                  allowTransparency={true}
+                  frameBorder={0}
+                  scrolling="no"
+                  className="wistia_embed"
+                  name="wistia_embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: "none", display: "block" }}
+                />
+              </div>
             </div>
           </div>
         </motion.div>

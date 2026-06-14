@@ -152,7 +152,7 @@ const VoiceCallButton = () => {
       {heroPassed && callState.isIdle && (
         <button
           onClick={handleButtonClick}
-          className="fixed bottom-6 left-6 z-[9997] h-[52px] bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-sm font-semibold px-5 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.4)] flex items-center gap-2"
+          className="fixed bottom-6 left-6 z-[9997] h-[52px] bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-sm font-light px-5 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.4)] flex items-center gap-2"
           aria-label="Talk to Sophia AI"
         >
           Talk to Sophia AI <ArrowRight className="h-5 w-5" />

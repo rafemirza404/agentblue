@@ -72,7 +72,7 @@ const Navigation = () => {
                 className="w-full h-full object-contain"
               />
             </div>
-            <span className={`text-[17px] font-bold tracking-tight ${isDemoPage ? 'text-white' : 'text-gray-900'}`}>
+            <span className={`text-[17px] font-normal tracking-tight ${isDemoPage ? 'text-white' : 'text-gray-900'}`}>
               AgentBlue
             </span>
           </Link>
@@ -84,7 +84,7 @@ const Navigation = () => {
                 key={item.name}
                 to={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`px-4 py-2 rounded-lg text-[14px] font-medium transition-colors duration-150 ${
+                className={`px-4 py-2 rounded-lg text-[14px] font-normal transition-colors duration-150 ${
                   isDemoPage
                     ? 'text-gray-300 hover:text-white hover:bg-white/10'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
@@ -99,7 +99,7 @@ const Navigation = () => {
           <div className="hidden md:flex items-center gap-3">
             <Button
               onClick={handleGetStarted}
-              className="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-[14px] font-semibold px-5 py-2 h-9 rounded-full transition-all duration-200 shadow-[0_0_0_0_rgba(79,124,255,0)] hover:shadow-[0_0_20px_rgba(79,124,255,0.35)]"
+              className="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-[14px] font-normal px-5 py-2 h-9 rounded-full transition-all duration-200 shadow-[0_0_0_0_rgba(79,124,255,0)] hover:shadow-[0_0_20px_rgba(79,124,255,0.35)]"
             >
               Get Started
             </Button>
@@ -124,7 +124,7 @@ const Navigation = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`px-4 py-3 rounded-lg text-[15px] font-medium transition-colors ${
+                  className={`px-4 py-3 rounded-lg text-[15px] font-normal transition-colors ${
                     isDemoPage
                       ? 'text-gray-300 hover:text-white hover:bg-white/10'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'

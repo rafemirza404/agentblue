@@ -2,6 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Helvetica Neue local font faces */
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLight.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLightItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: condensed;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBlack.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-stretch: condensed;
+  font-display: swap;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -140,21 +221,27 @@ html {
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
+    font-feature-settings: "kern" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Typography — Inter-based, consistent across all sections */
+  /* Typography — Helvetica Neue, consistent across all sections */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 700;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     letter-spacing: -0.02em;
     line-height: 1.15;
   }
+}
+
+/* Force all headings to Helvetica Neue Medium (500) — a softer weight than
+   the default bold, overriding inline Tailwind font-bold/semibold/etc.
+   utilities. Placed outside @layer so it wins the cascade. */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500 !important;
 }
 
 @layer components {
@@ -329,5 +416,62 @@ html {
 
   .animate-fade-up {
     animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Hero voice-agent vignette: equaliser waveform + live blip */
+  .hero-wave {
+    transform-origin: center;
+    animation: hero-wave 1.1s ease-in-out infinite alternate;
+  }
+  @keyframes hero-wave {
+    0% {
+      transform: scaleY(0.4);
+      opacity: 0.65;
+    }
+    100% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  /* Ripple ring behind the hero CTA's phone icon */
+  .hero-ring {
+    animation: hero-ring 2s ease-out infinite;
+  }
+  @keyframes hero-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    70% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .live-blip {
+    animation: live-blip 1.6s ease-in-out infinite;
+  }
+  @keyframes live-blip {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(26, 191, 107, 0.5);
+    }
+    50% {
+      opacity: 0.6;
+      box-shadow: 0 0 0 4px rgba(26, 191, 107, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-wave,
+    .live-blip,
+    .hero-ring {
+      animation: none;
+    }
   }
 }
