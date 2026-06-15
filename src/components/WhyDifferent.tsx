@@ -50,26 +50,17 @@ const AgnosticVignette = () => (
   <div className="rounded-2xl border border-[#EBEBF0] bg-white p-4 shadow-[0_18px_44px_-22px_rgba(20,20,40,0.25)]">
     <div className="flex items-center justify-between">
       <p className="text-[10px] font-semibold text-[#697386]">Recommended stack</p>
-      <span className="rounded-full bg-[#EAF7F0] px-2 py-0.5 text-[8px] font-semibold text-[#1ABF6B]">
+      <span className="rounded-full bg-[#F1F2F6] px-2 py-0.5 text-[8px] font-semibold text-[#0A2540]">
         0 commissions
       </span>
     </div>
     <div className="mt-3 grid grid-cols-4 gap-1.5">
-      {[
-        "from-[#86ABFF] to-[#4F7CFF]",
-        "from-[#9FC2FF] to-[#4F7CFF]",
-        "from-[#86ABFF] to-[#8B7BFF]",
-        "from-[#5FE0A6] to-[#1ABF6B]",
-        "from-[#FFD27A] to-[#F4B23E]",
-        "from-[#9FC2FF] to-[#5FB8FF]",
-        "from-[#FFB3C8] to-[#4F7CFF]",
-        "from-[#C9B8FF] to-[#8EE6FF]",
-      ].map((g, i) => (
+      {Array.from({ length: 8 }).map((_, i) => (
         <div
           key={i}
           className="flex aspect-square items-center justify-center rounded-lg border border-[#EEF0F4] bg-[#FAFAFC]"
         >
-          <span className={`h-3.5 w-3.5 rounded-md bg-gradient-to-br ${g}`} />
+          <span className="h-3.5 w-3.5 rounded-md bg-gradient-to-br from-[#86ABFF] to-[#4F7CFF]" />
         </div>
       ))}
     </div>
@@ -104,7 +95,7 @@ const OwnershipVignette = () => (
         </div>
       ))}
     </div>
-    <div className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-semibold text-[#1ABF6B]">
+    <div className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-semibold text-[#4F7CFF]">
       <Download className="h-3 w-3" />
       Yours, forever
     </div>
@@ -117,24 +108,21 @@ const WhyDifferent = () => {
       icon: Compass,
       title: "Strategy before tools",
       body: "We audit your operations before recommending a single solution.",
-      gradient:
-        "bg-[radial-gradient(125%_120%_at_15%_0%,#FFE7D6_0%,#FFF3EB_50%,#FFFFFF_100%)]",
+      gradient: "bg-[#FAFBFC]",
       Vignette: StrategyVignette,
     },
     {
       icon: Boxes,
       title: "Platform-agnostic",
       body: "No vendor bias, no commissions—just what genuinely works best for you.",
-      gradient:
-        "bg-[radial-gradient(125%_120%_at_85%_0%,#DCE8FF_0%,#EEF4FF_50%,#FFFFFF_100%)]",
+      gradient: "bg-[#FAFBFC]",
       Vignette: AgnosticVignette,
     },
     {
       icon: FileDown,
       title: "You own everything",
       body: "Blueprints, specs, and roadmaps—all yours to keep and implement.",
-      gradient:
-        "bg-[radial-gradient(125%_120%_at_50%_0%,#D6EEFF_0%,#EAF6FF_50%,#FFFFFF_100%)]",
+      gradient: "bg-[#FAFBFC]",
       Vignette: OwnershipVignette,
     },
   ];
@@ -175,7 +163,7 @@ const WhyDifferent = () => {
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
                 variants={fadeUp}
-                className={`flex flex-col overflow-hidden rounded-3xl border border-[#E6E6E6] p-6 md:p-7 ${item.gradient}`}
+                className={`flex flex-col overflow-hidden rounded-3xl border border-[#EAECF0] p-6 md:p-7 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_12px_32px_-16px_rgba(16,24,40,0.12)] transition-shadow duration-300 hover:shadow-[0_2px_4px_rgba(16,24,40,0.05),0_20px_44px_-18px_rgba(16,24,40,0.18)] ${item.gradient}`}
               >
                 <div className="mb-4 flex items-center gap-3">
                   <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white text-[#4F7CFF] shadow-[0_6px_16px_-8px_rgba(79,124,255,0.5)]">
