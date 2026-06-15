@@ -101,12 +101,16 @@ const Navigation = () => {
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button
+            <button
               onClick={handleGetStarted}
-              className="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-[14px] font-light px-5 py-2 h-9 rounded-full transition-all duration-200 shadow-[0_0_0_0_rgba(79,124,255,0)] hover:shadow-[0_0_20px_rgba(79,124,255,0.35)]"
+              className={`px-4 py-2 rounded-lg text-[14px] font-normal transition-colors duration-150 ${
+                isDemoPage
+                  ? 'text-gray-300 hover:text-white hover:bg-white/10'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
             >
               Talk to Sales
-            </Button>
+            </button>
           </div>
 
           {/* Mobile menu button */}
