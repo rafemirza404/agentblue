@@ -57,7 +57,7 @@ const FAQ = () => {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease }}
           >
-            <span className="mb-4 block text-sm font-semibold text-[#635BFF]">
+            <span className="mb-4 block text-sm font-semibold text-[#4F7CFF]">
               FAQ
             </span>
             <h2 className="text-3xl leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.5rem]">
@@ -71,7 +71,7 @@ const FAQ = () => {
             </p>
             <a
               href="#contact-form-section"
-              className="mt-6 inline-flex items-center gap-1.5 rounded-full border border-[#E6E6E6] bg-white px-4 py-2 text-sm font-semibold text-[#0A2540] shadow-sm transition-colors hover:border-[#635BFF] hover:text-[#635BFF]"
+              className="mt-6 inline-flex items-center gap-1.5 rounded-full border border-[#E6E6E6] bg-white px-4 py-2 text-sm font-semibold text-[#0A2540] shadow-sm transition-colors hover:border-[#4F7CFF] hover:text-[#4F7CFF]"
             >
               Ask us anything <ArrowUpRight className="h-4 w-4" />
             </a>
@@ -89,9 +89,9 @@ const FAQ = () => {
               >
                 <AccordionItem
                   value={`item-${index}`}
-                  className="overflow-hidden rounded-2xl border border-[#E6E6E6] bg-white px-5 shadow-[0_10px_30px_-18px_rgba(20,20,40,0.18)] transition-colors data-[state=open]:border-[#635BFF]/40 data-[state=open]:bg-[#FAF9FF]"
+                  className="overflow-hidden rounded-2xl border border-[#E6E6E6] bg-white px-5 shadow-[0_10px_30px_-18px_rgba(20,20,40,0.18)] transition-colors data-[state=open]:border-[#4F7CFF]/40 data-[state=open]:bg-[#FAF9FF]"
                 >
-                  <AccordionTrigger className="py-5 text-left text-[15px] font-semibold tracking-tight text-[#0A2540] no-underline hover:no-underline [&>svg]:text-[#635BFF]">
+                  <AccordionTrigger className="py-5 text-left text-[15px] font-semibold tracking-tight text-[#0A2540] no-underline hover:no-underline [&>svg]:text-[#4F7CFF]">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="pb-5 text-[14px] leading-relaxed text-[#425466]">

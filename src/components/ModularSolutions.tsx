@@ -16,7 +16,7 @@ const fadeUp = {
 
 /* Small rounded-square expand button at the top-right of each bottom card. */
 const ExpandIcon = () => (
-  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[#635BFF] text-white shadow-[0_4px_12px_-2px_rgba(99,91,255,0.5)]">
+  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-[#4F7CFF] text-white shadow-[0_4px_12px_-2px_rgba(79,124,255,0.5)]">
     <Maximize2 className="h-4 w-4" />
   </span>
 );
@@ -33,7 +33,7 @@ const ModularSolutions = () => {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.65, ease }}
         >
-          <span className="mb-4 block text-sm font-semibold text-[#635BFF]">
+          <span className="mb-4 block text-sm font-semibold text-[#4F7CFF]">
             Modular solutions
           </span>
           <h2 className="max-w-3xl text-3xl font-bold leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.75rem]">
@@ -91,7 +91,7 @@ const ModularSolutions = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="relative flex aspect-[4/5] items-center overflow-hidden rounded-3xl border border-[#E6E6E6] bg-[radial-gradient(130%_120%_at_15%_100%,#FFE2CC_0%,#F3ECFF_55%,#FFFFFF_100%)] p-6"
+            className="relative flex aspect-[4/5] items-center overflow-hidden rounded-3xl border border-[#E6E6E6] bg-[radial-gradient(130%_120%_at_15%_100%,#FFE2CC_0%,#EEF4FF_55%,#FFFFFF_100%)] p-6"
           >
             <div className="w-full overflow-hidden rounded-2xl border border-[#EBEBF0] bg-white shadow-[0_20px_50px_-20px_rgba(20,20,40,0.25)]">
               {/* window chrome */}
@@ -126,8 +126,8 @@ const ModularSolutions = () => {
                   Payment method
                 </p>
                 <div className="mt-2 space-y-2">
-                  <div className="flex items-center gap-2 rounded-md border border-[#635BFF] px-2.5 py-1.5">
-                    <span className="h-2.5 w-2.5 rounded-full border-[3px] border-[#635BFF]" />
+                  <div className="flex items-center gap-2 rounded-md border border-[#4F7CFF] px-2.5 py-1.5">
+                    <span className="h-2.5 w-2.5 rounded-full border-[3px] border-[#4F7CFF]" />
                     <span className="text-[10px] text-[#0A2540]">Card</span>
                   </div>
                   <div className="flex items-center gap-2 rounded-md border border-[#EEF0F4] px-2.5 py-1.5">
@@ -146,7 +146,7 @@ const ModularSolutions = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className="relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl border border-[#E6E6E6] bg-[radial-gradient(125%_120%_at_100%_0%,#E9DEFF_0%,#F3ECFF_45%,#FFFFFF_100%)] p-6"
+            className="relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl border border-[#E6E6E6] bg-[radial-gradient(125%_120%_at_100%_0%,#DCE8FF_0%,#EEF4FF_45%,#FFFFFF_100%)] p-6"
           >
             {/* bar chart sits at the back, anchored to the bottom */}
             <div className="absolute inset-x-6 bottom-6 flex flex-col">
@@ -155,7 +155,7 @@ const ModularSolutions = () => {
                   (h, i) => (
                     <div
                       key={i}
-                      className="flex-1 rounded-t-[3px] bg-gradient-to-t from-[#635BFF] to-[#A78BFF]"
+                      className="flex-1 rounded-t-[3px] bg-gradient-to-t from-[#4F7CFF] to-[#86ABFF]"
                       style={{ height: `${h * 1.4}px` }}
                     />
                   )
@@ -173,7 +173,7 @@ const ModularSolutions = () => {
             <div className="relative z-10 w-[88%] rounded-2xl border border-[#EBEBF0] bg-white p-4 shadow-[0_20px_50px_-20px_rgba(20,20,40,0.28)]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#8B7BFF] to-[#635BFF] text-white">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#8B7BFF] to-[#4F7CFF] text-white">
                     <Zap className="h-3.5 w-3.5" />
                   </span>
                   <div>
@@ -200,7 +200,7 @@ const ModularSolutions = () => {
                   Usage meter
                 </span>
                 <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#EEF0F4]">
-                  <div className="h-full w-[7%] rounded-full bg-gradient-to-r from-[#635BFF] to-[#A78BFF]" />
+                  <div className="h-full w-[7%] rounded-full bg-gradient-to-r from-[#4F7CFF] to-[#86ABFF]" />
                 </div>
               </div>
             </div>
@@ -250,7 +250,7 @@ const ModularSolutions = () => {
                   </span>
                 </div>
                 {/* expand icon */}
-                <span className="absolute right-3 top-7 flex h-9 w-9 items-center justify-center rounded-xl bg-[#635BFF] text-white shadow-[0_6px_16px_-4px_rgba(99,91,255,0.6)]">
+                <span className="absolute right-3 top-7 flex h-9 w-9 items-center justify-center rounded-xl bg-[#4F7CFF] text-white shadow-[0_6px_16px_-4px_rgba(79,124,255,0.6)]">
                   <Maximize2 className="h-4 w-4" />
                 </span>
               </div>
@@ -284,7 +284,7 @@ const ModularSolutions = () => {
                       <span
                         className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full ${
                           active
-                            ? "bg-gradient-to-br from-[#8B7BFF] to-[#635BFF] text-white"
+                            ? "bg-gradient-to-br from-[#8B7BFF] to-[#4F7CFF] text-white"
                             : "bg-[#FBE9C9] text-[#C99A3E]"
                         }`}
                       >
@@ -323,7 +323,7 @@ const ModularSolutions = () => {
             {/* ── Zenflow card (front, left) ── */}
             <div className="absolute left-0 top-[18%] z-10 hidden w-[42%] rounded-2xl border border-[#EBEBF0] bg-white px-4 py-3 shadow-[0_20px_50px_-22px_rgba(20,20,40,0.3)] sm:block">
               <div className="flex items-center gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFE0EC] text-[#FF6FA3]">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#FFE0EC] text-[#4F7CFF]">
                   <Flower2 className="h-3.5 w-3.5" />
                 </span>
                 <span className="text-sm font-bold text-[#0A2540]">Zenflow</span>
@@ -333,7 +333,7 @@ const ModularSolutions = () => {
             {/* ── Daybreak Yoga invoice card (frontmost, overlaps heading) ── */}
             <div className="relative z-20 w-full max-w-[300px] rounded-2xl border border-[#EBEBF0] bg-white p-5 shadow-[0_30px_70px_-28px_rgba(20,20,40,0.42)] sm:absolute sm:left-[2%] sm:top-[46%] sm:w-[58%] md:left-[-2%]">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#8B7BFF] to-[#635BFF] text-white">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#8B7BFF] to-[#4F7CFF] text-white">
                   <Flower2 className="h-4 w-4" />
                 </span>
                 <span className="text-base font-bold text-[#0A2540]">
@@ -389,7 +389,7 @@ const ModularSolutions = () => {
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] [background-image:radial-gradient(#FF7AA8_1px,transparent_1.6px)] [background-size:13px_13px] opacity-50 [mask-image:radial-gradient(ellipse_80%_80%_at_50%_100%,black,transparent_70%)]" />
             <div className="relative z-10 mt-auto space-y-3">
               {/* chat bubbles */}
-              <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-tr-sm bg-[#635BFF] px-3 py-2 text-[11px] leading-snug text-white">
+              <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-tr-sm bg-[#4F7CFF] px-3 py-2 text-[11px] leading-snug text-white">
                 Map my busywork and fix the biggest revenue leak first.
               </div>
               <div className="w-fit max-w-[90%] rounded-2xl rounded-tl-sm border border-[#EBEBF0] bg-white px-3 py-2 text-[11px] leading-snug text-[#425466] shadow-sm">
@@ -431,7 +431,7 @@ const ModularSolutions = () => {
             </div>
             <div className="relative z-10 flex flex-1 items-center justify-center">
               {/* holographic card with chip + number */}
-              <div className="aspect-[1.586/1] w-full max-w-[270px] rotate-[-7deg] overflow-hidden rounded-2xl bg-[linear-gradient(125deg,#FFD9C2_0%,#FFC2E2_28%,#C9B8FF_58%,#8EE6FF_100%)] p-5 shadow-[0_28px_60px_-18px_rgba(99,91,255,0.5)]">
+              <div className="aspect-[1.586/1] w-full max-w-[270px] rotate-[-7deg] overflow-hidden rounded-2xl bg-[linear-gradient(125deg,#FFD9C2_0%,#FFC2E2_28%,#C9B8FF_58%,#8EE6FF_100%)] p-5 shadow-[0_28px_60px_-18px_rgba(79,124,255,0.5)]">
                 {/* sheen */}
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)]" />
                 <div className="relative flex h-full flex-col justify-between">
@@ -477,14 +477,14 @@ const ModularSolutions = () => {
                 <svg className="absolute inset-0 h-full w-full" viewBox="0 0 200 140" fill="none">
                   <path
                     d="M40 95 Q110 10 165 60"
-                    stroke="#FF6FA3"
+                    stroke="#4F7CFF"
                     strokeWidth="1.5"
                     strokeDasharray="3 3"
                   />
                 </svg>
                 {/* location pin */}
                 <span className="absolute right-[18%] top-[34%] inline-flex items-center gap-1.5 rounded-full border border-[#EBEBF0] bg-white px-2.5 py-1 shadow-md">
-                  <MapPin className="h-3 w-3 text-[#635BFF]" />
+                  <MapPin className="h-3 w-3 text-[#4F7CFF]" />
                   <span className="text-[10px] font-semibold text-[#0A2540]">
                     Live
                   </span>

@@ -89,7 +89,7 @@ const AssessmentForm = () => {
   };
 
   const inputClass =
-    "w-full rounded-xl border border-[#E3E8EE] bg-white px-4 py-3.5 text-base text-[#0A2540] placeholder:text-[#9AA5B1] transition-all focus:border-[#635BFF] focus:ring-4 focus:ring-[#635BFF]/10";
+    "w-full rounded-xl border border-[#E3E8EE] bg-white px-4 py-3.5 text-base text-[#0A2540] placeholder:text-[#9AA5B1] transition-all focus:border-[#4F7CFF] focus:ring-4 focus:ring-[#4F7CFF]/10";
 
   return (
     <section className="bg-white py-12 md:py-24" id="assessment-form">
@@ -99,7 +99,7 @@ const AssessmentForm = () => {
           <div className="relative overflow-hidden rounded-[2rem] border border-[#E6E6E6] bg-[radial-gradient(125%_120%_at_50%_0%,#FFE7D6_0%,#FFF1F6_38%,#FFFFFF_72%)] p-6 shadow-[0_30px_70px_-32px_rgba(20,20,40,0.3)] md:p-10">
             {/* Eyebrow + heading */}
             <div className="mb-8 text-center md:mb-10">
-              <span className="mb-3 block text-sm font-semibold text-[#635BFF]">
+              <span className="mb-3 block text-sm font-semibold text-[#4F7CFF]">
                 Free assessment
               </span>
               <h2 className="text-2xl tracking-tight text-[#0A2540] md:text-[2.25rem] md:leading-[1.1]">

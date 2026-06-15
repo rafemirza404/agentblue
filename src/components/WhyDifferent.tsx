@@ -26,9 +26,9 @@ const StrategyVignette = () => (
           <div
             className={`flex-1 rounded-lg px-2 py-1.5 text-center text-[9px] font-semibold ${
               i === 0
-                ? "bg-[#635BFF] text-white"
+                ? "bg-[#4F7CFF] text-white"
                 : i === 1
-                ? "bg-[#635BFF]/15 text-[#635BFF]"
+                ? "bg-[#4F7CFF]/15 text-[#4F7CFF]"
                 : "bg-[#F1F2F6] text-[#9AA5B1]"
             }`}
           >
@@ -56,13 +56,13 @@ const AgnosticVignette = () => (
     </div>
     <div className="mt-3 grid grid-cols-4 gap-1.5">
       {[
-        "from-[#FF9ABF] to-[#FF6FA3]",
-        "from-[#9FC2FF] to-[#635BFF]",
-        "from-[#A78BFF] to-[#8B7BFF]",
+        "from-[#86ABFF] to-[#4F7CFF]",
+        "from-[#9FC2FF] to-[#4F7CFF]",
+        "from-[#86ABFF] to-[#8B7BFF]",
         "from-[#5FE0A6] to-[#1ABF6B]",
         "from-[#FFD27A] to-[#F4B23E]",
         "from-[#9FC2FF] to-[#5FB8FF]",
-        "from-[#FFB3C8] to-[#FF6FA3]",
+        "from-[#FFB3C8] to-[#4F7CFF]",
         "from-[#C9B8FF] to-[#8EE6FF]",
       ].map((g, i) => (
         <div
@@ -95,7 +95,7 @@ const OwnershipVignette = () => (
           className="flex items-center justify-between rounded-lg border border-[#EEF0F4] bg-[#FAFAFC] px-2.5 py-1.5"
         >
           <div className="flex items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#635BFF]/10 text-[#635BFF]">
+            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#4F7CFF]/10 text-[#4F7CFF]">
               <FileDown className="h-3 w-3" />
             </span>
             <span className="text-[9px] font-medium text-[#0A2540]">{name}</span>
@@ -126,7 +126,7 @@ const WhyDifferent = () => {
       title: "Platform-agnostic",
       body: "No vendor bias, no commissions—just what genuinely works best for you.",
       gradient:
-        "bg-[radial-gradient(125%_120%_at_85%_0%,#E9DEFF_0%,#F3ECFF_50%,#FFFFFF_100%)]",
+        "bg-[radial-gradient(125%_120%_at_85%_0%,#DCE8FF_0%,#EEF4FF_50%,#FFFFFF_100%)]",
       Vignette: AgnosticVignette,
     },
     {
@@ -150,7 +150,7 @@ const WhyDifferent = () => {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.65, ease }}
         >
-          <span className="mb-4 block text-sm font-semibold text-[#635BFF]">
+          <span className="mb-4 block text-sm font-semibold text-[#4F7CFF]">
             Why we're different
           </span>
           <h2 className="max-w-3xl text-3xl leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.75rem]">
@@ -178,7 +178,7 @@ const WhyDifferent = () => {
                 className={`flex flex-col overflow-hidden rounded-3xl border border-[#E6E6E6] p-6 md:p-7 ${item.gradient}`}
               >
                 <div className="mb-4 flex items-center gap-3">
-                  <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white text-[#635BFF] shadow-[0_6px_16px_-8px_rgba(99,91,255,0.5)]">
+                  <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white text-[#4F7CFF] shadow-[0_6px_16px_-8px_rgba(79,124,255,0.5)]">
                     <item.icon className="h-5 w-5" />
                   </span>
                   <h3 className="text-lg tracking-tight text-[#0A2540]">
