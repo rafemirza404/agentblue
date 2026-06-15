@@ -33,14 +33,13 @@ const LaunchVideo = () => {
           </h2>
         </motion.div>
 
-        {/* Framed video on a soft pastel wash */}
+        {/* Video, no frame/border */}
         <motion.div
           initial={{ opacity: 0, y: 32, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1, ease }}
-          className="rounded-[2rem] bg-white p-3 shadow-[0_30px_70px_-30px_rgba(20,20,40,0.2)] md:p-5"
         >
-          <div className="overflow-hidden rounded-2xl border border-[#EBEBF0] bg-white shadow-[0_18px_44px_-24px_rgba(20,20,40,0.25)]">
+          <div className="overflow-hidden rounded-2xl shadow-[0_18px_44px_-24px_rgba(20,20,40,0.25)]">
             <div
               className="wistia_responsive_padding"
               style={{ padding: "56.25% 0 0 0", position: "relative", background: "transparent" }}
