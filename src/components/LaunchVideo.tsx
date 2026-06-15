@@ -38,7 +38,7 @@ const LaunchVideo = () => {
           initial={{ opacity: 0, y: 32, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.1, ease }}
-          className="rounded-[2rem] border border-[#E6E6E6] bg-[radial-gradient(120%_120%_at_50%_0%,#DCE8FF_0%,#EEF4FF_40%,#FFFFFF_100%)] p-3 shadow-[0_30px_70px_-30px_rgba(20,20,40,0.3)] md:p-5"
+          className="rounded-[2rem] bg-white p-3 shadow-[0_30px_70px_-30px_rgba(20,20,40,0.2)] md:p-5"
         >
           <div className="overflow-hidden rounded-2xl border border-[#EBEBF0] bg-white shadow-[0_18px_44px_-24px_rgba(20,20,40,0.25)]">
             <div

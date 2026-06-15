@@ -2,7 +2,7 @@ import Navigation from "@/components/Navigation";
 import NewHero from "@/components/NewHero";
 import IntegrationCarousel from "@/components/IntegrationCarousel";
 import LaunchVideo from "@/components/LaunchVideo";
-import HowItWorks from "@/components/HowItWorks";
+import OperationsTiers from "@/components/OperationsTiers";
 import WhyDifferent from "@/components/WhyDifferent";
 import ModularSolutions from "@/components/ModularSolutions";
 import { FeatureCarousel } from "@/components/ui/feature-carousel";
@@ -37,9 +37,9 @@ const Index = () => {
           <LaunchVideo />
         </section>
 
-        {/* Section 3: Three Tiers - PRESERVED */}
+        {/* Section 3: Three Tiers (ServiceCard grid) */}
         <section id="how-we-work">
-          <HowItWorks />
+          <OperationsTiers />
         </section>
 
         {/* Section 3: Why We're Different */}

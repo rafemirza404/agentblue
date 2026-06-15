@@ -95,17 +95,17 @@ const AssessmentForm = () => {
     <section className="bg-white py-12 md:py-24" id="assessment-form">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl">
-          {/* Card on a soft pastel wash */}
-          <div className="relative overflow-hidden rounded-[2rem] border border-[#E6E6E6] bg-[radial-gradient(125%_120%_at_50%_0%,#FFE7D6_0%,#FFF1F6_38%,#FFFFFF_72%)] p-6 shadow-[0_30px_70px_-32px_rgba(20,20,40,0.3)] md:p-10">
+          {/* Clean white card, black & white treatment */}
+          <div className="relative overflow-hidden rounded-[2rem] border border-[#E6E6E6] bg-white p-6 shadow-[0_30px_70px_-32px_rgba(20,20,40,0.18)] md:p-10">
             {/* Eyebrow + heading */}
             <div className="mb-8 text-center md:mb-10">
-              <span className="mb-3 block text-sm font-semibold text-[#4F7CFF]">
+              <span className="mb-3 block text-sm font-semibold text-black">
                 Free assessment
               </span>
-              <h2 className="text-2xl tracking-tight text-[#0A2540] md:text-[2.25rem] md:leading-[1.1]">
+              <h2 className="text-2xl tracking-tight text-black md:text-[2.25rem] md:leading-[1.1]">
                 Get a personalized automation assessment
               </h2>
-              <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-[#425466]">
+              <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-[#4B5563]">
                 Tell us about your biggest operational challenge. We'll send a
                 custom analysis within 48 hours.
               </p>
@@ -186,7 +186,7 @@ const AssessmentForm = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-full bg-[#4F7CFF] px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_20px_rgba(79,124,255,0.4)] transition-all duration-300 hover:scale-[1.02] hover:bg-[#4F7CFF] hover:shadow-[0_0_30px_rgba(79,124,255,0.6)] md:py-5 md:text-lg"
+                  className="w-full rounded-full bg-black px-6 py-3.5 text-base font-semibold text-white shadow-[0_8px_24px_-8px_rgba(0,0,0,0.5)] transition-all duration-300 hover:scale-[1.02] hover:bg-black/90 md:py-5 md:text-lg"
                 >
                   {isSubmitting ? "Sending..." : "Get Your Assessment"}{" "}
                   <ArrowRight className="ml-2 inline h-5 w-5" />

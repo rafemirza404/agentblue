@@ -8,11 +8,10 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const FinalCTA = () => {
   return (
-    <section className="relative overflow-hidden bg-[#0A2540] py-20 md:py-28">
-      {/* atmosphere: indigo glow + faint dot-grid */}
+    <section className="relative overflow-hidden bg-black py-20 md:py-28">
+      {/* atmosphere: faint dot-grid */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 h-[420px] w-[720px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-[#4F7CFF] opacity-25 blur-[120px]" />
-        <div className="absolute inset-0 opacity-[0.35] [background-image:radial-gradient(rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_30%,black,transparent_72%)]" />
+        <div className="absolute inset-0 opacity-[0.35] [background-image:radial-gradient(rgba(255,255,255,0.14)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_30%,black,transparent_72%)]" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4">
@@ -25,7 +24,7 @@ const FinalCTA = () => {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease }}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#4F7CFF]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-white" />
             Get started
           </motion.span>
 
@@ -40,7 +39,7 @@ const FinalCTA = () => {
           </motion.h2>
 
           <motion.p
-            className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-[#A8B6D4] md:text-lg"
+            className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
@@ -64,10 +63,10 @@ const FinalCTA = () => {
                   <ArrowRight className="ml-2 inline h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </>
               }
-              buttonClassName="group inline-flex h-[50px] items-center rounded-full bg-[#4F7CFF] px-7 text-[15px] font-semibold text-white shadow-[0_12px_30px_-10px_rgba(79,124,255,0.7)] transition-all duration-300 hover:bg-[#3F6BF0] hover:shadow-[0_16px_38px_-10px_rgba(79,124,255,0.85)]"
+              buttonClassName="group inline-flex h-[50px] items-center rounded-full bg-white px-7 text-[15px] font-semibold text-black shadow-[0_12px_30px_-10px_rgba(0,0,0,0.5)] transition-all duration-300 hover:bg-white/90"
             />
 
-            <p className="mt-2 text-sm text-[#7E8FB5]">
+            <p className="mt-2 text-sm text-white/50">
               No sales pitch. Just strategic insights.
             </p>
           </motion.div>

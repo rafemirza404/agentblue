@@ -20,7 +20,7 @@ const NewHero = () => {
         fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
         fontWeight={400}
         titleClassName="!text-black !font-normal"
-        descriptionClassName="text-black/70 font-normal"
+        descriptionClassName="!text-white font-normal"
         veilOpacity="bg-white/15"
       >
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
