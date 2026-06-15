@@ -5,70 +5,70 @@
 /* Helvetica Neue local font faces */
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLight.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLight.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLightItalic.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLightItalic.woff2') format('woff2');
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Light.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-LightItalic.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-LightItalic.woff2') format('woff2');
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Italic.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Medium.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Bold.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-BoldItalic.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-BoldItalic.woff2') format('woff2');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBold.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-stretch: condensed;
@@ -76,7 +76,7 @@
 }
 @font-face {
   font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBlack.otf') format('opentype');
+  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBlack.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-stretch: condensed;
@@ -541,5 +541,14 @@ h1, h2, h3, h4, h5, h6 {
     .integration-scroll-right {
       animation: none;
     }
+  }
+
+  /* Skip rendering work for off-screen sections on long pages. The browser
+     doesn't lay out / paint these until they're near the viewport, which
+     removes scroll jank as the page grows. `contain-intrinsic-size` reserves
+     an estimated height so the scrollbar stays stable. */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
   }
 }
