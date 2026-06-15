@@ -12,8 +12,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import ScrollToTop from '@/components/ScrollToTop';
-import Chatbot from '@/components/features/chatbot/Chatbot';
-import VoiceCallButton from '@/components/features/voice-call/VoiceCallButton';
 
 // Code-split routes for better performance
 const Index = lazy(() => import('./pages/Index'));
@@ -22,6 +20,13 @@ const Services = lazy(() => import('./pages/Services'));
 const Contact = lazy(() => import('./pages/Contact'));
 const WatchDemo = lazy(() => import('./pages/WatchDemo'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Global widgets are heavy (chat + voice/Vapi) and hidden until interacted
+// with — load them lazily so they stay out of the initial bundle.
+const Chatbot = lazy(() => import('@/components/features/chatbot/Chatbot'));
+const VoiceCallButton = lazy(
+  () => import('@/components/features/voice-call/VoiceCallButton')
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,7 +42,7 @@ const GlobalWidgets = () => {
   if (location.pathname === '/watch-demo') return null;
 
   return (
-    <>
+    <Suspense fallback={null}>
       <ErrorBoundary
         fallback={
           <div className="fixed bottom-6 right-6 bg-red-100 text-red-700 px-4 py-2 rounded-lg shadow-lg text-sm">
@@ -57,7 +62,7 @@ const GlobalWidgets = () => {
       >
         <VoiceCallButton />
       </ErrorBoundary>
-    </>
+    </Suspense>
   );
 };
 
