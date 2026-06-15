@@ -1,5 +1,5 @@
 import { MeshGradient } from "@paper-design/shaders-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface HeroSectionProps {
   title?: string;
@@ -47,6 +47,13 @@ export function HeroSection({
 }: HeroSectionProps) {
   const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 });
   const [mounted, setMounted] = useState(false);
+  // Pause the WebGL render loop whenever the hero is scrolled out of view —
+  // this is the main perf win, since the shader otherwise renders forever.
+  const [inView, setInView] = useState(true);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  // Cap pixel ratio so the shader doesn't render at 2x/3x on retina screens.
+  const dpr =
+    typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 1.5) : 1;
 
   useEffect(() => {
     setMounted(true);
@@ -60,6 +67,17 @@ export function HeroSection({
     return () => window.removeEventListener("resize", update);
   }, []);
 
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const handleButtonClick = () => {
     if (onButtonClick) {
       onButtonClick();
@@ -68,21 +86,23 @@ export function HeroSection({
 
   return (
     <section
+      ref={sectionRef}
       className={`relative w-full overflow-hidden bg-background flex items-center justify-center py-28 md:py-32 ${className}`}
     >
       <div className="absolute inset-0 w-full h-full">
         {mounted && (
           <>
             <MeshGradient
-              width={dimensions.width}
-              height={dimensions.height}
+              width={Math.round(dimensions.width * dpr)}
+              height={Math.round(dimensions.height * dpr)}
               colors={colors}
               distortion={distortion}
               swirl={swirl}
               grainMixer={0}
               grainOverlay={0}
-              speed={speed}
+              speed={inView ? speed : 0}
               offsetX={offsetX}
+              style={{ width: "100%", height: "100%" }}
             />
             <div className={`absolute inset-0 pointer-events-none ${veilOpacity}`} />
           </>
