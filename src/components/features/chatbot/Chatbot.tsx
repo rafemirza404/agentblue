@@ -239,17 +239,17 @@ const Chatbot = () => {
           </div>
         )}
 
-        {/* Launcher — bare message icon, no pill */}
+        {/* Launcher — bare message icon, no button shape */}
         <div className="relative">
           <button
             onClick={() => { setIsOpen(true); setShowPrompt(false); }}
             className="group relative flex h-[52px] w-[52px] items-center justify-center transition-transform duration-300 hover:scale-110 active:scale-95"
             aria-label="Open chat support"
           >
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:-translate-y-px group-hover:rotate-[-6deg] drop-shadow-[0_6px_16px_rgba(20,20,40,0.28)]">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:-translate-y-px group-hover:rotate-[-6deg] drop-shadow-[0_6px_16px_rgba(79,124,255,0.45)]">
               <path
                 d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                fill="#0A0A0A"
+                fill="#4F7CFF"
               />
               <circle cx="8.5" cy="10" r="1.1" fill="white" />
               <circle cx="12" cy="10" r="1.1" fill="white" />
