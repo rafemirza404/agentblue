@@ -185,7 +185,7 @@ const Services = () => {
       
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="bg-[#EEF4FF] py-24 md:py-36">
+        <section className="bg-[#EEF4FF] py-20 md:py-36">
           <div className="container mx-auto px-4 max-w-5xl flex flex-col items-center text-center">
             <div className="bg-white border border-gray-200 rounded-full px-4 py-1.5 text-sm text-gray-600 inline-flex items-center gap-2 shadow-sm mb-8 animate-fade-in">
               Strategy-First Consulting
@@ -210,11 +210,11 @@ const Services = () => {
         </section>
 
         {/* The Problem Section */}
-        <section className="py-20 bg-secondary/30">
+        <section className="py-14 md:py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <motion.div
-                className="text-center mb-16"
+                className="text-center mb-10 md:mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -247,7 +247,7 @@ const Services = () => {
                     transition={{ duration: 0.6, delay: index * 0.15 }}
                   >
                     <Card className="border-0 bg-background h-full hover-lift">
-                      <CardContent className="p-8">
+                      <CardContent className="p-6 md:p-8">
                         <h3 className="text-xl font-bold mb-4">{item.title}</h3>
                         <p className="text-muted-foreground leading-relaxed">
                           {item.description}
@@ -262,11 +262,11 @@ const Services = () => {
         </section>
 
         {/* The AgentBlue Difference */}
-        <section className="py-20">
+        <section className="py-14 md:py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <motion.div
-                className="text-center mb-16"
+                className="text-center mb-10 md:mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -286,7 +286,7 @@ const Services = () => {
                     transition={{ duration: 0.6, delay: index * 0.15 }}
                   >
                     <Card className="border-0 bg-secondary/30 h-full">
-                      <CardContent className="p-8">
+                      <CardContent className="p-6 md:p-8">
                         <div className="flex items-start gap-4 mb-4">
                           <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 text-white">
                             {item.icon}
@@ -309,11 +309,11 @@ const Services = () => {
         </section>
 
         {/* Three-Tier Model */}
-        <section className="py-20 bg-secondary/30">
+        <section className="py-14 md:py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <motion.div
-                className="text-center mb-16"
+                className="text-center mb-10 md:mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -329,7 +329,7 @@ const Services = () => {
                   <div className="absolute -top-4 left-8 w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-xl font-bold">
                     1
                   </div>
-                  <CardContent className="p-8 pt-12">
+                  <CardContent className="p-6 md:p-8 pt-12">
                     <Badge className="mb-4">TIER 1</Badge>
                     <h3 className="text-xl font-bold text-black mb-2">Operations Intelligence Audit</h3>
                     <p className="text-muted-foreground mb-4">Diagnose operational chaos. Quantify the bleeding.</p>
@@ -378,7 +378,7 @@ const Services = () => {
                   <div className="absolute -top-4 left-8 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl font-bold">
                     2
                   </div>
-                  <CardContent className="p-8 pt-12">
+                  <CardContent className="p-6 md:p-8 pt-12">
                     <Badge className="mb-4" variant="secondary">TIER 2</Badge>
                     <h3 className="text-xl font-bold text-black mb-2">Automation Infrastructure Blueprint</h3>
                     <p className="text-muted-foreground mb-4">Technical roadmaps any developer can execute.</p>
@@ -427,7 +427,7 @@ const Services = () => {
                   <div className="absolute -top-4 left-8 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-xl font-bold">
                     3
                   </div>
-                  <CardContent className="p-8 pt-12">
+                  <CardContent className="p-6 md:p-8 pt-12">
                     <Badge className="mb-4" variant="secondary">TIER 3</Badge>
                     <h3 className="text-xl font-bold text-black mb-2">Turnkey Implementation</h3>
                     <p className="text-muted-foreground mb-4">We build, test, train, and stabilize. You see results.</p>
@@ -475,11 +475,11 @@ const Services = () => {
         </section>
 
         {/* Automation Capabilities */}
-        <section className="py-20">
+        <section className="py-14 md:py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <motion.div
-                className="text-center mb-16"
+                className="text-center mb-10 md:mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -528,11 +528,11 @@ const Services = () => {
         </section>
 
         {/* Our Proven Process */}
-        <section id="process" className="py-20 bg-secondary/30">
+        <section id="process" className="py-14 md:py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <motion.div
-                className="text-center mb-16"
+                className="text-center mb-10 md:mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -552,7 +552,7 @@ const Services = () => {
                     transition={{ duration: 0.6, delay: index * 0.15 }}
                   >
                     <Card className="border-0 bg-background">
-                      <CardContent className="p-8">
+                      <CardContent className="p-6 md:p-8">
                         <div className="flex flex-col md:flex-row gap-6">
                           <div className="flex-shrink-0">
                             <div className="text-6xl font-bold text-muted-foreground/20 mb-4">{phase.number}</div>
@@ -589,11 +589,11 @@ const Services = () => {
         </section>
 
         {/* Results & Proof */}
-        <section className="py-20">
+        <section className="py-14 md:py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <motion.div
-                className="text-center mb-16"
+                className="text-center mb-10 md:mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -611,7 +611,7 @@ const Services = () => {
                   <div className="flex gap-6 min-w-max">
                     {stats.map((stat, index) => (
                       <Card key={index} className="border-0 bg-secondary/30 text-center w-[280px] flex-shrink-0">
-                        <CardContent className="p-8">
+                        <CardContent className="p-6 md:p-8">
                           <div className="text-accent mb-4 flex justify-center">{stat.icon}</div>
                           <div className="text-4xl font-bold mb-2 text-accent">{stat.value}</div>
                           <h3 className="text-sm font-semibold mb-2">{stat.label}</h3>
@@ -634,7 +634,7 @@ const Services = () => {
                     transition={{ duration: 0.6, delay: index * 0.15 }}
                   >
                     <Card className="border-0 bg-secondary/30 text-center h-full">
-                      <CardContent className="p-8">
+                      <CardContent className="p-6 md:p-8">
                         <div className="text-accent mb-4 flex justify-center">{stat.icon}</div>
                         <div className="text-4xl font-bold mb-2 text-accent">{stat.value}</div>
                         <h3 className="text-sm font-semibold mb-2">{stat.label}</h3>
@@ -646,7 +646,7 @@ const Services = () => {
               </div>
               
               <Card className="border-0 bg-accent text-white">
-                <CardContent className="p-12 text-center">
+                <CardContent className="p-8 md:p-12 text-center">
                   <h3 className="text-2xl md:text-3xl font-bold mb-4">See How We've Transformed Operations</h3>
                   <p className="text-base md:text-lg mb-6 opacity-90">
                     From 8-hour onboarding processes to 45 minutes. From 15% complaints to under 2%. Real businesses, transformative results.
@@ -664,7 +664,7 @@ const Services = () => {
         </section>
 
         {/* Who We Serve */}
-        <section className="py-20 bg-secondary/30">
+        <section className="py-14 md:py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">Built for Solar & HVAC Companies Ready to Scale</h2>
@@ -679,11 +679,11 @@ const Services = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20">
+        <section className="py-14 md:py-20">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div
-                className="text-center mb-16"
+                className="text-center mb-10 md:mb-16"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -709,7 +709,7 @@ const Services = () => {
         </section>
 
         {/* Final CTA */}
-        <section className="py-20 bg-[#1a1f35] text-white">
+        <section className="py-14 md:py-20 bg-[#1a1f35] text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
@@ -720,7 +720,7 @@ const Services = () => {
               </p>
               
               <Card className="bg-white text-foreground mb-8">
-                <CardContent className="p-8">
+                <CardContent className="p-6 md:p-8">
                   <h3 className="text-2xl font-bold mb-6">What You'll Get on the Call:</h3>
                   <div className="grid md:grid-cols-2 gap-4 text-left mb-6">
                     <div className="flex items-start gap-3">
