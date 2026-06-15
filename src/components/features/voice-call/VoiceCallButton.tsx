@@ -50,6 +50,16 @@ const VoiceCallButton = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Broadcast overlay open/close so the hero shader pauses its WebGL render
+  // loop while a voice modal or active call is up (the hero's "Talk to Sophia"
+  // button can open this flow while the user is still in the hero).
+  const overlayActive = activeModal !== 'none' || !callState.isIdle;
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent(overlayActive ? 'overlay:open' : 'overlay:close')
+    );
+  }, [overlayActive]);
+
   // Allow hero section button to trigger this flow via custom event
   useEffect(() => {
     const handler = () => handleButtonClick();

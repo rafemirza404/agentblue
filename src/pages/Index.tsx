@@ -43,27 +43,27 @@ const Index = () => {
         </section>
 
         {/* 5 — Product suite: what they actually get */}
-        <section id="modular-solutions">
+        <section id="modular-solutions" className="cv-auto">
           <ModularSolutions />
         </section>
 
         {/* 6 — Capability depth (picture-driven carousel) */}
-        <section id="capabilities" className="px-4 py-16 md:py-24">
+        <section id="capabilities" className="px-4 py-16 md:py-24 cv-auto">
           <FeatureCarousel />
         </section>
 
         {/* 7 — How we work: Diagnose → Design → Deploy */}
-        <section id="how-we-work">
+        <section id="how-we-work" className="cv-auto">
           <OperationsTiers />
         </section>
 
         {/* 8 — Differentiation: objection-crusher before the ask */}
-        <section id="why-different">
+        <section id="why-different" className="cv-auto">
           <WhyDifferent />
         </section>
 
         {/* 9 — Reassurance: fits your stack (handled low, as last objection) */}
-        <section id="integrations">
+        <section id="integrations" className="cv-auto">
           <IntegrationCarousel />
         </section>
 
@@ -75,12 +75,12 @@ const Index = () => {
         )}
 
         {/* 10 — Remaining objections */}
-        <section id="faq">
+        <section id="faq" className="cv-auto">
           <FAQ />
         </section>
 
         {/* 11 — The close */}
-        <section id="final-cta">
+        <section id="final-cta" className="cv-auto">
           <FinalCTA />
         </section>
 

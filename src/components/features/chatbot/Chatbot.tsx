@@ -64,6 +64,15 @@ const Chatbot = () => {
   }, [isOpen]);
 
   /**
+   * Broadcast overlay open/close so the hero shader can pause its WebGL render
+   * loop while the chat is open — otherwise they compete for the GPU/main
+   * thread and the chat opens janky while the user is still in the hero.
+   */
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(isOpen ? 'overlay:open' : 'overlay:close'));
+  }, [isOpen]);
+
+  /**
    * Show notification only when a NEW bot message arrives while user is scrolled up
    */
   useEffect(() => {

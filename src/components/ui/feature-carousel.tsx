@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
@@ -108,6 +108,20 @@ const wrap = (min: number, max: number, v: number) => {
 export function FeatureCarousel() {
   const [step, setStep] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  // Don't run the autoplay timer / animations while the carousel is off-screen.
+  const [inView, setInView] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "100px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const currentIndex =
     ((step % FEATURES.length) + FEATURES.length) % FEATURES.length;
@@ -122,10 +136,10 @@ export function FeatureCarousel() {
   };
 
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || !inView) return;
     const interval = setInterval(nextStep, AUTO_PLAY_INTERVAL);
     return () => clearInterval(interval);
-  }, [nextStep, isPaused]);
+  }, [nextStep, isPaused, inView]);
 
   const getCardStatus = (index: number) => {
     const diff = index - currentIndex;
@@ -142,7 +156,7 @@ export function FeatureCarousel() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto md:p-8">
+    <div ref={rootRef} className="w-full max-w-7xl mx-auto md:p-8">
       <div className="relative overflow-hidden rounded-[1.75rem] sm:rounded-[2.5rem] lg:rounded-[4rem] flex flex-col lg:flex-row min-h-0 lg:min-h-[600px] lg:aspect-video border border-border/40">
         <div className="w-full lg:w-[40%] min-h-[230px] md:min-h-[450px] lg:h-full relative z-30 flex flex-col items-start justify-center overflow-hidden px-6 sm:px-8 md:px-16 lg:pl-16 py-8 lg:py-0 bg-[#4F7CFF]">
           <div className="absolute inset-x-0 top-0 h-10 md:h-20 lg:h-16 bg-gradient-to-b from-[#4F7CFF] via-[#4F7CFF]/80 to-transparent z-40" />

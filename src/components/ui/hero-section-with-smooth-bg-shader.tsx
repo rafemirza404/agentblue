@@ -51,6 +51,10 @@ export function HeroSection({
   // Pause the WebGL render loop whenever the hero is scrolled out of view —
   // this is the main perf win, since the shader otherwise renders forever.
   const [inView, setInView] = useState(true);
+  // Also pause while a global overlay (chatbot / voice modal) is open, so the
+  // shader doesn't fight the overlay for the GPU/main thread and make it open
+  // janky while the user is still in the hero.
+  const [overlayOpen, setOverlayOpen] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
   // Cap pixel ratio so the shader doesn't render at 2x/3x on retina screens.
   const dpr =
@@ -73,10 +77,27 @@ export function HeroSection({
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0 }
+      // Negative bottom margin shrinks the "in view" zone so the shader stops
+      // rendering once most of the hero has scrolled past the top — instead of
+      // only when it's 100% gone. This keeps scroll light through the hero and
+      // the section right below it, where the WebGL loop was still running.
+      { threshold: 0, rootMargin: "0px 0px -55% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
+  }, []);
+
+  // Listen for global overlay open/close events (dispatched by the chatbot and
+  // voice-call widgets) and freeze the shader while one is open.
+  useEffect(() => {
+    const onOpen = () => setOverlayOpen(true);
+    const onClose = () => setOverlayOpen(false);
+    window.addEventListener("overlay:open", onOpen);
+    window.addEventListener("overlay:close", onClose);
+    return () => {
+      window.removeEventListener("overlay:open", onOpen);
+      window.removeEventListener("overlay:close", onClose);
+    };
   }, []);
 
   const handleButtonClick = () => {
@@ -93,7 +114,7 @@ export function HeroSection({
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className={`relative w-full overflow-hidden bg-background flex items-center justify-center py-20 sm:py-24 md:py-32 ${className}`}
     >
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full transform-gpu [contain:strict]">
         {mounted && (
           <>
             <MeshGradient
@@ -104,7 +125,7 @@ export function HeroSection({
               swirl={swirl}
               grainMixer={0}
               grainOverlay={0}
-              speed={inView ? speed : 0}
+              speed={inView && !overlayOpen ? speed : 0}
               offsetX={offsetX}
               style={{ width: "100%", height: "100%" }}
             />
