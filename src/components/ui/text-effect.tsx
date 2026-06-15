@@ -25,6 +25,9 @@ type TextEffectProps = {
   trigger?: boolean;
   onAnimationComplete?: () => void;
   segmentWrapperClassName?: string;
+  style?: React.CSSProperties;
+  role?: string;
+  'aria-level'?: number;
 };
 
 const defaultStaggerTimes: Record<'char' | 'word' | 'line', number> = {
@@ -160,6 +163,9 @@ export function TextEffect({
   trigger = true,
   onAnimationComplete,
   segmentWrapperClassName,
+  style,
+  role,
+  'aria-level': ariaLevel,
 }: TextEffectProps) {
   let segments: string[];
 
@@ -207,6 +213,9 @@ export function TextEffect({
           variants={delayedContainerVariants}
           className={cn('whitespace-pre-wrap', className)}
           onAnimationComplete={onAnimationComplete}
+          style={style}
+          role={role}
+          aria-level={ariaLevel}
         >
           {segments.map((segment, index) => (
             <AnimationComponent

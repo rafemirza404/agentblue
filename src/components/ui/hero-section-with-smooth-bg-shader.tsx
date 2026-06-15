@@ -1,5 +1,6 @@
 import { MeshGradient } from "@paper-design/shaders-react";
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 interface HeroSectionProps {
   title?: string;
@@ -85,8 +86,11 @@ export function HeroSection({
   };
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: mounted ? 1 : 0 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className={`relative w-full overflow-hidden bg-background flex items-center justify-center py-20 sm:py-24 md:py-32 ${className}`}
     >
       <div className="absolute inset-0 w-full h-full">
@@ -141,6 +145,6 @@ export function HeroSection({
           )}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
