@@ -16,10 +16,10 @@ const NewHero = () => {
         title="Automation Strategy That Fixes"
         highlightText="Revenue Leaks"
         description="For operations-heavy businesses. Audit, identify the leaks, automate the fix — first call in 30 minutes, revenue flowing in 90 days."
-        maxWidth="max-w-5xl"
+        maxWidth="max-w-4xl"
         fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
-        fontWeight={700}
-        titleClassName="text-white"
+        fontWeight={400}
+        titleClassName="text-white !font-normal"
         descriptionClassName="text-white/90 font-normal"
         veilOpacity="bg-black/10"
       >
