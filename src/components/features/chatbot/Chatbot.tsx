@@ -239,29 +239,24 @@ const Chatbot = () => {
           </div>
         )}
 
-        {/* Launcher button */}
+        {/* Launcher — bare message icon, no pill */}
         <div className="relative">
-          {/* soft outer glow pulse */}
-          <span className="pointer-events-none absolute -inset-1.5 rounded-full bg-[#4F7CFF]/25 blur-md animate-ping" style={{ animationDuration: '3s' }} />
-          <span className="pointer-events-none absolute inset-0 rounded-full bg-[#4F7CFF]/20 animate-ping" style={{ animationDuration: '3s', animationDelay: '0.4s' }} />
           <button
             onClick={() => { setIsOpen(true); setShowPrompt(false); }}
-            className="group relative w-[56px] h-[56px] rounded-full bg-gradient-to-br from-[#5C87FF] to-[#3F6BF0] shadow-[0_8px_28px_-6px_rgba(79,124,255,0.6),inset_0_1px_1px_rgba(255,255,255,0.4)] ring-1 ring-white/20 hover:shadow-[0_12px_36px_-6px_rgba(79,124,255,0.75)] hover:scale-[1.06] active:scale-95 transition-all duration-300 flex items-center justify-center overflow-hidden"
+            className="group relative flex h-[52px] w-[52px] items-center justify-center transition-transform duration-300 hover:scale-110 active:scale-95"
             aria-label="Open chat support"
           >
-            {/* glossy top sheen */}
-            <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-full bg-gradient-to-b from-white/30 to-transparent" />
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative transition-transform duration-300 group-hover:-translate-y-px group-hover:rotate-[-6deg]">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="transition-transform duration-300 group-hover:-translate-y-px group-hover:rotate-[-6deg] drop-shadow-[0_6px_16px_rgba(20,20,40,0.28)]">
               <path
                 d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                fill="white"
+                fill="#0A0A0A"
               />
-              <circle cx="8.5" cy="10" r="1.1" fill="#4F7CFF" />
-              <circle cx="12" cy="10" r="1.1" fill="#4F7CFF" />
-              <circle cx="15.5" cy="10" r="1.1" fill="#4F7CFF" />
+              <circle cx="8.5" cy="10" r="1.1" fill="white" />
+              <circle cx="12" cy="10" r="1.1" fill="white" />
+              <circle cx="15.5" cy="10" r="1.1" fill="white" />
             </svg>
             {/* online dot */}
-            <span className="absolute top-1 right-1 flex h-3 w-3">
+            <span className="absolute top-0.5 right-0.5 flex h-3 w-3">
               <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-70 animate-ping" />
               <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500 ring-2 ring-white" />
             </span>
