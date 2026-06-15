@@ -87,6 +87,8 @@ export function HeroSection({
             <div className={`absolute inset-0 pointer-events-none ${veilOpacity}`} />
           </>
         )}
+        {/* bottom fade so the gradient melts smoothly into the next section */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-40 bg-gradient-to-b from-transparent to-white" />
       </div>
 
       <div className={`relative z-10 ${maxWidth} mx-auto px-6 w-full`}>
@@ -96,10 +98,10 @@ export function HeroSection({
           <div
             role="heading"
             aria-level={1}
-            className={`text-balance text-4xl sm:text-5xl md:text-6xl xl:text-[80px] leading-tight sm:leading-tight md:leading-tight lg:leading-tight xl:leading-[1.1] mb-6 lg:text-7xl ${titleClassName}`}
+            className={`text-balance text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[68px] leading-[1.1] mb-6 ${titleClassName}`}
             style={{ fontFamily, fontWeight }}
           >
-            {title} <span>{highlightText}</span>
+            {title} <span className="block">{highlightText}</span>
           </div>
           <p
             className={`text-lg sm:text-xl text-pretty max-w-2xl mx-auto leading-relaxed mb-10 px-4 ${descriptionClassName}`}

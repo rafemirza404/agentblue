@@ -1,168 +1,156 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CalendarBooking } from "@/components/CalendarBooking";
+import React from "react";
+import { ChevronRight } from "lucide-react";
+import { AnimatedGroup } from "@/components/ui/animated-group";
 
-/* Faithful adaptation of the Aceternity HeroSectionOne reference — same box
-   structure, gradient accent lines, word-by-word animated heading, two
-   buttons, and framed preview. Navbar omitted (the site has its own nav).
-   Content and accent color restyled to the AgentBlue brand. */
+const transitionVariants = {
+  item: {
+    hidden: {
+      opacity: 0,
+      filter: "blur(12px)",
+      y: 12,
+    },
+    visible: {
+      opacity: 1,
+      filter: "blur(0px)",
+      y: 0,
+      transition: {
+        type: "spring" as const,
+        bounce: 0.3,
+        duration: 1.5,
+      },
+    },
+  },
+};
+
+/* Faithful implementation of the bottom part of hero-section-2.tsx:
+   the framed app-screenshot block + the customer logos grid.
+   Implemented verbatim, adapted only for Vite (next/link -> <a>,
+   motion/react -> framer-motion via AnimatedGroup, aspect-15/8 ->
+   aspect-[15/8]). The reference hero header/nav is intentionally omitted. */
 export function HeroShowcase() {
-  const openSophia = () =>
-    window.dispatchEvent(new CustomEvent("openVoiceCall"));
-
   return (
-    <div className="relative bg-white">
-      {/* soft fade so the gradient hero blends smoothly into this section */}
-      <div className="pointer-events-none absolute -top-24 left-0 h-24 w-full bg-gradient-to-b from-transparent to-white" />
-
-      <div className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
-        <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/80">
-          <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-[#4F7CFF] to-transparent" />
-        </div>
-        <div className="absolute inset-y-0 right-0 h-full w-px bg-neutral-200/80">
-          <div className="absolute h-40 w-px bg-gradient-to-b from-transparent via-[#4F7CFF] to-transparent" />
-        </div>
-        <div className="absolute inset-x-0 bottom-0 h-px w-full bg-neutral-200/80">
-          <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-[#4F7CFF] to-transparent" />
-        </div>
-
-        <div className="px-4 py-10 md:py-20">
-          <h2 className="relative z-10 mx-auto max-w-4xl text-center text-2xl text-[#0A2540] md:text-4xl lg:text-7xl">
-            {"See your revenue leaks fixed in real time"
-              .split(" ")
-              .map((word, index) => (
-                <motion.span
-                  key={index}
-                  initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                  transition={{
-                    duration: 0.3,
-                    delay: index * 0.1,
-                    ease: "easeInOut",
-                  }}
-                  className="mr-2 inline-block"
-                >
-                  {word}
-                </motion.span>
-              ))}
-          </h2>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.8 }}
-            className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600"
+    <main className="overflow-hidden">
+      <section>
+        <div className="relative">
+          <AnimatedGroup
+            variants={{
+              container: {
+                visible: {
+                  transition: {
+                    staggerChildren: 0.05,
+                    delayChildren: 0.75,
+                  },
+                },
+              },
+              ...transitionVariants,
+            }}
           >
-            AgentBlue audits your operations, finds the leaks, and automates the
-            fix — your first call in 30 minutes, revenue flowing in 90 days.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 1 }}
-            className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
-          >
-            <button
-              onClick={openSophia}
-              className="w-60 transform rounded-lg bg-[#4F7CFF] px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3F6BF0]"
-            >
-              Talk to Sophia
-            </button>
-            <CalendarBooking
-              trigger={
-                <button className="w-60 transform rounded-lg border border-gray-300 bg-white px-6 py-2 font-medium text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-100">
-                  Book a call
-                </button>
-              }
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 1.2 }}
-            className="relative z-10 mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md"
-          >
-            <div className="w-full overflow-hidden rounded-xl border border-gray-300">
-              <DashboardPreview />
+            <div className="relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
+              <div
+                aria-hidden
+                className="bg-gradient-to-b to-background absolute inset-0 z-10 from-transparent from-35%"
+              />
+              <div className="inset-shadow-2xs ring-background bg-background relative mx-auto max-w-5xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
+                <img
+                  className="z-2 border-border/25 aspect-[15/8] relative rounded-2xl border"
+                  src="https://tailark.com/_next/image?url=%2Fmail2-light.png&w=3840&q=75"
+                  alt="app screen"
+                  width="2700"
+                  height="1440"
+                />
+              </div>
             </div>
-          </motion.div>
+          </AnimatedGroup>
         </div>
-      </div>
-    </div>
+      </section>
+      <section className="bg-background pb-16 pt-16 md:pb-32">
+        <div className="group relative m-auto max-w-5xl px-6">
+          <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
+            <a href="/" className="block text-sm duration-150 hover:opacity-75">
+              <span> Meet Our Customers</span>
+              <ChevronRight className="ml-1 inline-block size-3" />
+            </a>
+          </div>
+          <div className="group-hover:blur-xs mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 sm:gap-x-16 sm:gap-y-14">
+            <div className="flex">
+              <img
+                className="mx-auto h-5 w-fit"
+                src="https://html.tailus.io/blocks/customers/nvidia.svg"
+                alt="Nvidia Logo"
+                height="20"
+                width="auto"
+              />
+            </div>
+
+            <div className="flex">
+              <img
+                className="mx-auto h-4 w-fit"
+                src="https://html.tailus.io/blocks/customers/column.svg"
+                alt="Column Logo"
+                height="16"
+                width="auto"
+              />
+            </div>
+            <div className="flex">
+              <img
+                className="mx-auto h-4 w-fit"
+                src="https://html.tailus.io/blocks/customers/github.svg"
+                alt="GitHub Logo"
+                height="16"
+                width="auto"
+              />
+            </div>
+            <div className="flex">
+              <img
+                className="mx-auto h-5 w-fit"
+                src="https://html.tailus.io/blocks/customers/nike.svg"
+                alt="Nike Logo"
+                height="20"
+                width="auto"
+              />
+            </div>
+            <div className="flex">
+              <img
+                className="mx-auto h-5 w-fit"
+                src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
+                alt="Lemon Squeezy Logo"
+                height="20"
+                width="auto"
+              />
+            </div>
+            <div className="flex">
+              <img
+                className="mx-auto h-4 w-fit"
+                src="https://html.tailus.io/blocks/customers/laravel.svg"
+                alt="Laravel Logo"
+                height="16"
+                width="auto"
+              />
+            </div>
+            <div className="flex">
+              <img
+                className="mx-auto h-7 w-fit"
+                src="https://html.tailus.io/blocks/customers/lilly.svg"
+                alt="Lilly Logo"
+                height="28"
+                width="auto"
+              />
+            </div>
+
+            <div className="flex">
+              <img
+                className="mx-auto h-6 w-fit"
+                src="https://html.tailus.io/blocks/customers/openai.svg"
+                alt="OpenAI Logo"
+                height="24"
+                width="auto"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
-
-/* Brand operations dashboard rendered as HTML/CSS inside the framed box,
-   sitting in the same 16/9 frame the reference uses for its image. */
-const DashboardPreview = () => (
-  <div className="aspect-[16/9] w-full bg-[#F7F8FA]">
-    {/* browser chrome bar */}
-    <div className="flex items-center gap-1.5 border-b border-[#EAECF0] bg-white px-4 py-2.5">
-      <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
-      <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
-      <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
-      <div className="ml-3 flex max-w-[220px] flex-1 items-center gap-1.5 rounded-md border border-[#EBEBF0] bg-[#F7F8FA] px-2.5 py-1 text-[10px] text-[#9AA5B1]">
-        <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#1ABF6B]" />
-        app.agentblue.in/operations
-      </div>
-    </div>
-
-    {/* dashboard body */}
-    <div className="p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <p className="text-[13px] font-semibold text-[#0A2540]">
-            Operations overview
-          </p>
-          <p className="text-[10px] text-[#9AA5B1]">Last updated just now</p>
-        </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#EAF7F0] px-2.5 py-1 text-[9px] font-semibold text-[#1ABF6B]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#1ABF6B]" /> Live
-        </span>
-      </div>
-
-      {/* KPI strip */}
-      <div className="mb-4 grid grid-cols-2 gap-2 lg:grid-cols-4">
-        {[
-          { label: "Revenue recovered", value: "$218,400", color: "#4F7CFF" },
-          { label: "Hours saved / mo", value: "340 hrs", color: "#1ABF6B" },
-          { label: "Lead response", value: "< 90 sec", color: "#635BFF" },
-          { label: "Leaks fixed", value: "3 of 3", color: "#FF6FA3" },
-        ].map((k, i) => (
-          <div key={i} className="rounded-xl border border-[#EAECF0] bg-white p-3">
-            <p className="text-[8px] text-[#9AA5B1]">{k.label}</p>
-            <p className="mt-0.5 text-[14px] font-semibold leading-tight text-[#0A2540]">
-              {k.value}
-            </p>
-            <span
-              className="mt-1 inline-block h-1 w-8 rounded-full"
-              style={{ backgroundColor: k.color }}
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* bar chart */}
-      <div className="rounded-xl border border-[#EAECF0] bg-white p-4">
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-[10px] font-semibold text-[#0A2540]">
-            Revenue recovered
-          </p>
-          <span className="text-[8px] text-[#9AA5B1]">12-month</span>
-        </div>
-        <div className="flex h-[90px] items-end gap-[3px] border-b border-[#F0F1F4]">
-          {[22, 34, 28, 46, 38, 58, 44, 68, 52, 76, 60, 88].map((h, i) => (
-            <div
-              key={i}
-              className="flex-1 rounded-t-[2px] bg-gradient-to-t from-[#4F7CFF] to-[#86ABFF]"
-              style={{ height: `${h}%` }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
