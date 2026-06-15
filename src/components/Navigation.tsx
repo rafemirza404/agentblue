@@ -65,11 +65,11 @@ const Navigation = () => {
             onClick={() => handleNavClick('/')}
             className="flex items-center space-x-2.5 hover:opacity-80 transition-opacity duration-200"
           >
-            <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center p-1 shadow-sm border border-gray-100">
+            <div className="w-9 h-9 flex items-center justify-center">
               <img
                 src={agentblueLogo}
                 alt="AgentBlue Logo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain drop-shadow-sm"
               />
             </div>
             <span className={`text-[17px] font-normal tracking-tight ${isDemoPage ? 'text-white' : 'text-gray-900'}`}>

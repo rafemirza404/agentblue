@@ -98,10 +98,10 @@ export function HeroSection({
           <div
             role="heading"
             aria-level={1}
-            className={`text-balance text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[68px] leading-[1.1] mb-6 ${titleClassName}`}
+            className={`mx-auto max-w-3xl text-balance text-5xl md:text-6xl leading-[1.05] mb-6 ${titleClassName}`}
             style={{ fontFamily, fontWeight }}
           >
-            {title} <span className="block">{highlightText}</span>
+            {title} {highlightText}
           </div>
           <p
             className={`text-lg sm:text-xl text-pretty max-w-2xl mx-auto leading-relaxed mb-10 px-4 ${descriptionClassName}`}

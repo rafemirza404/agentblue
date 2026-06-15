@@ -19,9 +19,9 @@ const NewHero = () => {
         maxWidth="max-w-4xl"
         fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
         fontWeight={400}
-        titleClassName="text-white !font-normal"
-        descriptionClassName="text-white/90 font-normal"
-        veilOpacity="bg-black/10"
+        titleClassName="!text-black !font-normal"
+        descriptionClassName="text-black/70 font-normal"
+        veilOpacity="bg-white/15"
       >
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
           <button
