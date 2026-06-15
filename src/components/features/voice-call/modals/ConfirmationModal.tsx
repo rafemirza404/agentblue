@@ -55,7 +55,7 @@ export const ConfirmationModal = ({
           <Button onClick={onUpdateInfo} variant="outline" className="flex-1">
             Update Info
           </Button>
-          <Button onClick={onConfirm} className="flex-1 bg-[#0066FF] hover:bg-[#0052CC]">
+          <Button onClick={onConfirm} className="flex-1 rounded-full bg-gradient-to-br from-[#5C87FF] to-[#3F6BF0] hover:opacity-95 shadow-[0_10px_26px_-8px_rgba(79,124,255,0.65)]">
             <Phone className="w-4 h-4 mr-2" />
             Start Call
           </Button>

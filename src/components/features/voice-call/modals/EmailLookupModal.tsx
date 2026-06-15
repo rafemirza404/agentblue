@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { webhookService } from '@/services/api/webhooks';
 import { validateEmail } from '@/lib/validation';
+import agentblueLogo from '@/assets/agentblue-logo.png';
 import type { LeadData } from '@/types/models';
 
 interface EmailLookupModalProps {
@@ -58,11 +59,14 @@ export const EmailLookupModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-2xl">Welcome back!</DialogTitle>
-          <DialogDescription className="text-base pt-2">
-            Enter your email to continue
+      <DialogContent className="sm:max-w-md rounded-3xl border-0 shadow-[0_30px_80px_-16px_rgba(20,20,40,0.4)]">
+        <DialogHeader className="items-center text-center">
+          <div className="mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#EEF4FF] to-[#DCE8FF] ring-1 ring-[#4F7CFF]/15 p-2.5">
+            <img src={agentblueLogo} alt="Sophia AI" className="h-full w-full object-contain" />
+          </div>
+          <DialogTitle className="text-2xl tracking-tight text-[#0A2540]">Welcome back!</DialogTitle>
+          <DialogDescription className="text-[14px] text-[#697386]">
+            Enter your email to continue your call with Sophia
           </DialogDescription>
         </DialogHeader>
 
@@ -86,7 +90,7 @@ export const EmailLookupModal = ({
           <Button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="w-full bg-[#0066FF] hover:bg-[#0052CC]"
+            className="w-full rounded-full bg-gradient-to-br from-[#5C87FF] to-[#3F6BF0] hover:opacity-95 shadow-[0_10px_26px_-8px_rgba(79,124,255,0.65)]"
           >
             {isLoading ? 'Looking up...' : 'Continue'}
           </Button>
