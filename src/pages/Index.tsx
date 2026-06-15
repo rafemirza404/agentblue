@@ -22,69 +22,69 @@ const Index = () => {
     <div className="min-h-screen">
       <Navigation />
       <main>
-        {/* Section 1: Hero Section */}
+        {/* 1 — Hero: the promise */}
         <section id="hero">
           <NewHero />
         </section>
 
-        {/* Section 2: Integrations */}
-        <section id="integrations">
-          <IntegrationCarousel />
-        </section>
-
-        {/* Section 3: Launch Video */}
-        <section id="launch-video">
-          <LaunchVideo />
-        </section>
-
-        {/* Section 3: Three Tiers (ServiceCard grid) */}
-        <section id="how-we-work">
-          <OperationsTiers />
-        </section>
-
-        {/* Section 3: Why We're Different */}
-        <section id="why-different">
-          <WhyDifferent />
-        </section>
-
-        {/* Feature showcase — picture-driven capabilities carousel */}
-        <section id="capabilities" className="px-4 py-16 md:py-24">
-          <FeatureCarousel />
-        </section>
-
-        {/* Section 3b: Modular Solutions (Stripe-style bento) */}
-        <section id="modular-solutions">
-          <ModularSolutions />
-        </section>
-
-        {/* Tabbed feature spotlight */}
+        {/* 2 — Outcomes: lead with benefits (recover revenue / save hours / always-on) */}
         <section id="feature-tabs">
           <FeatureTabs />
         </section>
 
-        {/* Case-study gallery carousel */}
+        {/* 3 — Proof: case studies / results, high on the page */}
         <section id="case-studies">
           <Gallery />
         </section>
 
-        {/* Section 4: Video/Demo Section with Gradient - CONDITIONAL */}
+        {/* 4 — See it real: launch video */}
+        <section id="launch-video">
+          <LaunchVideo />
+        </section>
+
+        {/* 5 — Product suite: what they actually get */}
+        <section id="modular-solutions">
+          <ModularSolutions />
+        </section>
+
+        {/* 6 — Capability depth (picture-driven carousel) */}
+        <section id="capabilities" className="px-4 py-16 md:py-24">
+          <FeatureCarousel />
+        </section>
+
+        {/* 7 — How we work: Diagnose → Design → Deploy */}
+        <section id="how-we-work">
+          <OperationsTiers />
+        </section>
+
+        {/* 8 — Differentiation: objection-crusher before the ask */}
+        <section id="why-different">
+          <WhyDifferent />
+        </section>
+
+        {/* 9 — Reassurance: fits your stack (handled low, as last objection) */}
+        <section id="integrations">
+          <IntegrationCarousel />
+        </section>
+
+        {/* Conditional VSL */}
         {SHOW_VIDEO_DEMO && (
           <section id="video-demo">
             <VideoDemo />
           </section>
         )}
 
-        {/* Section 5: FAQ - PRESERVED */}
+        {/* 10 — Remaining objections */}
         <section id="faq">
           <FAQ />
         </section>
 
-        {/* Section 6: Final CTA */}
+        {/* 11 — The close */}
         <section id="final-cta">
           <FinalCTA />
         </section>
 
-        {/* Section 7: Assessment Form */}
+        {/* 12 — Convert */}
         <section id="contact-form-section">
           <AssessmentForm />
         </section>
