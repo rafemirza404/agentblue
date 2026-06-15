@@ -46,15 +46,19 @@ const Navigation = () => {
     setIsOpen(false);
   };
 
+  // When the mobile menu is open, force a solid white background so the
+  // dropdown is never translucent (even at the top of the page).
   const navBg = isDemoPage
     ? 'bg-black/95 border-b border-gray-800'
-    : scrolled
+    : isOpen
       ? 'bg-white border-b border-gray-100 shadow-[0_1px_12px_rgba(0,0,0,0.06)]'
-      : 'bg-white/0 border-b border-transparent';
+      : scrolled
+        ? 'bg-white border-b border-gray-100 shadow-[0_1px_12px_rgba(0,0,0,0.06)]'
+        : 'bg-white/0 border-b border-transparent';
 
   return (
     <nav
-      className={`${isDemoPage ? 'relative' : 'fixed top-0'} w-full md:backdrop-blur-xl z-50 transition-all duration-300 ${navBg}`}
+      className={`${isDemoPage ? 'relative' : 'fixed top-0'} w-full ${isOpen ? '' : 'md:backdrop-blur-xl'} z-50 transition-all duration-300 ${navBg}`}
     >
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="flex justify-between items-center h-[68px]">
@@ -99,9 +103,9 @@ const Navigation = () => {
           <div className="hidden md:flex items-center gap-3">
             <Button
               onClick={handleGetStarted}
-              className="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-[14px] font-normal px-5 py-2 h-9 rounded-full transition-all duration-200 shadow-[0_0_0_0_rgba(79,124,255,0)] hover:shadow-[0_0_20px_rgba(79,124,255,0.35)]"
+              className="bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white text-[14px] font-light px-5 py-2 h-9 rounded-full transition-all duration-200 shadow-[0_0_0_0_rgba(79,124,255,0)] hover:shadow-[0_0_20px_rgba(79,124,255,0.35)]"
             >
-              Get Started
+              Talk to Sales
             </Button>
           </div>
 
@@ -137,9 +141,9 @@ const Navigation = () => {
               <div className="pt-3">
                 <Button
                   onClick={handleGetStarted}
-                  className="w-full bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white font-semibold rounded-full"
+                  className="w-full bg-[#4F7CFF] hover:bg-[#3B6AE8] text-white font-light rounded-full"
                 >
-                  Get Started
+                  Talk to Sales
                 </Button>
               </div>
             </div>

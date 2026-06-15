@@ -87,7 +87,7 @@ export function HeroSection({
   return (
     <section
       ref={sectionRef}
-      className={`relative w-full overflow-hidden bg-background flex items-center justify-center py-28 md:py-32 ${className}`}
+      className={`relative w-full overflow-hidden bg-background flex items-center justify-center py-20 sm:py-24 md:py-32 ${className}`}
     >
       <div className="absolute inset-0 w-full h-full">
         {mounted && (
@@ -118,7 +118,7 @@ export function HeroSection({
           <div
             role="heading"
             aria-level={1}
-            className={`mx-auto max-w-3xl text-balance text-5xl md:text-6xl leading-[1.05] mb-6 ${titleClassName}`}
+            className={`mx-auto max-w-3xl text-balance text-[2rem] sm:text-4xl md:text-6xl leading-[1.08] md:leading-[1.05] mb-6 ${titleClassName}`}
             style={{ fontFamily, fontWeight }}
           >
             {title} {highlightText}

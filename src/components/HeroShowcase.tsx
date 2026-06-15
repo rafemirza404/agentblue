@@ -47,7 +47,7 @@ export function HeroShowcase() {
               ...transitionVariants,
             }}
           >
-            <div className="relative -mr-56 mt-8 overflow-hidden px-2 sm:mr-0 sm:mt-12 md:mt-20">
+            <div className="relative mt-8 overflow-hidden px-4 sm:mr-0 sm:mt-12 md:mt-20">
               <div
                 aria-hidden
                 className="bg-gradient-to-b to-background absolute inset-0 z-10 from-transparent from-35%"
@@ -73,7 +73,7 @@ export function HeroShowcase() {
               <ChevronRight className="ml-1 inline-block size-3" />
             </a>
           </div>
-          <div className="group-hover:blur-xs mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 sm:gap-x-16 sm:gap-y-14">
+          <div className="group-hover:blur-xs mx-auto mt-12 grid max-w-2xl grid-cols-2 gap-x-8 gap-y-8 transition-all duration-500 group-hover:opacity-50 sm:grid-cols-4 sm:gap-x-16 sm:gap-y-14">
             <div className="flex">
               <img
                 className="mx-auto h-5 w-fit"
