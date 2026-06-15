@@ -83,7 +83,7 @@ const FeatureTabs = ({
   ],
 }: FeatureTabsProps) => {
   return (
-    <section className="py-24 md:py-32">
+    <section className="py-14 md:py-32">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-4 text-center">
           <Badge variant="outline">{badge}</Badge>

@@ -128,7 +128,7 @@ const WhyDifferent = () => {
   ];
 
   return (
-    <section className="bg-white py-16 px-4 md:py-28">
+    <section className="bg-white py-14 px-4 md:py-28">
       <div className="container mx-auto max-w-6xl">
         {/* Heading */}
         <motion.div

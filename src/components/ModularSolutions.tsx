@@ -33,7 +33,7 @@ const cardBase =
 
 const ModularSolutions = () => {
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section className="bg-white py-14 md:py-28">
       <div className="container mx-auto max-w-6xl px-4">
         {/* Section heading */}
         <motion.div
@@ -275,7 +275,7 @@ const ModularSolutions = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className={`${cardBase} min-h-[420px] p-8`}
+            className={`${cardBase} min-h-[340px] p-6 sm:p-8 md:min-h-[420px]`}
           >
             <div className="relative z-10 mb-5 flex items-start justify-between">
               <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-[#0A2540]">
@@ -313,7 +313,7 @@ const ModularSolutions = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className={`${cardBase} min-h-[420px] p-8`}
+            className={`${cardBase} min-h-[340px] p-6 sm:p-8 md:min-h-[420px]`}
           >
             <div className="relative z-10 mb-5 flex items-start justify-between">
               <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-[#0A2540]">
@@ -350,7 +350,7 @@ const ModularSolutions = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={fadeUp}
-            className={`${cardBase} min-h-[420px] p-8`}
+            className={`${cardBase} min-h-[340px] p-6 sm:p-8 md:min-h-[420px]`}
           >
             <div className="relative z-10 mb-5 flex items-start justify-between">
               <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-[#0A2540]">

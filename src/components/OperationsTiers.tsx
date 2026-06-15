@@ -33,7 +33,7 @@ const tiers = [
 
 const OperationsTiers = () => {
   return (
-    <section className="bg-white py-20 px-4 md:py-28">
+    <section className="bg-white py-14 px-4 md:py-28">
       <div className="container mx-auto max-w-6xl">
         <motion.div
           className="mb-12 md:mb-16"
