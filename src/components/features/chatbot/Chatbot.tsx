@@ -265,11 +265,11 @@ const Chatbot = () => {
       </div>
 
       {/* Desktop Chat Modal */}
-      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[360px] max-w-[360px] h-[580px] max-h-[580px] bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
+      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[414px] max-w-[414px] h-[522px] max-h-[522px] bg-white rounded-[26px] shadow-[0_24px_70px_-12px_rgba(20,20,40,0.28),0_0_0_1px_rgba(20,20,40,0.04)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
         {/* Header */}
-        <div className="h-[80px] bg-white px-6 py-5 flex items-center justify-between border-b border-[#E5E7EB]">
+        <div className="h-[76px] bg-white px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center">
               <img
                 src={agentblueLogo}
                 alt="AgentBlue"
@@ -277,17 +277,23 @@ const Chatbot = () => {
               />
             </div>
             <div>
-              <h3 className="text-[#1a1a2e] font-semibold text-lg leading-tight">
+              <h3 className="text-[#1a1a2e] font-semibold text-[17px] leading-tight tracking-tight">
                 {ENV.app.name}
               </h3>
-              <p className="text-[#6B7280] text-[13px] mt-1">
-                We architect operational excellence
-              </p>
+              <div className="flex items-center gap-1.5 mt-1">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60 animate-ping" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-500" />
+                </span>
+                <p className="text-[#6B7280] text-[12.5px]">
+                  Online · We architect operational excellence
+                </p>
+              </div>
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="w-8 h-8 text-[#6B7280] hover:bg-[#F3F4F6] rounded-lg transition-colors flex items-center justify-center"
+            className="w-8 h-8 text-[#9CA3AF] hover:text-[#6B7280] hover:bg-[#F3F4F6] rounded-full transition-colors flex items-center justify-center"
             aria-label="Close chat"
           >
             <X className="w-4 h-4" />
@@ -299,10 +305,10 @@ const Chatbot = () => {
           <div
             ref={containerRef}
             onScroll={handleScroll}
-            className="absolute inset-0 bg-[#F8F9FA] p-5 overflow-y-auto scroll-smooth"
+            className="absolute inset-0 bg-gradient-to-b from-[#FAFBFC] to-[#F4F6FA] px-5 py-5 overflow-y-auto scroll-smooth"
             style={{
               scrollbarWidth: 'thin',
-              scrollbarColor: 'rgba(0,0,0,0.2) transparent',
+              scrollbarColor: 'rgba(0,0,0,0.15) transparent',
             }}
           >
             <div className="space-y-4">
@@ -318,10 +324,10 @@ const Chatbot = () => {
               {/* Typing Indicator */}
               {isTyping && (
                 <div className="flex justify-start animate-in fade-in duration-200">
-                  <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
+                  <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-[0_2px_8px_rgba(20,20,40,0.1)] ring-1 ring-black/5">
                     <img src={agentblueLogo} alt="Bot" className="w-full h-full object-contain" />
                   </div>
-                  <div className="max-w-[80px] bg-[#F3F4F6] px-5 py-3 rounded-2xl rounded-tl-[4px]">
+                  <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-md shadow-[0_2px_10px_-2px_rgba(20,20,40,0.08)] ring-1 ring-black/[0.04]">
                     <div className="flex gap-1.5 items-center">
                       {[0, 200, 400].map((delay) => (
                         <span
@@ -355,22 +361,22 @@ const Chatbot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="h-[80px] bg-white px-5 py-4 border-t border-[#E5E7EB] flex gap-3 items-center">
+        <div className="bg-white px-4 pb-4 pt-2 flex gap-2.5 items-center">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-12 bg-white border-2 border-[#E5E7EB] rounded-3xl px-5 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.1)]"
+            className="flex-1 h-12 bg-[#F4F6FA] border border-transparent rounded-full px-5 text-sm text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:bg-white focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.12)]"
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="w-12 h-12 bg-[#4F7CFF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-[0_4px_12px_rgba(79,124,255,0.3)] disabled:bg-[#E5E7EB] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="w-12 h-12 flex-shrink-0 bg-[#4F7CFF] rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-[0_6px_16px_rgba(79,124,255,0.4)] disabled:bg-[#E5E7EB] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
             aria-label="Send message"
           >
-            <Send className="w-5 h-5 text-white" />
+            <Send className="w-[18px] h-[18px] text-white -ml-0.5" />
           </button>
         </div>
       </div>
@@ -384,7 +390,7 @@ const Chatbot = () => {
         </div>
 
         {/* Header */}
-        <div className="px-5 py-3 flex items-center justify-between border-b border-[#F3F4F6] flex-shrink-0">
+        <div className="px-5 py-3 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] flex items-center justify-center p-1.5 flex-shrink-0">
               <img src={agentblueLogo} alt="AgentBlue" className="w-full h-full object-contain" />
@@ -413,7 +419,7 @@ const Chatbot = () => {
           <div
             ref={containerRef}
             onScroll={handleScroll}
-            className="absolute inset-0 bg-[#F8F9FA] p-3 overflow-y-auto scroll-smooth"
+            className="absolute inset-0 bg-gradient-to-b from-[#FAFBFC] to-[#F4F6FA] p-3 overflow-y-auto scroll-smooth"
           >
             <div className="space-y-2">
               {messages.map((message, index) => (
@@ -428,10 +434,10 @@ const Chatbot = () => {
               {/* Typing Indicator */}
               {isTyping && (
                 <div className="flex justify-start animate-in fade-in duration-200">
-                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.1)]">
+                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center p-1 mr-2 flex-shrink-0 shadow-[0_2px_8px_rgba(20,20,40,0.1)] ring-1 ring-black/5">
                     <img src={agentblueLogo} alt="Bot" className="w-full h-full object-contain" />
                   </div>
-                  <div className="bg-[#F3F4F6] px-3 py-2 rounded-2xl rounded-tl-[4px]">
+                  <div className="bg-white px-3.5 py-2.5 rounded-2xl rounded-bl-md shadow-[0_2px_10px_-2px_rgba(20,20,40,0.08)] ring-1 ring-black/[0.04]">
                     <div className="flex gap-1 items-center">
                       {[0, 200, 400].map((delay) => (
                         <span
@@ -465,14 +471,14 @@ const Chatbot = () => {
         </div>
 
         {/* Input Area */}
-        <div className="bg-white px-4 py-3 border-t border-[#F3F4F6] flex gap-3 items-center" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+        <div className="bg-white px-4 pt-2 pb-3 flex gap-2.5 items-center" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 h-11 bg-white border-2 border-[#E5E7EB] rounded-3xl px-4 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.1)]"
+            className="flex-1 h-11 bg-[#F4F6FA] border border-transparent rounded-full px-4 text-base text-[#1a1a2e] placeholder:text-[#9CA3AF] outline-none transition-all duration-200 focus:bg-white focus:border-[#4F7CFF] focus:shadow-[0_0_0_3px_rgba(79,124,255,0.12)]"
             style={{ fontSize: '16px' }}
           />
           <button

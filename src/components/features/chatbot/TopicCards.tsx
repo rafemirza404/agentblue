@@ -56,7 +56,7 @@ export const TopicCards = ({ onCardClick, isMobile = false }: TopicCardsProps) =
           <button
             key={card.id}
             onClick={() => onCardClick(card.message)}
-            className="w-full bg-white border border-[#E5E7EB] rounded-full px-4 py-2 text-left text-[12px] font-medium text-[#1a1a2e] hover:border-[#4F7CFF] hover:bg-[#F0F7FF] transition-all duration-200 truncate"
+            className="w-full bg-white ring-1 ring-black/[0.06] rounded-full px-4 py-2.5 text-left text-[12px] font-medium text-[#1a1a2e] shadow-[0_1px_4px_rgba(20,20,40,0.05)] hover:ring-[#4F7CFF]/40 hover:bg-[#F4F8FF] hover:text-[#4F7CFF] transition-all duration-200 truncate"
           >
             {card.title}
           </button>
@@ -73,9 +73,11 @@ export const TopicCards = ({ onCardClick, isMobile = false }: TopicCardsProps) =
           <button
             key={card.id}
             onClick={() => onCardClick(card.message)}
-            className="bg-white border-2 border-[#E5E7EB] rounded-xl p-4 cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)] text-left flex flex-col gap-2 col-span-2 last:col-span-2"
+            className="group bg-white ring-1 ring-black/[0.06] rounded-2xl p-4 cursor-pointer transition-all duration-250 hover:ring-[#4F7CFF]/40 hover:bg-[#F8FAFF] hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-8px_rgba(79,124,255,0.35)] shadow-[0_1px_4px_rgba(20,20,40,0.05)] text-left flex flex-col gap-2 col-span-2 last:col-span-2"
           >
-            <Icon className="w-8 h-8 text-[#0066FF] mb-1" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#EEF4FF] text-[#4F7CFF] transition-colors duration-200 group-hover:bg-[#4F7CFF] group-hover:text-white">
+              <Icon className="w-[18px] h-[18px]" />
+            </span>
             <div className="text-[15px] font-semibold text-[#1a1a2e] leading-tight">{card.title}</div>
             <div className="text-[13px] text-[#6B7280] leading-snug">{card.description}</div>
           </button>
