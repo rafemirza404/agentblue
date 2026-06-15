@@ -212,38 +212,59 @@ const Chatbot = () => {
   // Closed state
   if (!isOpen) {
     return (
-      <div className="fixed bottom-6 right-6 z-[9998] flex flex-col items-end gap-3">
+      <div className="fixed bottom-6 right-6 z-[9998] flex flex-col items-end gap-3.5">
 
         {/* Prompt bubble */}
         {showPrompt && !promptDismissed && (
-          <div className="flex items-start gap-2 animate-in slide-in-from-bottom-2 fade-in duration-300">
-            <div className="relative bg-white rounded-2xl rounded-br-sm px-4 py-3 shadow-[0_4px_24px_rgba(0,0,0,0.12)] max-w-[200px]">
+          <div className="relative mr-1 animate-in slide-in-from-bottom-3 fade-in duration-400">
+            <div className="relative flex items-center gap-2.5 bg-white rounded-2xl rounded-br-md pl-2.5 pr-4 py-2.5 shadow-[0_12px_40px_-8px_rgba(20,20,40,0.22)] ring-1 ring-black/[0.05] max-w-[230px]">
               <button
                 onClick={() => { setShowPrompt(false); setPromptDismissed(true); }}
-                className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-500 text-[10px] flex items-center justify-center leading-none transition-colors"
+                className="absolute -top-2 -right-2 w-5 h-5 bg-white ring-1 ring-black/10 hover:bg-gray-100 rounded-full text-gray-400 hover:text-gray-600 text-[12px] flex items-center justify-center leading-none shadow-sm transition-colors"
+                aria-label="Dismiss"
               >×</button>
-              <p className="text-[13px] font-medium text-gray-800 leading-snug">
-                Have a question? 👋
-              </p>
-              <p className="text-[12px] text-gray-500 mt-0.5">We're here to help.</p>
+              {/* mini avatar */}
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#EEF4FF] p-1 ring-1 ring-black/[0.04]">
+                <img src={agentblueLogo} alt="AgentBlue" className="h-full w-full object-contain" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[13px] font-semibold text-[#1a1a2e] leading-snug">
+                  Have a question? 👋
+                </p>
+                <p className="text-[12px] text-gray-500 leading-snug">We're here to help.</p>
+              </div>
             </div>
+            {/* tail */}
+            <span className="absolute -bottom-1.5 right-7 h-3 w-3 rotate-45 bg-white ring-1 ring-black/[0.05] [clip-path:polygon(100%_0,100%_100%,0_100%)]" />
           </div>
         )}
 
-        {/* Button with pulse */}
+        {/* Launcher button */}
         <div className="relative">
-          <span className="absolute inset-0 rounded-full bg-[#4F7CFF] opacity-30 animate-ping" style={{ animationDuration: '2.5s' }} />
+          {/* soft outer glow pulse */}
+          <span className="pointer-events-none absolute -inset-1.5 rounded-full bg-[#4F7CFF]/25 blur-md animate-ping" style={{ animationDuration: '3s' }} />
+          <span className="pointer-events-none absolute inset-0 rounded-full bg-[#4F7CFF]/20 animate-ping" style={{ animationDuration: '3s', animationDelay: '0.4s' }} />
           <button
             onClick={() => { setIsOpen(true); setShowPrompt(false); }}
-            className="relative w-[52px] h-[52px] bg-[#4F7CFF] rounded-full shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.5)] hover:scale-105 transition-all duration-300 flex items-center justify-center"
+            className="group relative w-[56px] h-[56px] rounded-full bg-gradient-to-br from-[#5C87FF] to-[#3F6BF0] shadow-[0_8px_28px_-6px_rgba(79,124,255,0.6),inset_0_1px_1px_rgba(255,255,255,0.4)] ring-1 ring-white/20 hover:shadow-[0_12px_36px_-6px_rgba(79,124,255,0.75)] hover:scale-[1.06] active:scale-95 transition-all duration-300 flex items-center justify-center overflow-hidden"
             aria-label="Open chat support"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* glossy top sheen */}
+            <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-full bg-gradient-to-b from-white/30 to-transparent" />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="relative transition-transform duration-300 group-hover:-translate-y-px group-hover:rotate-[-6deg]">
               <path
                 d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
                 fill="white"
               />
+              <circle cx="8.5" cy="10" r="1.1" fill="#4F7CFF" />
+              <circle cx="12" cy="10" r="1.1" fill="#4F7CFF" />
+              <circle cx="15.5" cy="10" r="1.1" fill="#4F7CFF" />
             </svg>
+            {/* online dot */}
+            <span className="absolute top-1 right-1 flex h-3 w-3">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-70 animate-ping" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500 ring-2 ring-white" />
+            </span>
           </button>
         </div>
 
@@ -257,10 +278,11 @@ const Chatbot = () => {
       <div className="hidden md:flex fixed bottom-6 right-6 z-[10000]">
         <button
           onClick={handleClose}
-          className="w-[52px] h-[52px] bg-[#4F7CFF] rounded-full shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.5)] hover:scale-105 transition-all duration-300 flex items-center justify-center"
+          className="group relative w-[56px] h-[56px] rounded-full bg-gradient-to-br from-[#5C87FF] to-[#3F6BF0] shadow-[0_8px_28px_-6px_rgba(79,124,255,0.6),inset_0_1px_1px_rgba(255,255,255,0.4)] ring-1 ring-white/20 hover:shadow-[0_12px_36px_-6px_rgba(79,124,255,0.75)] hover:scale-[1.06] active:scale-95 transition-all duration-300 flex items-center justify-center overflow-hidden"
           aria-label="Close chat"
         >
-          <ChevronDown className="w-6 h-6 text-white" />
+          <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 rounded-t-full bg-gradient-to-b from-white/30 to-transparent" />
+          <ChevronDown className="relative w-6 h-6 text-white transition-transform duration-300 group-hover:translate-y-0.5" />
         </button>
       </div>
 
