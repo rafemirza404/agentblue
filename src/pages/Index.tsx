@@ -5,6 +5,9 @@ import LaunchVideo from "@/components/LaunchVideo";
 import HowItWorks from "@/components/HowItWorks";
 import WhyDifferent from "@/components/WhyDifferent";
 import ModularSolutions from "@/components/ModularSolutions";
+import { FeatureCarousel } from "@/components/ui/feature-carousel";
+import { FeatureTabs } from "@/components/FeatureTabs";
+import { Gallery } from "@/components/Gallery";
 import VideoDemo from "@/components/VideoDemo";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -44,9 +47,24 @@ const Index = () => {
           <WhyDifferent />
         </section>
 
+        {/* Feature showcase — picture-driven capabilities carousel */}
+        <section id="capabilities" className="px-4 py-16 md:py-24">
+          <FeatureCarousel />
+        </section>
+
         {/* Section 3b: Modular Solutions (Stripe-style bento) */}
         <section id="modular-solutions">
           <ModularSolutions />
+        </section>
+
+        {/* Tabbed feature spotlight */}
+        <section id="feature-tabs">
+          <FeatureTabs />
+        </section>
+
+        {/* Case-study gallery carousel */}
+        <section id="case-studies">
+          <Gallery />
         </section>
 
         {/* Section 4: Video/Demo Section with Gradient - CONDITIONAL */}
