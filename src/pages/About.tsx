@@ -2,7 +2,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Scale, FileText, BarChart3, Linkedin, ArrowRight } from "lucide-react";
-import rafeImage from "@/assets/rafe.png";
+import rafeImage from "@/assets/rafe.webp";
 import { CalendarBooking } from "@/components/CalendarBooking";
 
 const About = () => {

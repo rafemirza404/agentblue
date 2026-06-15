@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const ICONS_ROW1 = [
   "https://cdn-icons-png.flaticon.com/512/5968/5968854.png",
@@ -28,8 +28,29 @@ const repeatedIcons = (icons: string[], repeat = 4) =>
   Array.from({ length: repeat }).flatMap(() => icons);
 
 export default function IntegrationCarousel() {
+  // Pause the two infinite marquees whenever the section is off-screen so the
+  // compositor isn't running them during the rest of the page's scroll.
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "200px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const playState = inView ? "" : "[animation-play-state:paused]";
+
   return (
-    <section className="relative py-32 overflow-hidden bg-white dark:bg-black">
+    <section
+      ref={sectionRef}
+      className="relative py-32 overflow-hidden bg-white dark:bg-black"
+    >
       {/* Light grid background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.04)_1px,transparent_1px)] [background-size:24px_24px]" />
 
@@ -54,25 +75,25 @@ export default function IntegrationCarousel() {
         {/* Carousel */}
         <div className="mt-12 overflow-hidden relative pb-2">
           {/* Row 1 */}
-          <div className="flex gap-10 whitespace-nowrap integration-scroll-left">
+          <div className={`flex gap-10 whitespace-nowrap integration-scroll-left ${playState}`}>
             {repeatedIcons(ICONS_ROW1, 4).map((src, i) => (
               <div
                 key={i}
                 className="h-16 w-16 flex-shrink-0 rounded-full bg-white dark:bg-gray-300 shadow-md flex items-center justify-center"
               >
-                <img src={src} alt="icon" className="h-10 w-10 object-contain" />
+                <img src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" width="40" height="40" className="h-10 w-10 object-contain" />
               </div>
             ))}
           </div>
 
           {/* Row 2 */}
-          <div className="flex gap-10 whitespace-nowrap mt-6 integration-scroll-right">
+          <div className={`flex gap-10 whitespace-nowrap mt-6 integration-scroll-right ${playState}`}>
             {repeatedIcons(ICONS_ROW2, 4).map((src, i) => (
               <div
                 key={i}
                 className="h-16 w-16 flex-shrink-0 rounded-full bg-white dark:bg-gray-300 shadow-md flex items-center justify-center"
               >
-                <img src={src} alt="icon" className="h-10 w-10 object-contain" />
+                <img src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" width="40" height="40" className="h-10 w-10 object-contain" />
               </div>
             ))}
           </div>
