@@ -76,7 +76,7 @@ const Navigation = () => {
                 className="w-full h-full object-contain drop-shadow-sm"
               />
             </div>
-            <span className={`text-[17px] font-normal tracking-tight ${isDemoPage ? 'text-white' : 'text-gray-900'}`}>
+            <span className={`text-[17px] font-normal tracking-tight ${isDemoPage ? 'text-white' : 'text-black'}`}>
               AgentBlue
             </span>
           </Link>
@@ -91,7 +91,7 @@ const Navigation = () => {
                 className={`px-4 py-2 rounded-lg text-[14px] font-normal transition-colors duration-150 ${
                   isDemoPage
                     ? 'text-gray-300 hover:text-white hover:bg-white/10'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    : 'text-black hover:text-gray-600 hover:bg-gray-100'
                 }`}
               >
                 {item.name}
@@ -106,7 +106,7 @@ const Navigation = () => {
               className={`px-4 py-2 rounded-lg text-[14px] font-normal transition-colors duration-150 ${
                 isDemoPage
                   ? 'text-gray-300 hover:text-white hover:bg-white/10'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  : 'text-black hover:text-gray-600 hover:bg-gray-100'
               }`}
             >
               Talk to Sales
@@ -135,7 +135,7 @@ const Navigation = () => {
                   className={`px-4 py-3 rounded-lg text-[15px] font-normal transition-colors ${
                     isDemoPage
                       ? 'text-gray-300 hover:text-white hover:bg-white/10'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      : 'text-black hover:text-gray-600 hover:bg-gray-50'
                   }`}
                   onClick={() => { handleNavClick(item.href); setIsOpen(false); }}
                 >

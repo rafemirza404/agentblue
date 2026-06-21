@@ -100,7 +100,7 @@ const Gallery = ({
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-end justify-between md:mb-14 lg:mb-16">
           <div className="flex flex-col gap-4">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#0A2540]">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl text-black">
               {title}
             </h2>
             <p className="max-w-lg text-[#425466]">{description}</p>

@@ -60,7 +60,7 @@ const FAQ = () => {
             <span className="mb-4 block text-sm font-semibold text-[#4F7CFF]">
               FAQ
             </span>
-            <h2 className="text-3xl leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.5rem]">
+            <h2 className="text-3xl leading-[1.1] tracking-tight text-black md:text-[2.5rem]">
               Questions?
               <br />
               We've got answers.

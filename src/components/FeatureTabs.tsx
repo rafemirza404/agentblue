@@ -87,7 +87,7 @@ const FeatureTabs = ({
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center gap-4 text-center">
           <Badge variant="outline">{badge}</Badge>
-          <h2 className="max-w-2xl text-3xl md:text-4xl text-[#0A2540]">
+          <h2 className="max-w-2xl text-3xl md:text-4xl text-black">
             {heading}
           </h2>
           <p className="text-[#425466]">{description}</p>
@@ -115,7 +115,7 @@ const FeatureTabs = ({
                   <Badge variant="outline" className="w-fit bg-white">
                     {tab.content.badge}
                   </Badge>
-                  <h3 className="text-3xl lg:text-5xl text-[#0A2540]">
+                  <h3 className="text-3xl lg:text-5xl text-black">
                     {tab.content.title}
                   </h3>
                   <p className="text-[#425466] lg:text-lg">

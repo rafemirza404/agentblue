@@ -45,7 +45,7 @@ const OperationsTiers = () => {
           <span className="mb-4 block text-sm font-semibold text-[#4F7CFF]">
             How we work
           </span>
-          <h2 className="max-w-3xl text-3xl leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.75rem]">
+          <h2 className="max-w-3xl text-3xl leading-[1.1] tracking-tight text-black md:text-[2.75rem]">
             Three tiers. One mission: operational excellence.
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#425466] md:text-lg">

@@ -46,7 +46,7 @@ const ModularSolutions = () => {
           <span className="mb-4 block text-sm font-semibold text-[#4F7CFF]">
             Modular solutions
           </span>
-          <h2 className="max-w-3xl text-3xl leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.75rem]">
+          <h2 className="max-w-3xl text-3xl leading-[1.1] tracking-tight text-black md:text-[2.75rem]">
             A fully integrated suite of automation products
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#425466] md:text-lg">
@@ -70,7 +70,7 @@ const ModularSolutions = () => {
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF4FF] text-[#4F7CFF]">
                 <Phone className="h-5 w-5" />
               </span>
-              <h3 className="text-lg tracking-tight text-[#0A2540]">Voice agents</h3>
+              <h3 className="text-lg tracking-tight text-black">Voice agents</h3>
             </div>
             <p className="mb-5 text-sm leading-relaxed text-[#425466]">
               Sophia answers, qualifies, and books — 24/7, in under 90 seconds.
@@ -116,7 +116,7 @@ const ModularSolutions = () => {
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF4FF] text-[#4F7CFF]">
                 <Workflow className="h-5 w-5" />
               </span>
-              <h3 className="text-lg tracking-tight text-[#0A2540]">
+              <h3 className="text-lg tracking-tight text-black">
                 Workflow automation
               </h3>
             </div>
@@ -164,7 +164,7 @@ const ModularSolutions = () => {
               <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF4FF] text-[#4F7CFF]">
                 <BarChart3 className="h-5 w-5" />
               </span>
-              <h3 className="text-lg tracking-tight text-[#0A2540]">
+              <h3 className="text-lg tracking-tight text-black">
                 Real-time analytics
               </h3>
             </div>
@@ -207,7 +207,7 @@ const ModularSolutions = () => {
         >
           {/* heading */}
           <div className="relative z-10">
-            <h3 className="text-2xl leading-tight tracking-tight text-[#0A2540] md:text-[2rem]">
+            <h3 className="text-2xl leading-tight tracking-tight text-black md:text-[2rem]">
               Runs inside the stack
               <br />
               you already use
@@ -278,7 +278,7 @@ const ModularSolutions = () => {
             className={`${cardBase} min-h-[340px] p-6 sm:p-8 md:min-h-[420px]`}
           >
             <div className="relative z-10 mb-5 flex items-start justify-between">
-              <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-[#0A2540]">
+              <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-black">
                 Automate your operations end-to-end
               </h3>
               <ExpandIcon />
@@ -316,7 +316,7 @@ const ModularSolutions = () => {
             className={`${cardBase} min-h-[340px] p-6 sm:p-8 md:min-h-[420px]`}
           >
             <div className="relative z-10 mb-5 flex items-start justify-between">
-              <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-[#0A2540]">
+              <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-black">
                 Built to pay for itself in 90 days
               </h3>
               <ExpandIcon />
@@ -353,7 +353,7 @@ const ModularSolutions = () => {
             className={`${cardBase} min-h-[340px] p-6 sm:p-8 md:min-h-[420px]`}
           >
             <div className="relative z-10 mb-5 flex items-start justify-between">
-              <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-[#0A2540]">
+              <h3 className="max-w-[78%] text-xl leading-snug tracking-tight text-black">
                 Scale across every channel and time zone
               </h3>
               <ExpandIcon />

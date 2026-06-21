@@ -1,49 +1,62 @@
 "use client";
 
+import { useState } from "react";
 import { HeroSection } from "@/components/ui/hero-section-with-smooth-bg-shader";
 import { HeroShowcase } from "@/components/HeroShowcase";
-import { CalendarBooking } from "@/components/CalendarBooking";
-import { ArrowRight, CalendarDays } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+
+// Same Cal.com target as CalendarBooking — submitting prefills the booking.
+const CAL_URL = "https://cal.com/agent-blue-lt5i92/30min";
 
 const NewHero = () => {
-  const openSophia = () =>
-    window.dispatchEvent(new CustomEvent("openVoiceCall"));
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const url = email
+      ? `${CAL_URL}?email=${encodeURIComponent(email)}`
+      : CAL_URL;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
 
   return (
     <>
       {/* Mesh-gradient shader hero */}
       <HeroSection
-        title="Automation Strategy That Fixes"
-        highlightText="Revenue Leaks"
-        description="For operations-heavy businesses. Audit, identify the leaks, automate the fix — first call in 30 minutes, revenue flowing in 90 days."
+        title="Simplify. Automate. Scale."
+        highlightText=""
+        description="We simplify your operations, automate the busywork, and scale what works — first call in 30 minutes."
         maxWidth="max-w-4xl"
         fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
         fontWeight={400}
         titleClassName="!text-black !font-normal"
         descriptionClassName="!text-white font-normal"
         veilOpacity="bg-white/15"
+        className="pt-32 md:pt-44"
       >
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto flex w-full max-w-md flex-col items-stretch gap-2 rounded-2xl border border-black/[0.06] bg-white p-2 shadow-[0_20px_50px_-24px_rgba(20,30,60,0.45)] sm:flex-row sm:items-center"
+        >
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            aria-label="Email"
+            className="h-11 w-full flex-1 rounded-xl bg-transparent px-4 text-[15px] text-black placeholder:text-black/40 focus:outline-none"
+            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+          />
           <button
-            onClick={openSophia}
-            className="group inline-flex h-[48px] items-center gap-2.5 rounded-full bg-[#4F7CFF] px-7 text-[15px] font-light text-white shadow-[0_8px_22px_-8px_rgba(79,124,255,0.6)] transition-all duration-300 hover:bg-[#3F6BF0]"
+            type="submit"
+            className="group inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-black px-6 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-[#111] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
           >
-            <span className="relative flex h-2 w-2">
-              <span className="live-blip absolute inline-flex h-2 w-2 rounded-full bg-white/90" />
-            </span>
-            Talk to Sophia
+            Get started
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </button>
-
-          <CalendarBooking
-            trigger={
-              <button className="group inline-flex h-[48px] cursor-pointer items-center gap-2 rounded-full border border-[#0A2540]/15 bg-white/70 px-6 text-[15px] font-light text-[#0A2540] backdrop-blur-sm transition-colors hover:text-[#4F7CFF]">
-                <CalendarDays className="h-4 w-4 text-[#4F7CFF]" />
-                Book a call
-              </button>
-            }
-          />
-        </div>
+        </form>
       </HeroSection>
 
       {/* Below-hero bordered showcase box, connected to the hero */}

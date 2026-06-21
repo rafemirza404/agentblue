@@ -79,14 +79,14 @@ const Index = () => {
           <FAQ />
         </section>
 
-        {/* 11 — The close */}
-        <section id="final-cta" className="cv-auto">
-          <FinalCTA />
-        </section>
-
-        {/* 12 — Convert */}
+        {/* 11 — Convert */}
         <section id="contact-form-section">
           <AssessmentForm />
+        </section>
+
+        {/* 12 — The close: blends into the footer */}
+        <section id="final-cta" className="cv-auto">
+          <FinalCTA />
         </section>
       </main>
       <Footer />

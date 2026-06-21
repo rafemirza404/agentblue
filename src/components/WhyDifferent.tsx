@@ -141,7 +141,7 @@ const WhyDifferent = () => {
           <span className="mb-4 block text-sm font-semibold text-[#4F7CFF]">
             Why we're different
           </span>
-          <h2 className="max-w-3xl text-3xl leading-[1.1] tracking-tight text-[#0A2540] md:text-[2.75rem]">
+          <h2 className="max-w-3xl text-3xl leading-[1.1] tracking-tight text-black md:text-[2.75rem]">
             Most automation projects fail. We start where they don't.
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#425466] md:text-lg">
@@ -169,7 +169,7 @@ const WhyDifferent = () => {
                   <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white text-[#4F7CFF] shadow-[0_6px_16px_-8px_rgba(79,124,255,0.5)]">
                     <item.icon className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg tracking-tight text-[#0A2540]">
+                  <h3 className="text-lg tracking-tight text-black">
                     {item.title}
                   </h3>
                 </div>

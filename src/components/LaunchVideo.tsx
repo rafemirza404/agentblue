@@ -28,7 +28,7 @@ const LaunchVideo = () => {
           <span className="mb-3 block text-sm font-semibold text-[#4F7CFF]">
             See it in action
           </span>
-          <h2 className="text-3xl tracking-tight text-[#0A2540] md:text-[2.5rem]">
+          <h2 className="text-3xl tracking-tight text-black md:text-[2.5rem]">
             Watch how it works
           </h2>
         </motion.div>

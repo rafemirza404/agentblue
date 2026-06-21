@@ -1,6 +1,6 @@
-import { MeshGradient } from "@paper-design/shaders-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import heroGradient from "@/assets/hero-gradient.webp";
 
 interface HeroSectionProps {
   title?: string;
@@ -8,6 +8,7 @@ interface HeroSectionProps {
   description?: string;
   buttonText?: string;
   onButtonClick?: () => void;
+  /** Kept for API compatibility; no longer used (gradient is now a static image). */
   colors?: string[];
   distortion?: number;
   swirl?: number;
@@ -30,12 +31,6 @@ export function HeroSection({
   description = "Transform your brand and evolve it through AI-driven brand guidelines and always up-to-date core components.",
   buttonText = "Join Waitlist",
   onButtonClick,
-  // AgentBlue brand: blues + soft warm peach accent
-  colors = ["#4F7CFF", "#6E97FF", "#B5D0FF", "#FFD8C2", "#EEF4FF", "#FFFFFF"],
-  distortion = 0.8,
-  swirl = 0.6,
-  speed = 0.42,
-  offsetX = 0.08,
   className = "",
   titleClassName = "",
   descriptionClassName = "",
@@ -46,58 +41,10 @@ export function HeroSection({
   fontWeight = 600,
   children,
 }: HeroSectionProps) {
-  const [dimensions, setDimensions] = useState({ width: 1920, height: 1080 });
   const [mounted, setMounted] = useState(false);
-  // Pause the WebGL render loop whenever the hero is scrolled out of view —
-  // this is the main perf win, since the shader otherwise renders forever.
-  const [inView, setInView] = useState(true);
-  // Also pause while a global overlay (chatbot / voice modal) is open, so the
-  // shader doesn't fight the overlay for the GPU/main thread and make it open
-  // janky while the user is still in the hero.
-  const [overlayOpen, setOverlayOpen] = useState(false);
-  const sectionRef = useRef<HTMLElement | null>(null);
-  // Cap pixel ratio so the shader doesn't render at 2x/3x on retina screens.
-  const dpr =
-    typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 1.5) : 1;
 
   useEffect(() => {
     setMounted(true);
-    const update = () =>
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      // Negative bottom margin shrinks the "in view" zone so the shader stops
-      // rendering once most of the hero has scrolled past the top — instead of
-      // only when it's 100% gone. This keeps scroll light through the hero and
-      // the section right below it, where the WebGL loop was still running.
-      { threshold: 0, rootMargin: "0px 0px -55% 0px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  // Listen for global overlay open/close events (dispatched by the chatbot and
-  // voice-call widgets) and freeze the shader while one is open.
-  useEffect(() => {
-    const onOpen = () => setOverlayOpen(true);
-    const onClose = () => setOverlayOpen(false);
-    window.addEventListener("overlay:open", onOpen);
-    window.addEventListener("overlay:close", onClose);
-    return () => {
-      window.removeEventListener("overlay:open", onOpen);
-      window.removeEventListener("overlay:close", onClose);
-    };
   }, []);
 
   const handleButtonClick = () => {
@@ -108,30 +55,24 @@ export function HeroSection({
 
   return (
     <motion.section
-      ref={sectionRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: mounted ? 1 : 0 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className={`relative w-full overflow-hidden bg-background flex items-center justify-center py-20 sm:py-24 md:py-32 ${className}`}
     >
-      <div className="absolute inset-0 w-full h-full transform-gpu [contain:strict]">
-        {mounted && (
-          <>
-            <MeshGradient
-              width={Math.round(dimensions.width * dpr)}
-              height={Math.round(dimensions.height * dpr)}
-              colors={colors}
-              distortion={distortion}
-              swirl={swirl}
-              grainMixer={0}
-              grainOverlay={0}
-              speed={inView && !overlayOpen ? speed : 0}
-              offsetX={offsetX}
-              style={{ width: "100%", height: "100%" }}
-            />
-            <div className={`absolute inset-0 pointer-events-none ${veilOpacity}`} />
-          </>
-        )}
+      <div className="absolute inset-0 w-full h-full">
+        {/* Static snapshot of the original mesh-gradient shader. Swapped in for
+            the live WebGL render loop, which was the main source of site-wide
+            scroll/animation jank. Pure CSS/image = effectively free to paint. */}
+        <img
+          src={heroGradient}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className={`absolute inset-0 pointer-events-none ${veilOpacity}`} />
         {/* bottom fade so the gradient melts smoothly into the next section */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-40 bg-gradient-to-b from-transparent to-white" />
       </div>
