@@ -21,6 +21,59 @@ export class VapiService {
   }
 
   /**
+   * Pre-acquire the microphone BEFORE the Vapi/Daily call starts.
+   *
+   * ROOT CAUSE of the intermittent "did not receive the customer's audio"
+   * failures: the Vapi SDK requests the mic lazily *during* start(). On a
+   * first-time permission prompt or a cold mic, Daily joins the room and
+   * begins its no-customer-audio timeout before the local audio track is
+   * producing frames, so Vapi terminates the call right as it connects.
+   *
+   * Warming the mic here, within the user gesture, forces the permission
+   * prompt + hardware spin-up to finish first (audio is already flowing when
+   * Daily joins) and surfaces device errors (NotAllowedError / NotReadableError)
+   * up front instead of as a silent dead call. We release the track
+   * immediately so the SDK can acquire the now-warm, permission-granted device
+   * cleanly.
+   */
+  private async prewarmMicrophone(): Promise<void> {
+    if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
+      console.warn('[VAPI] mediaDevices.getUserMedia unavailable; skipping mic pre-warm');
+      return;
+    }
+
+    let stream: MediaStream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (error) {
+      // Re-throw with a clear, actionable message; the caller maps this to a
+      // user-facing toast and aborts the call instead of joining audio-less.
+      const name = (error as DOMException)?.name;
+      const message =
+        name === 'NotAllowedError' || name === 'SecurityError'
+          ? 'Microphone permission denied'
+          : name === 'NotReadableError'
+            ? 'Microphone is already in use by another app or tab'
+            : name === 'NotFoundError'
+              ? 'No microphone was found on this device'
+              : 'Could not access the microphone';
+      console.error('[VAPI] Microphone pre-warm failed:', name, error);
+      throw new Error(message);
+    }
+
+    const track = stream.getAudioTracks()[0];
+    console.log('[VAPI] Microphone pre-warmed:', {
+      label: track?.label,
+      readyState: track?.readyState,
+      enabled: track?.enabled,
+    });
+
+    // Release the device so the SDK's own getUserMedia gets it instantly.
+    // Permission is now granted and the mic subsystem is enumerated + warm.
+    stream.getTracks().forEach((t) => t.stop());
+  }
+
+  /**
    * Start a call with the given variables
    * FIX: Check for null return value from VAPI SDK
    */
@@ -50,6 +103,12 @@ export class VapiService {
     console.log('[VAPI] Starting call with validated variables:', variables);
 
     try {
+      // Warm + permission-check the mic BEFORE starting the SDK, so the
+      // customer's audio track is already live when Daily joins the room. This
+      // is the fix for the intermittent "did not receive the customer's audio"
+      // call drops.
+      await this.prewarmMicrophone();
+
       // CRITICAL FIX: Check if start() returns null (indicates failure)
       const result = await this.client.start(this.assistantId, assistantOverrides);
 
