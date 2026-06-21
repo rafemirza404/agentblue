@@ -166,9 +166,15 @@ export const useVoiceCallFlow = () => {
 
       callState.transitionTo('ended');
 
+      // Surface the specific failure (e.g. mic permission denied / mic in use)
+      // raised by the mic pre-warm, instead of a generic message, so the user
+      // knows what to fix.
+      const reason = error instanceof Error ? error.message : '';
       toast({
         title: 'Failed to Start Call',
-        description: 'Unable to initialize call. Please check your microphone permissions and try again.',
+        description: reason
+          ? `${reason}. Please resolve it and try again.`
+          : 'Unable to initialize call. Please check your microphone permissions and try again.',
         variant: 'destructive',
       });
     }

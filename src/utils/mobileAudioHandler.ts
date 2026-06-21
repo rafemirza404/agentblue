@@ -6,7 +6,6 @@
 
 export class MobileAudioHandler {
   private wakeLock: any = null;
-  private audioContext: AudioContext | null = null;
   private isActive = false;
 
   /**
@@ -62,59 +61,27 @@ export class MobileAudioHandler {
   }
 
   /**
-   * Initialize audio context for mobile
-   * Helps maintain audio stream during app switching
-   */
-  initializeAudioContext(): void {
-    if (!this.isMobileDevice()) {
-      return;
-    }
-
-    try {
-      // Create AudioContext if it doesn't exist
-      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-      if (!this.audioContext && AudioContextClass) {
-        this.audioContext = new AudioContextClass();
-        console.log('[MobileAudio] AudioContext initialized');
-      }
-
-      // Resume audio context if suspended (common on mobile)
-      if (this.audioContext && this.audioContext.state === 'suspended') {
-        this.audioContext.resume().then(() => {
-          console.log('[MobileAudio] AudioContext resumed');
-        });
-      }
-    } catch (error) {
-      console.error('[MobileAudio] Failed to initialize AudioContext:', error);
-    }
-  }
-
-  /**
    * Handle visibility change (app switching, screen lock)
+   *
+   * NOTE: We deliberately do NOT create/resume a separate AudioContext here.
+   * Daily/WebRTC (the Vapi SDK) owns the call's audio pipeline; an extra
+   * AudioContext would be wired to nothing and, on iOS Safari, re-configuring
+   * the shared AVAudioSession can briefly mute the live capture — which Vapi
+   * reports as "did not receive the customer's audio". The only thing worth
+   * restoring on foreground is the screen wake lock, which iOS auto-releases
+   * when the page is backgrounded.
    */
-  setupVisibilityHandler(): void {
+  setupVisibilityHandler(): (() => void) | void {
     if (!this.isMobileDevice()) {
       return;
     }
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        console.log('[MobileAudio] App backgrounded - maintaining audio');
-        // Keep audio context alive
-        if (this.audioContext && this.audioContext.state === 'running') {
-          // Audio context should continue running
-          console.log('[MobileAudio] AudioContext still running in background');
-        }
+        console.log('[MobileAudio] App backgrounded');
       } else {
-        console.log('[MobileAudio] App foregrounded - resuming');
-        // Resume audio context if needed
-        if (this.audioContext && this.audioContext.state === 'suspended') {
-          this.audioContext.resume().then(() => {
-            console.log('[MobileAudio] AudioContext resumed after foreground');
-          });
-        }
-
-        // Re-request wake lock if it was released
+        console.log('[MobileAudio] App foregrounded - restoring wake lock');
+        // Re-request wake lock if it was released while backgrounded
         if (this.isActive && !this.wakeLock) {
           this.requestWakeLock();
         }
@@ -136,13 +103,10 @@ export class MobileAudioHandler {
     this.isActive = true;
     console.log('[MobileAudio] Starting mobile audio handling');
 
-    // Request wake lock
+    // Request wake lock to keep the screen on for the duration of the call
     await this.requestWakeLock();
 
-    // Initialize audio context
-    this.initializeAudioContext();
-
-    // Setup visibility handler
+    // Setup visibility handler (restores wake lock on foreground)
     const cleanupVisibility = this.setupVisibilityHandler();
 
     // Return cleanup function
@@ -151,10 +115,6 @@ export class MobileAudioHandler {
       await this.releaseWakeLock();
       if (cleanupVisibility) {
         cleanupVisibility();
-      }
-      if (this.audioContext) {
-        await this.audioContext.close();
-        this.audioContext = null;
       }
       console.log('[MobileAudio] Mobile audio handling stopped');
     };

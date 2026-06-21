@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useFormValidation } from '@/hooks/useFormValidation';
-import { COUNTRY_CODES, ROLES } from '@/config/constants';
+import { COUNTRIES, DEFAULT_COUNTRY_ISO, ROLES } from '@/config/constants';
 import type { LeadData } from '@/types/models';
 
 interface LeadFormModalProps {
@@ -39,15 +39,17 @@ export const LeadFormModal = ({
     consent: false,
   });
 
-  const [countryCode, setCountryCode] = useState('+1');
+  const [countryIso, setCountryIso] = useState(DEFAULT_COUNTRY_ISO);
   const [phoneNumber, setPhoneNumber] = useState('');
+
+  const dialCode = COUNTRIES.find((c) => c.iso === countryIso)?.dial ?? '';
 
   const handleChange = (field: keyof LeadData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = () => {
-    const fullPhone = countryCode + phoneNumber;
+    const fullPhone = dialCode + phoneNumber;
     const dataToValidate = { ...formData, phone: fullPhone };
 
     if (validateLeadForm(dataToValidate, phoneNumber)) {
@@ -101,14 +103,16 @@ export const LeadFormModal = ({
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number *</Label>
             <div className="flex gap-2">
-              <Select value={countryCode} onValueChange={setCountryCode}>
-                <SelectTrigger className="w-[120px]">
+              <Select value={countryIso} onValueChange={setCountryIso}>
+                <SelectTrigger className="w-[130px]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  {COUNTRY_CODES.map((country) => (
-                    <SelectItem key={country.code} value={country.code}>
-                      {country.code} ({country.name})
+                <SelectContent className="max-h-[300px]">
+                  {COUNTRIES.map((country) => (
+                    <SelectItem key={country.iso} value={country.iso} textValue={country.name}>
+                      <span className="mr-1.5">{country.flag}</span>
+                      {country.name}
+                      <span className="ml-1.5 text-gray-400">{country.dial}</span>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -124,7 +128,7 @@ export const LeadFormModal = ({
             </div>
             {errors.phoneNumber && <p className="text-sm text-red-500">{errors.phoneNumber}</p>}
             <p className="text-xs text-gray-500">
-              Combined: {countryCode} {phoneNumber}
+              Combined: {dialCode} {phoneNumber}
             </p>
           </div>
 
