@@ -34,6 +34,10 @@ export interface CallDiagnostics {
   inAppBrowser: boolean;
   inAppName: string | null;
   isSecureContext: boolean;
+  /** navigator.onLine at capture time. */
+  onLine?: boolean;
+  /** Network Information API hint (e.g. '4g', '3g', 'slow-2g') if available. */
+  networkType?: string | null;
   vapiCallId?: string | null;
   /** 'granted' | 'skipped-inapp' | a DOMException name | etc. */
   micResult?: string;
@@ -43,10 +47,63 @@ export interface CallDiagnostics {
   extra?: Record<string, unknown>;
 }
 
+/**
+ * Turn any thrown value — including Vapi/Daily error *objects* — into a
+ * readable string. The previous `String(err)` produced "[object Object]" for
+ * the SDK's error events, hiding the real reason. This surfaces common
+ * Vapi/Daily fields up front and appends a (circular-safe) JSON dump.
+ */
+export function serializeError(err: unknown): string {
+  if (err == null) return 'null';
+  if (err instanceof Error) return `${err.name}: ${err.message}`;
+  if (typeof err === 'string') return err;
+  if (typeof err !== 'object') return String(err);
+
+  const obj = err as Record<string, unknown>;
+  const keyed: string[] = [];
+  for (const k of [
+    'type',
+    'action',
+    'errorMsg',
+    'msg',
+    'message',
+    'reason',
+    'endedReason',
+    'stage',
+    'code',
+  ]) {
+    const v = obj[k];
+    if (v != null && typeof v !== 'object') keyed.push(`${k}=${String(v)}`);
+  }
+
+  let json = '';
+  try {
+    const seen = new WeakSet<object>();
+    json = JSON.stringify(err, (_key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (seen.has(value)) return '[Circular]';
+        seen.add(value);
+      }
+      return value;
+    });
+  } catch {
+    json = '';
+  }
+
+  if (keyed.length && json && json !== '{}') return `${keyed.join(' ')} | ${json}`;
+  if (keyed.length) return keyed.join(' ');
+  if (json && json !== '{}') return json;
+  return String(err);
+}
+
 /** Snapshot the static client/browser context. */
 function gatherClientInfo() {
   const ua = typeof navigator !== 'undefined' ? navigator.userAgent || '' : '';
   const inApp = detectInAppBrowser(ua);
+  const conn =
+    typeof navigator !== 'undefined'
+      ? (navigator as unknown as { connection?: { effectiveType?: string } }).connection
+      : undefined;
   return {
     userAgent: ua,
     platform: typeof navigator !== 'undefined' ? navigator.platform || '' : '',
@@ -55,6 +112,8 @@ function gatherClientInfo() {
     inAppName: inApp.app,
     isSecureContext:
       typeof window !== 'undefined' ? Boolean(window.isSecureContext) : false,
+    onLine: typeof navigator !== 'undefined' ? navigator.onLine : true,
+    networkType: conn?.effectiveType ?? null,
   };
 }
 

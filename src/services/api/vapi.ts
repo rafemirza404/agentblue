@@ -6,7 +6,7 @@
 import Vapi from '@vapi-ai/web';
 import { ENV } from '@/config/env';
 import { isInAppBrowser } from '@/utils/inAppBrowser';
-import { logCallDiagnostics } from '@/utils/callDiagnostics';
+import { logCallDiagnostics, serializeError } from '@/utils/callDiagnostics';
 import type { VapiVariables, VapiAssistantOverrides, VapiEventHandlers } from '@/types/vapi';
 
 export class VapiService {
@@ -140,9 +140,7 @@ export class VapiService {
       console.log('[VAPI] Call start initiated successfully');
     } catch (error) {
       console.error('[VAPI] Failed to start call:', error);
-      logCallDiagnostics('call-start-error', {
-        error: error instanceof Error ? error.message : String(error),
-      });
+      logCallDiagnostics('call-start-error', { error: serializeError(error) });
       throw error;
     }
   }
