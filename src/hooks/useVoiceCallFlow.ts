@@ -12,6 +12,7 @@ import { vapiService } from '@/services/api/vapi';
 import { webhookService } from '@/services/api/webhooks';
 import { storageService } from '@/services/storage/localStorage';
 import { mobileAudioHandler } from '@/utils/mobileAudioHandler';
+import { logCallDiagnostics } from '@/utils/callDiagnostics';
 import type { LeadData, CallData, FeedbackData, CallStatus } from '@/types/models';
 
 export const useVoiceCallFlow = () => {
@@ -360,6 +361,9 @@ export const useVoiceCallFlow = () => {
 
     const handleError = (error: Error) => {
       console.error('[VAPI] Error:', error);
+      logCallDiagnostics('call-error', {
+        error: error instanceof Error ? error.message : String(error),
+      });
       toastRef.current({
         title: 'Call Error',
         description: 'There was an issue with the call. Please try again.',
@@ -379,6 +383,10 @@ export const useVoiceCallFlow = () => {
         error: event.error,
         duration: event.totalDuration,
         context: event.context,
+      });
+      logCallDiagnostics('call-start-failed', {
+        error: event?.error ? String(event.error) : null,
+        extra: { stage: event?.stage, totalDuration: event?.totalDuration },
       });
 
       // Transition to ended state

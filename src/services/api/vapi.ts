@@ -5,6 +5,8 @@
 
 import Vapi from '@vapi-ai/web';
 import { ENV } from '@/config/env';
+import { isInAppBrowser } from '@/utils/inAppBrowser';
+import { logCallDiagnostics } from '@/utils/callDiagnostics';
 import type { VapiVariables, VapiAssistantOverrides, VapiEventHandlers } from '@/types/vapi';
 
 export class VapiService {
@@ -58,15 +60,18 @@ export class VapiService {
               ? 'No microphone was found on this device'
               : 'Could not access the microphone';
       console.error('[VAPI] Microphone pre-warm failed:', name, error);
+      logCallDiagnostics('prewarm-error', { micResult: name || 'unknown' });
       throw new Error(message);
     }
 
     const track = stream.getAudioTracks()[0];
-    console.log('[VAPI] Microphone pre-warmed:', {
+    const micTrack = {
       label: track?.label,
       readyState: track?.readyState,
       enabled: track?.enabled,
-    });
+    };
+    console.log('[VAPI] Microphone pre-warmed:', micTrack);
+    logCallDiagnostics('prewarm-result', { micResult: 'granted', micTrack });
 
     // Release the device so the SDK's own getUserMedia gets it instantly.
     // Permission is now granted and the mic subsystem is enumerated + warm.
@@ -101,13 +106,26 @@ export class VapiService {
     };
 
     console.log('[VAPI] Starting call with validated variables:', variables);
+    logCallDiagnostics('call-start-attempt');
 
     try {
       // Warm + permission-check the mic BEFORE starting the SDK, so the
       // customer's audio track is already live when Daily joins the room. This
       // is the fix for the intermittent "did not receive the customer's audio"
       // call drops.
-      await this.prewarmMicrophone();
+      //
+      // EXCEPTION: in-app browsers (Instagram/Facebook/etc.) cannot survive two
+      // separate getUserMedia acquisitions — the pre-warm's grab-release plus
+      // the SDK's own grab hands the call a dead/silent mic (Android Instagram
+      // "did not receive customer audio"). There we skip the pre-warm and let
+      // the SDK's getUserMedia be the ONLY mic request. Fix B's banner nudges
+      // those users into a real browser where the pre-warm path is reliable.
+      if (isInAppBrowser()) {
+        console.warn('[VAPI] In-app browser detected — skipping mic pre-warm (single SDK getUserMedia).');
+        logCallDiagnostics('prewarm-skipped-inapp', { micResult: 'skipped-inapp' });
+      } else {
+        await this.prewarmMicrophone();
+      }
 
       // CRITICAL FIX: Check if start() returns null (indicates failure)
       const result = await this.client.start(this.assistantId, assistantOverrides);
@@ -122,6 +140,9 @@ export class VapiService {
       console.log('[VAPI] Call start initiated successfully');
     } catch (error) {
       console.error('[VAPI] Failed to start call:', error);
+      logCallDiagnostics('call-start-error', {
+        error: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
   }

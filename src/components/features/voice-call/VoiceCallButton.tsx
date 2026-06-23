@@ -13,6 +13,7 @@ import { ConfirmationModal } from './modals/ConfirmationModal';
 import { IntroModal } from './modals/IntroModal';
 import { CallActiveCard } from './modals/CallActiveCard';
 import { FeedbackModal } from './modals/FeedbackModal';
+import { InAppBrowserBanner } from './modals/InAppBrowserBanner';
 import type { LeadData, ModalState } from '@/types/models';
 
 const VoiceCallButton = () => {
@@ -146,8 +147,15 @@ const VoiceCallButton = () => {
   // Show feedback modal when call ends
   const showFeedbackModal = callState.isEnded;
 
+  // In-app browsers (Instagram/Facebook/…) are unreliable for voice; nudge the
+  // user to their real browser whenever they're engaging the call flow.
+  const inVoiceFlow = activeModal !== 'none' || !callState.isIdle;
+
   return (
     <>
+      {/* In-app browser warning banner (renders only inside in-app browsers) */}
+      <InAppBrowserBanner active={inVoiceFlow} />
+
       {/* Floating Button — visible only after hero scrolls out of view */}
       {heroPassed && callState.isIdle && (
         <button
