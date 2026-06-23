@@ -13,6 +13,7 @@ import { ConfirmationModal } from './modals/ConfirmationModal';
 import { IntroModal } from './modals/IntroModal';
 import { CallActiveCard } from './modals/CallActiveCard';
 import { FeedbackModal } from './modals/FeedbackModal';
+import { InAppBrowserBanner } from './modals/InAppBrowserBanner';
 import type { LeadData, ModalState } from '@/types/models';
 
 const VoiceCallButton = () => {
@@ -158,6 +159,9 @@ const VoiceCallButton = () => {
 
   return (
     <>
+      {/* In-app browser warning banner (renders only inside in-app browsers) */}
+      <InAppBrowserBanner active={overlayActive} />
+
       {/* Floating Button — visible only after hero scrolls out of view */}
       {heroPassed && callState.isIdle && (
         <button

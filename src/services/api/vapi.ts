@@ -3,55 +3,23 @@
  * Abstraction layer for VAPI SDK
  */
 
-import type Vapi from '@vapi-ai/web';
+import Vapi from '@vapi-ai/web';
 import { ENV } from '@/config/env';
+import { isInAppBrowser } from '@/utils/inAppBrowser';
+import { logCallDiagnostics } from '@/utils/callDiagnostics';
 import type { VapiVariables, VapiAssistantOverrides, VapiEventHandlers } from '@/types/vapi';
 
 export class VapiService {
-  // Lazily created — the heavy @vapi-ai/web SDK is only downloaded and
-  // instantiated the first time a call actually starts, keeping it out of
-  // the initial page bundle.
-  private client: Vapi | null = null;
-  private clientPromise: Promise<Vapi> | null = null;
+  private client: Vapi;
   private assistantId: string;
-  // Handlers registered before the SDK is loaded; applied once the client
-  // is created so listeners survive the deferred import.
-  private pendingHandlers: VapiEventHandlers | null = null;
 
   constructor() {
     if (!ENV.vapi.apiKey) {
       console.error('VAPI API key is missing');
     }
+
+    this.client = new Vapi(ENV.vapi.apiKey);
     this.assistantId = ENV.vapi.assistantId;
-  }
-
-  /**
-   * Dynamically import and instantiate the Vapi SDK on first use.
-   * Subsequent calls reuse the same client.
-   */
-  private async getOrCreateClient(): Promise<Vapi> {
-    if (this.client) return this.client;
-    if (!this.clientPromise) {
-      this.clientPromise = import('@vapi-ai/web').then(({ default: Vapi }) => {
-        this.client = new Vapi(ENV.vapi.apiKey);
-        // Apply any listeners registered before the SDK finished loading.
-        if (this.pendingHandlers) {
-          this.attachHandlers(this.client, this.pendingHandlers);
-        }
-        return this.client;
-      });
-    }
-    return this.clientPromise;
-  }
-
-  private attachHandlers(client: Vapi, handlers: VapiEventHandlers): void {
-    if (handlers.onCallStart) client.on('call-start', handlers.onCallStart);
-    if (handlers.onCallEnd) client.on('call-end', handlers.onCallEnd);
-    if (handlers.onSpeechStart) client.on('speech-start', handlers.onSpeechStart);
-    if (handlers.onSpeechEnd) client.on('speech-end', handlers.onSpeechEnd);
-    if (handlers.onMessage) client.on('message', handlers.onMessage);
-    if (handlers.onError) client.on('error', handlers.onError);
-    if (handlers.onCallStartFailed) client.on('call-start-failed', handlers.onCallStartFailed);
   }
 
   /**
@@ -69,9 +37,6 @@ export class VapiService {
    * up front instead of as a silent dead call. We release the track
    * immediately so the SDK can acquire the now-warm, permission-granted device
    * cleanly.
-   *
-   * Called before the SDK's dynamic import so the browser's transient user
-   * activation (needed by getUserMedia) is not lost to an intervening await.
    */
   private async prewarmMicrophone(): Promise<void> {
     if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
@@ -95,15 +60,18 @@ export class VapiService {
               ? 'No microphone was found on this device'
               : 'Could not access the microphone';
       console.error('[VAPI] Microphone pre-warm failed:', name, error);
+      logCallDiagnostics('prewarm-error', { micResult: name || 'unknown' });
       throw new Error(message);
     }
 
     const track = stream.getAudioTracks()[0];
-    console.log('[VAPI] Microphone pre-warmed:', {
+    const micTrack = {
       label: track?.label,
       readyState: track?.readyState,
       enabled: track?.enabled,
-    });
+    };
+    console.log('[VAPI] Microphone pre-warmed:', micTrack);
+    logCallDiagnostics('prewarm-result', { micResult: 'granted', micTrack });
 
     // Release the device so the SDK's own getUserMedia gets it instantly.
     // Permission is now granted and the mic subsystem is enumerated + warm.
@@ -138,18 +106,29 @@ export class VapiService {
     };
 
     console.log('[VAPI] Starting call with validated variables:', variables);
+    logCallDiagnostics('call-start-attempt');
 
     try {
-      // Warm + permission-check the mic BEFORE loading/starting the SDK, so the
+      // Warm + permission-check the mic BEFORE starting the SDK, so the
       // customer's audio track is already live when Daily joins the room. This
       // is the fix for the intermittent "did not receive the customer's audio"
-      // call drops. Must run before the dynamic import below to keep the user
-      // gesture valid for getUserMedia.
-      await this.prewarmMicrophone();
+      // call drops.
+      //
+      // EXCEPTION: in-app browsers (Instagram/Facebook/etc.) cannot survive two
+      // separate getUserMedia acquisitions — the pre-warm's grab-release plus
+      // the SDK's own grab hands the call a dead/silent mic (Android Instagram
+      // "did not receive customer audio"). There we skip the pre-warm and let
+      // the SDK's getUserMedia be the ONLY mic request. Fix B's banner nudges
+      // those users into a real browser where the pre-warm path is reliable.
+      if (isInAppBrowser()) {
+        console.warn('[VAPI] In-app browser detected — skipping mic pre-warm (single SDK getUserMedia).');
+        logCallDiagnostics('prewarm-skipped-inapp', { micResult: 'skipped-inapp' });
+      } else {
+        await this.prewarmMicrophone();
+      }
 
-      const client = await this.getOrCreateClient();
       // CRITICAL FIX: Check if start() returns null (indicates failure)
-      const result = await client.start(this.assistantId, assistantOverrides);
+      const result = await this.client.start(this.assistantId, assistantOverrides);
 
       if (result === null) {
         // Call failed to start - VAPI SDK will emit 'call-start-failed' event
@@ -161,73 +140,85 @@ export class VapiService {
       console.log('[VAPI] Call start initiated successfully');
     } catch (error) {
       console.error('[VAPI] Failed to start call:', error);
+      logCallDiagnostics('call-start-error', {
+        error: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
   }
 
   /**
-   * Stop the current call. No-op if no call/client exists yet.
+   * Stop the current call
    */
   stop(): void {
     console.log('[VAPI] Stopping call');
-    this.client?.stop();
+    this.client.stop();
   }
 
   /**
-   * Set mute status. No-op if no call/client exists yet.
+   * Set mute status
    */
   setMuted(muted: boolean): void {
-    this.client?.setMuted(muted);
+    this.client.setMuted(muted);
   }
 
   /**
-   * Register event listeners.
-   * The SDK may not be loaded yet (it loads lazily on call start), so handlers
-   * are stored and attached as soon as the client is created.
+   * Register event listeners
    * FIX: Added call-start-failed listener for detailed error tracking
    */
   setupEventListeners(handlers: VapiEventHandlers): () => void {
-    this.pendingHandlers = handlers;
-    // If the client already exists, attach immediately.
-    if (this.client) {
-      this.attachHandlers(this.client, handlers);
+    if (handlers.onCallStart) {
+      this.client.on('call-start', handlers.onCallStart);
+    }
+    if (handlers.onCallEnd) {
+      this.client.on('call-end', handlers.onCallEnd);
+    }
+    if (handlers.onSpeechStart) {
+      this.client.on('speech-start', handlers.onSpeechStart);
+    }
+    if (handlers.onSpeechEnd) {
+      this.client.on('speech-end', handlers.onSpeechEnd);
+    }
+    if (handlers.onMessage) {
+      this.client.on('message', handlers.onMessage);
+    }
+    if (handlers.onError) {
+      this.client.on('error', handlers.onError);
+    }
+    if (handlers.onCallStartFailed) {
+      this.client.on('call-start-failed', handlers.onCallStartFailed);
     }
 
     // Return cleanup function
     return () => {
-      if (this.pendingHandlers === handlers) {
-        this.pendingHandlers = null;
-      }
-      const client = this.client;
-      if (!client) return;
       if (handlers.onCallStart) {
-        client.removeListener('call-start', handlers.onCallStart);
+        this.client.removeListener('call-start', handlers.onCallStart);
       }
       if (handlers.onCallEnd) {
-        client.removeListener('call-end', handlers.onCallEnd);
+        this.client.removeListener('call-end', handlers.onCallEnd);
       }
       if (handlers.onSpeechStart) {
-        client.removeListener('speech-start', handlers.onSpeechStart);
+        this.client.removeListener('speech-start', handlers.onSpeechStart);
       }
       if (handlers.onSpeechEnd) {
-        client.removeListener('speech-end', handlers.onSpeechEnd);
+        this.client.removeListener('speech-end', handlers.onSpeechEnd);
       }
       if (handlers.onMessage) {
-        client.removeListener('message', handlers.onMessage);
+        this.client.removeListener('message', handlers.onMessage);
       }
       if (handlers.onError) {
-        client.removeListener('error', handlers.onError);
+        this.client.removeListener('error', handlers.onError);
       }
       if (handlers.onCallStartFailed) {
-        client.removeListener('call-start-failed', handlers.onCallStartFailed);
+        this.client.removeListener('call-start-failed', handlers.onCallStartFailed);
       }
     };
   }
 
   /**
-   * Get the underlying client if it has been created, otherwise null.
+   * Get the underlying client (for advanced use)
    */
-  getClient(): Vapi | null {
+  getClient(): Vapi {
     return this.client;
   }
 }
