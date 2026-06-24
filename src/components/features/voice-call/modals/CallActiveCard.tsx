@@ -5,6 +5,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, PhoneOff } from 'lucide-react';
+import { isSlowNetwork } from '@/utils/callDiagnostics';
 import type { CallState, CallStatus } from '@/types/models';
 
 interface CallActiveCardProps {
@@ -59,7 +60,9 @@ export const CallActiveCard = ({
             </div>
 
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              This usually takes 2-3 seconds
+              {isSlowNetwork()
+                ? 'On a slow connection this can take up to a minute — please wait'
+                : 'This usually takes a few seconds'}
             </p>
             <p className="text-xs text-gray-500">
               Please allow microphone access if prompted

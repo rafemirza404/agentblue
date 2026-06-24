@@ -26,7 +26,10 @@ export interface CallDiagnostics {
     | 'prewarm-error'
     | 'call-start-error'
     | 'call-start-failed'
-    | 'call-error';
+    | 'call-error'
+    | 'connect-timeout'
+    | 'connect-retry'
+    | 'connection-state';
   timestamp: string;
   userAgent: string;
   platform: string;
@@ -38,6 +41,8 @@ export interface CallDiagnostics {
   onLine?: boolean;
   /** Network Information API hint (e.g. '4g', '3g', 'slow-2g') if available. */
   networkType?: string | null;
+  /** Whether the OS/browser data-saver is on (can degrade WebRTC). */
+  saveData?: boolean | null;
   vapiCallId?: string | null;
   /** 'granted' | 'skipped-inapp' | a DOMException name | etc. */
   micResult?: string;
@@ -102,7 +107,9 @@ function gatherClientInfo() {
   const inApp = detectInAppBrowser(ua);
   const conn =
     typeof navigator !== 'undefined'
-      ? (navigator as unknown as { connection?: { effectiveType?: string } }).connection
+      ? (navigator as unknown as {
+          connection?: { effectiveType?: string; saveData?: boolean };
+        }).connection
       : undefined;
   return {
     userAgent: ua,
@@ -114,7 +121,25 @@ function gatherClientInfo() {
       typeof window !== 'undefined' ? Boolean(window.isSecureContext) : false,
     onLine: typeof navigator !== 'undefined' ? navigator.onLine : true,
     networkType: conn?.effectiveType ?? null,
+    saveData: conn?.saveData ?? null,
   };
+}
+
+/**
+ * Best-effort read of the connection's "effective type" for slow-network
+ * heads-up logic. Returns one of '2g' | '3g' | '4g' | 'slow-2g' | null.
+ */
+export function getEffectiveNetworkType(): string | null {
+  if (typeof navigator === 'undefined') return null;
+  const conn = (navigator as unknown as { connection?: { effectiveType?: string } })
+    .connection;
+  return conn?.effectiveType ?? null;
+}
+
+/** True when the connection looks slow enough to warn the user about. */
+export function isSlowNetwork(): boolean {
+  const t = getEffectiveNetworkType();
+  return t === '2g' || t === 'slow-2g' || t === '3g';
 }
 
 /**

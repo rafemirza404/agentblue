@@ -7,7 +7,10 @@ export const CALL_CONSTANTS = {
   RATE_LIMIT_MINUTES: 60,
   FEEDBACK_AUTO_CLOSE_SECONDS: 10,
   CALL_TIMER_INTERVAL_MS: 1000,
-  CONNECTION_TIMEOUT_MS: 30000,
+  // Give up on a stuck "connecting" call after this long. Set generously
+  // (~75s) because weak mobile networks legitimately take 30–80s to load the
+  // Daily call-machine bundle + join — a shorter cutoff causes false failures.
+  CONNECTION_TIMEOUT_MS: 75000,
 } as const;
 
 export const MODAL_STATES = {
