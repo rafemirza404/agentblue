@@ -5,6 +5,7 @@
 
 import { Mic, MicOff, PhoneOff } from 'lucide-react';
 import agentblueLogo from '@/assets/agentblue-logo.png';
+import { isSlowNetwork } from '@/utils/callDiagnostics';
 import type { CallState, CallStatus } from '@/types/models';
 
 interface CallActiveCardProps {
@@ -57,7 +58,11 @@ export const CallActiveCard = ({
 
             <div>
               <p className="text-[15px] font-semibold text-[#0A2540]">Connecting to Sophia…</p>
-              <p className="mt-0.5 text-[12px] text-[#697386]">This usually takes 2–3 seconds</p>
+              <p className="mt-0.5 text-[12px] text-[#697386]">
+                {isSlowNetwork()
+                  ? 'On a slow connection this can take up to a minute — please wait'
+                  : 'This usually takes a few seconds'}
+              </p>
             </div>
 
             {/* indeterminate shimmer bar */}

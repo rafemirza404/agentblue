@@ -12,7 +12,8 @@ import { vapiService } from '@/services/api/vapi';
 import { webhookService } from '@/services/api/webhooks';
 import { storageService } from '@/services/storage/localStorage';
 import { mobileAudioHandler } from '@/utils/mobileAudioHandler';
-import { logCallDiagnostics, serializeError } from '@/utils/callDiagnostics';
+import { logCallDiagnostics, serializeError, isSlowNetwork } from '@/utils/callDiagnostics';
+import { CALL_CONSTANTS } from '@/config/constants';
 import type { LeadData, CallData, FeedbackData, CallStatus } from '@/types/models';
 
 export const useVoiceCallFlow = () => {
@@ -37,6 +38,15 @@ export const useVoiceCallFlow = () => {
 
   // Timers
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  // Guards a stuck "connecting" call so it fails fast instead of hanging.
+  const connectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const clearConnectTimeout = useCallback(() => {
+    if (connectTimeoutRef.current) {
+      clearTimeout(connectTimeoutRef.current);
+      connectTimeoutRef.current = null;
+    }
+  }, []);
 
   // Refs for event handlers to access latest state
   const callStateRef = useRef(callState);
@@ -141,55 +151,119 @@ export const useVoiceCallFlow = () => {
       return;
     }
 
+    // Guard against double-taps / re-entry: only start a call from idle/ended.
+    if (callState.isConnecting || callState.isConnected || callState.isEnding) {
+      console.warn('[VoiceCallFlow] Call already in progress; ignoring duplicate start');
+      return;
+    }
+
     console.log('[VoiceCallFlow] Initiating call with data:', currentData);
 
     // Immediately transition to connecting state
     callState.transitionTo('connecting');
 
-    try {
-      // Pass data directly to VAPI - no closure issues
-      await vapiService.startCall({
-        name: currentData.name,
-        email: currentData.email,
-        company: currentData.company,
-        role: currentData.role,
-        phone: currentData.phone,
-        callSource: 'website',
-      });
-
-      // CRITICAL FIX: saveCallTime() moved to handleCallStart
-      // Only save call time AFTER call actually connects (not just after start() returns)
-      // This prevents rate-limiting users when their call fails to connect
-
-      // State will transition to 'connected' via VAPI 'call-start' event
-    } catch (error) {
-      console.error('[VoiceCallFlow] Failed to start call:', error);
-
-      callState.transitionTo('ended');
-
-      // Surface the specific failure (e.g. mic permission denied / mic in use)
-      // raised by the mic pre-warm, instead of a generic message, so the user
-      // knows what to fix.
-      const reason = error instanceof Error ? error.message : '';
+    // Heads-up for slow connections — weak mobile networks legitimately take
+    // 30–80s to load the Daily call-machine bundle + join.
+    if (isSlowNetwork()) {
       toast({
-        title: 'Failed to Start Call',
-        description: reason
-          ? `${reason}. Please resolve it and try again.`
-          : 'Unable to initialize call. Please check your microphone permissions and try again.',
-        variant: 'destructive',
+        title: 'Slow connection detected',
+        description:
+          'Connecting may take up to a minute. For best results use Wi-Fi or a stronger signal.',
       });
     }
-  }, [callState, toast]);
+
+    // Overall connect guard: if 'call-start' hasn't fired by the timeout, abort
+    // with an honest message instead of hanging for 60–80s.
+    clearConnectTimeout();
+    connectTimeoutRef.current = setTimeout(() => {
+      if (!callStateRef.current.isConnecting) return;
+      console.warn('[VoiceCallFlow] Connect timed out');
+      logCallDiagnostics('connect-timeout');
+      vapiService.stop();
+      callStateRef.current.transitionTo('ended');
+      document.body.style.overflow = 'auto';
+      toastRef.current({
+        title: "Couldn't connect",
+        description:
+          'Your network or device may be too slow. Try Wi-Fi or a stronger signal, then try again.',
+        variant: 'destructive',
+      });
+    }, CALL_CONSTANTS.CONNECTION_TIMEOUT_MS);
+
+    // Try to start, with one automatic retry on a network-y start failure.
+    // The connect timeout above naturally caps total time, so a slow failure
+    // won't stack two long waits.
+    const maxAttempts = 2;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const callId = await vapiService.startCall({
+          name: currentData.name,
+          email: currentData.email,
+          company: currentData.company,
+          role: currentData.role,
+          phone: currentData.phone,
+          callSource: 'website',
+        });
+
+        // Reliable call-id capture (matches the Vapi dashboard).
+        if (callId) setVapiCallId(callId);
+
+        // saveCallTime() + connected transition + timeout clear happen in
+        // handleCallStart, once the 'call-start' event actually fires.
+        return;
+      } catch (error) {
+        // If the connect timeout already aborted us, stop retrying.
+        if (!callStateRef.current.isConnecting) return;
+
+        if (attempt < maxAttempts) {
+          console.warn(`[VoiceCallFlow] Start attempt ${attempt} failed; retrying`, error);
+          logCallDiagnostics('connect-retry', {
+            error: serializeError(error),
+            extra: { attempt },
+          });
+          toast({
+            title: 'Reconnecting…',
+            description: 'First attempt failed — trying again.',
+          });
+          continue;
+        }
+
+        // Final failure — give an honest, network-aware message.
+        clearConnectTimeout();
+        console.error('[VoiceCallFlow] Failed to start call:', error);
+        callState.transitionTo('ended');
+        document.body.style.overflow = 'auto';
+
+        const reason = error instanceof Error ? error.message : '';
+        const isMicIssue = /microphone|\bmic\b/i.test(reason);
+        toast({
+          title: 'Failed to Start Call',
+          description: isMicIssue
+            ? `${reason}. Please resolve it and try again.`
+            : 'Couldn’t connect — your network or device may be struggling. Try Wi-Fi or a stronger signal, then try again.',
+          variant: 'destructive',
+        });
+      }
+    }
+  }, [callState, toast, clearConnectTimeout]);
 
   /**
    * End call
    */
   const endCall = useCallback(() => {
     console.log('[VoiceCallFlow] Ending call');
-    callState.transitionTo('ending');
+    clearConnectTimeout();
+    // From 'connecting' the SDK may never emit 'call-end', so end directly —
+    // otherwise tapping Cancel leaves the user stuck on a frozen "Connecting…"
+    // screen ('connecting → ending' is not a valid transition).
+    if (callState.isConnecting) {
+      callState.transitionTo('ended');
+    } else {
+      callState.transitionTo('ending');
+    }
     vapiService.stop();
-    // State will transition to 'ended' via VAPI 'call-end' event
-  }, [callState]);
+    // From 'connected', state transitions to 'ended' via the VAPI 'call-end' event
+  }, [callState, clearConnectTimeout]);
 
   /**
    * Toggle mute
@@ -246,6 +320,7 @@ export const useVoiceCallFlow = () => {
   useEffect(() => {
     const handleCallStart = async () => {
       console.log('[VAPI] Call started');
+      clearConnectTimeout();
       callStateRef.current.transitionTo('connected');
       setCallStartTime(new Date());
       document.body.style.overflow = 'hidden';
@@ -273,6 +348,7 @@ export const useVoiceCallFlow = () => {
 
     const handleCallEnd = async () => {
       console.log('[VAPI] Call ended');
+      clearConnectTimeout();
       callStateRef.current.transitionTo('ended');
       document.body.style.overflow = 'auto';
 
@@ -361,6 +437,7 @@ export const useVoiceCallFlow = () => {
 
     const handleError = (error: Error) => {
       console.error('[VAPI] Error:', error);
+      clearConnectTimeout();
       logCallDiagnostics('call-error', { error: serializeError(error) });
       toastRef.current({
         title: 'Call Error',
@@ -382,6 +459,7 @@ export const useVoiceCallFlow = () => {
         duration: event.totalDuration,
         context: event.context,
       });
+      clearConnectTimeout();
       logCallDiagnostics('call-start-failed', {
         error: event?.error != null ? serializeError(event.error) : null,
         extra: {
@@ -430,10 +508,31 @@ export const useVoiceCallFlow = () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
+      if (connectTimeoutRef.current) {
+        clearTimeout(connectTimeoutRef.current);
+        connectTimeoutRef.current = null;
+      }
+
+      // If a call is still live when the widget unmounts (e.g. the user routes
+      // to /watch-demo mid-call), hang it up so it doesn't keep running
+      // invisibly, and release the mobile audio handler / screen wake lock.
+      const st = callStateRef.current;
+      if (st && !st.isIdle && !st.isEnded) {
+        try {
+          vapiService.stop();
+        } catch (e) {
+          console.error('[VoiceCallFlow] Failed to stop call on unmount:', e);
+        }
+        if (mobileAudioCleanupRef.current) {
+          mobileAudioCleanupRef.current().catch(() => {});
+          mobileAudioCleanupRef.current = null;
+        }
+      }
+
       removeListeners(); // Remove event listeners
       document.body.style.overflow = 'auto';
     };
-  }, []); // Empty deps - only run once on mount
+  }, [clearConnectTimeout]); // Re-bind only if the (stable) clear helper changes
 
   /**
    * Reset call state

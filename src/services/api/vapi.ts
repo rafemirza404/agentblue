@@ -79,10 +79,12 @@ export class VapiService {
   }
 
   /**
-   * Start a call with the given variables
+   * Start a call with the given variables.
+   * Returns the Vapi call id on success (or null) so the caller can store a
+   * reliable id that matches the Vapi dashboard.
    * FIX: Check for null return value from VAPI SDK
    */
-  async startCall(variables: VapiVariables): Promise<void> {
+  async startCall(variables: VapiVariables): Promise<string | null> {
     // Validate that phone number is always present
     if (!variables.phone || variables.phone.trim() === '') {
       const error = new Error('Phone number is required but missing in VAPI metadata');
@@ -138,10 +140,72 @@ export class VapiService {
       }
 
       console.log('[VAPI] Call start initiated successfully');
+      // Attach a best-effort "black box" on the underlying Daily call object so
+      // we capture WebRTC/ICE state during the join phase (data Vapi's servers
+      // never see). Non-blocking, never throws.
+      this.attachConnectionDiagnostics();
+      return (result as { id?: string })?.id ?? null;
     } catch (error) {
       console.error('[VAPI] Failed to start call:', error);
       logCallDiagnostics('call-start-error', { error: serializeError(error) });
       throw error;
+    }
+  }
+
+  /**
+   * Get the underlying Daily call object (exposed by @vapi-ai/web), or null.
+   * Available after a call has started.
+   */
+  getDailyCallObject(): any | null {
+    try {
+      const anyClient = this.client as unknown as {
+        getDailyCallObject?: () => unknown;
+      };
+      return anyClient.getDailyCallObject?.() ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Best-effort capture of the live WebRTC/Daily connection state into call
+   * diagnostics. This is the only place we can see *why* a join stalls on a
+   * weak network (ICE stuck on "checking", room deleted, etc.) — Vapi's
+   * server-side records don't include it. Never throws.
+   */
+  private attachConnectionDiagnostics(): void {
+    try {
+      const daily = this.getDailyCallObject();
+      if (!daily) return;
+
+      const sample = (label: string) => {
+        try {
+          logCallDiagnostics('connection-state', {
+            extra: {
+              label,
+              meetingState: daily.meetingState?.(),
+              // Daily exposes participant/network stats lazily; capture what's safe.
+              participantCount:
+                typeof daily.participantCounts === 'function'
+                  ? daily.participantCounts()
+                  : undefined,
+            },
+          });
+        } catch {
+          /* ignore sampling errors */
+        }
+      };
+
+      daily.on?.('joined-meeting', () => sample('joined-meeting'));
+      daily.on?.('left-meeting', () => sample('left-meeting'));
+      daily.on?.('error', (e: unknown) =>
+        logCallDiagnostics('connection-state', {
+          extra: { label: 'daily-error' },
+          error: serializeError(e),
+        })
+      );
+    } catch {
+      /* diagnostics must never affect the call */
     }
   }
 

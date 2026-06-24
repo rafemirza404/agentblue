@@ -21,17 +21,26 @@ export const useRateLimit = () => {
     const lastCallTime = storageService.getLastCallTime();
 
     if (lastCallTime) {
-      const timeSinceLastCall = Date.now() - lastCallTime;
-      const minutesSince = Math.floor(timeSinceLastCall / 60000);
+      const elapsedMs = Date.now() - lastCallTime;
 
-      if (minutesSince < CALL_CONSTANTS.RATE_LIMIT_MINUTES) {
-        const minutesRemaining = CALL_CONSTANTS.RATE_LIMIT_MINUTES - minutesSince;
-        toast({
-          title: 'Please wait',
-          description: `Please wait ${minutesRemaining} minutes before your next call`,
-          variant: 'destructive',
-        });
-        return false;
+      // Guard against clock skew / corrupt timestamps: a value in the future
+      // (elapsedMs < 0) means the device clock moved backward — ignore it
+      // rather than locking the user out with a bogus "wait 75 minutes".
+      if (elapsedMs >= 0) {
+        const minutesSince = Math.floor(elapsedMs / 60000);
+
+        if (minutesSince < CALL_CONSTANTS.RATE_LIMIT_MINUTES) {
+          const minutesRemaining = Math.max(
+            1,
+            CALL_CONSTANTS.RATE_LIMIT_MINUTES - minutesSince
+          );
+          toast({
+            title: 'Please wait',
+            description: `Please wait ${minutesRemaining} minutes before your next call`,
+            variant: 'destructive',
+          });
+          return false;
+        }
       }
     }
 
