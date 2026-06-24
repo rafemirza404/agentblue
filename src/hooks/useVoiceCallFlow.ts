@@ -174,9 +174,11 @@ export const useVoiceCallFlow = () => {
 
     // Overall connect guard: if 'call-start' hasn't fired by the timeout, abort
     // with an honest message instead of hanging for 60–80s.
+    let aborted = false;
     clearConnectTimeout();
     connectTimeoutRef.current = setTimeout(() => {
       if (!callStateRef.current.isConnecting) return;
+      aborted = true;
       console.warn('[VoiceCallFlow] Connect timed out');
       logCallDiagnostics('connect-timeout');
       vapiService.stop();
@@ -212,10 +214,18 @@ export const useVoiceCallFlow = () => {
         // handleCallStart, once the 'call-start' event actually fires.
         return;
       } catch (error) {
-        // If the connect timeout already aborted us, stop retrying.
-        if (!callStateRef.current.isConnecting) return;
+        // If the connect timeout already aborted this attempt, stop.
+        if (aborted) return;
 
-        if (attempt < maxAttempts) {
+        const reason = error instanceof Error ? error.message : '';
+        // Mic / permission / device failures are TERMINAL — retrying is
+        // pointless (the mic is blocked, not flaky) and just flashes a
+        // confusing "Reconnecting…" before the real error.
+        const isDeviceOrPermissionError =
+          /microphone|\bmic\b|permission|denied|in use|not found|could not access/i.test(reason);
+
+        // Retry once — but only for network-y failures, never device/permission.
+        if (attempt < maxAttempts && !isDeviceOrPermissionError) {
           console.warn(`[VoiceCallFlow] Start attempt ${attempt} failed; retrying`, error);
           logCallDiagnostics('connect-retry', {
             error: serializeError(error),
@@ -228,21 +238,23 @@ export const useVoiceCallFlow = () => {
           continue;
         }
 
-        // Final failure — give an honest, network-aware message.
+        // Fail now. Use callStateRef.current (NOT the captured `callState`,
+        // which is the stale 'idle' object from before transitionTo('connecting')
+        // — `idle → ended` would be rejected and leave the user stuck on the
+        // "Connecting…" screen).
         clearConnectTimeout();
         console.error('[VoiceCallFlow] Failed to start call:', error);
-        callState.transitionTo('ended');
+        callStateRef.current.transitionTo('ended');
         document.body.style.overflow = 'auto';
 
-        const reason = error instanceof Error ? error.message : '';
-        const isMicIssue = /microphone|\bmic\b/i.test(reason);
         toast({
-          title: 'Failed to Start Call',
-          description: isMicIssue
-            ? `${reason}. Please resolve it and try again.`
+          title: isDeviceOrPermissionError ? 'Microphone Unavailable' : 'Failed to Start Call',
+          description: isDeviceOrPermissionError
+            ? `${reason}. Check your browser's microphone permission for this site, then try again.`
             : 'Couldn’t connect — your network or device may be struggling. Try Wi-Fi or a stronger signal, then try again.',
           variant: 'destructive',
         });
+        return;
       }
     }
   }, [callState, toast, clearConnectTimeout]);
