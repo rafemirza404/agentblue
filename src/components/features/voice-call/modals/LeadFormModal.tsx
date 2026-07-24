@@ -63,7 +63,8 @@ export const LeadFormModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-md p-0 gap-0 rounded-2xl sm:rounded-2xl overflow-hidden">
+        <div className="max-h-[85vh] overflow-y-auto thin-scroll p-6">
         <DialogHeader>
           <DialogTitle className="text-2xl">Connect with Sophia AI</DialogTitle>
           <DialogDescription className="text-base pt-2">
@@ -181,9 +182,10 @@ export const LeadFormModal = ({
           <Button onClick={onClose} variant="outline" className="flex-1">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} className="flex-1 bg-[#0066FF] hover:bg-[#0052CC]">
+          <Button onClick={handleSubmit} className="flex-1 bg-[#4F7CFF] hover:bg-[#3B6AE8]">
             Continue
           </Button>
+        </div>
         </div>
       </DialogContent>
     </Dialog>

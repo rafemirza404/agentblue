@@ -73,9 +73,9 @@ export const TopicCards = ({ onCardClick, isMobile = false }: TopicCardsProps) =
           <button
             key={card.id}
             onClick={() => onCardClick(card.message)}
-            className="bg-white border-2 border-[#E5E7EB] rounded-xl p-4 cursor-pointer transition-all duration-250 hover:border-[#0066FF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,102,255,0.15)] text-left flex flex-col gap-2 col-span-2 last:col-span-2"
+            className="bg-white border-2 border-[#E5E7EB] rounded-xl p-4 cursor-pointer transition-all duration-250 hover:border-[#4F7CFF] hover:bg-[#F0F7FF] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(79,124,255,0.15)] text-left flex flex-col gap-2 col-span-2 last:col-span-2"
           >
-            <Icon className="w-8 h-8 text-[#0066FF] mb-1" />
+            <Icon className="w-8 h-8 text-[#4F7CFF] mb-1" />
             <div className="text-[15px] font-semibold text-[#1a1a2e] leading-tight">{card.title}</div>
             <div className="text-[13px] text-[#6B7280] leading-snug">{card.description}</div>
           </button>

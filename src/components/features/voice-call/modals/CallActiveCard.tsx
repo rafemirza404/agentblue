@@ -37,7 +37,7 @@ export const CallActiveCard = ({
       <>
         <div className="fixed inset-0 bg-black/40 z-[9996]" />
 
-        <div className="fixed bottom-6 left-6 z-[9997] bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl border-2 border-[#0066FF] w-[280px]">
+        <div className="fixed bottom-6 left-6 z-[9997] bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl border-2 border-[#4F7CFF] w-[280px]">
           <div className="space-y-4 text-center">
             <div className="flex items-center justify-center gap-2">
               <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
@@ -50,7 +50,7 @@ export const CallActiveCard = ({
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-2 bg-[#0066FF] rounded-full animate-pulse"
+                  className="w-2 bg-[#4F7CFF] rounded-full animate-pulse"
                   style={{
                     animationDelay: `${i * 0.1}s`,
                     height: '20px',
@@ -87,7 +87,7 @@ export const CallActiveCard = ({
       <>
         <div className="fixed inset-0 bg-black/40 z-[9996]" />
 
-        <div className="fixed bottom-6 left-6 z-[9997] bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl border-2 border-[#0066FF] animate-pulse-glow w-[280px]">
+        <div className="fixed bottom-6 left-6 z-[9997] bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-2xl border-2 border-[#4F7CFF] animate-pulse-glow w-[280px]">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
@@ -100,7 +100,7 @@ export const CallActiveCard = ({
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-2 bg-[#0066FF] rounded-full animate-waveform"
+                  className="w-2 bg-[#4F7CFF] rounded-full animate-waveform"
                   style={{
                     animationDelay: `${i * 0.1}s`,
                     height: '20px',

@@ -203,7 +203,7 @@ export const FeedbackModal = ({
           <div className="space-y-3 pt-4">
             <Button
               onClick={handleExploreServices}
-              className="w-full bg-[#0066FF] hover:bg-[#0052CC]"
+              className="w-full bg-[#4F7CFF] hover:bg-[#3B6AE8]"
             >
               Explore Our Services
             </Button>
