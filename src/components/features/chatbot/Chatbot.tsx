@@ -230,22 +230,21 @@ const Chatbot = () => {
           </div>
         )}
 
-        {/* Button with pulse */}
-        <div className="relative">
-          <span className="absolute inset-0 rounded-full bg-[#4F7CFF] opacity-30 animate-ping" style={{ animationDuration: '2.5s' }} />
-          <button
-            onClick={() => { setIsOpen(true); setShowPrompt(false); }}
-            className="relative w-[52px] h-[52px] bg-[#4F7CFF] rounded-full shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.5)] hover:scale-105 transition-all duration-300 flex items-center justify-center"
-            aria-label="Open chat support"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                fill="white"
-              />
-            </svg>
-          </button>
-        </div>
+        {/* Launcher — compact icon on mobile (no overlap with the Sophia pill),
+            full "Chat with us" pill on desktop, matching the Sophia button style */}
+        <button
+          onClick={() => { setIsOpen(true); setShowPrompt(false); }}
+          className="inline-flex items-center justify-center gap-2 h-[52px] w-[52px] sm:w-auto sm:px-5 rounded-full bg-[#4F7CFF] hover:bg-[#4F7CFF] text-white text-sm font-semibold whitespace-nowrap transition-all duration-300 hover:scale-105 shadow-[0_4px_20px_rgba(79,124,255,0.3)] hover:shadow-[0_6px_28px_rgba(79,124,255,0.4)]"
+          aria-label="Open chat support"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              fill="white"
+            />
+          </svg>
+          <span className="hidden sm:inline">Chat with us</span>
+        </button>
 
       </div>
     );
@@ -277,7 +276,7 @@ const Chatbot = () => {
               />
             </div>
             <div>
-              <h3 className="text-[#1a1a2e] font-semibold text-lg leading-tight">
+              <h3 className="brand-wordmark text-[#1a1a2e] font-semibold text-lg leading-tight">
                 {ENV.app.name}
               </h3>
               <p className="text-[#6B7280] text-[13px] mt-1">
@@ -390,7 +389,7 @@ const Chatbot = () => {
               <img src={agentblueLogo} alt="AgentBlue" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h3 className="text-[#1a1a2e] font-semibold text-base leading-tight">
+              <h3 className="brand-wordmark text-[#1a1a2e] font-semibold text-base leading-tight">
                 {ENV.app.name}
               </h3>
               <div className="flex items-center gap-1.5 mt-0.5">

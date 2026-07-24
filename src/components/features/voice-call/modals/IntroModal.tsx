@@ -50,7 +50,7 @@ export const IntroModal = ({ open, onClose, onConfirm }: IntroModalProps) => {
           <Button onClick={onClose} variant="outline" className="flex-1">
             Cancel
           </Button>
-          <Button onClick={onConfirm} className="flex-1 bg-[#0066FF] hover:bg-[#0052CC]">
+          <Button onClick={onConfirm} className="flex-1 bg-[#4F7CFF] hover:bg-[#3B6AE8]">
             <Phone className="w-4 h-4 mr-2" />
             Start Voice Call
           </Button>

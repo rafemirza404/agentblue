@@ -58,7 +58,7 @@ export const EmailLookupModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-2xl sm:rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-2xl">Welcome back!</DialogTitle>
           <DialogDescription className="text-base pt-2">
@@ -86,7 +86,7 @@ export const EmailLookupModal = ({
           <Button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="w-full bg-[#0066FF] hover:bg-[#0052CC]"
+            className="w-full bg-[#4F7CFF] hover:bg-[#3B6AE8]"
           >
             {isLoading ? 'Looking up...' : 'Continue'}
           </Button>

@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Libre Caslon Condensed — headings & headlines site-wide */
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Libre Caslon Condensed';
+  src: url('/fonts/LibreCaslonCondensed/LibreCaslonCondensed-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -148,12 +192,41 @@ html {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Typography — Inter-based, consistent across all sections */
+  /* Typography — headlines & headings use Libre Caslon Condensed site-wide.
+     Default SemiBold reads well for headlines; elements with a `font-bold`
+     utility still render Caslon Bold, preserving existing emphasis. */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: 'Libre Caslon Condensed', 'Inter', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     line-height: 1.15;
+  }
+
+  /* AgentBlue wordmark / brand name must stay Inter even inside heading tags */
+  .brand-wordmark {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+  }
+
+  /* Thin, soft scrollbar for scrollable modals/panels */
+  .thin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(79, 124, 255, 0.35) transparent;
+  }
+  .thin-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .thin-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .thin-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(79, 124, 255, 0.35);
+    border-radius: 9999px;
+  }
+  .thin-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(79, 124, 255, 0.55);
   }
 }
 
