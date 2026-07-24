@@ -75,7 +75,7 @@ const HowItWorks = () => {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4">
-            Three Tiers. One Mission: Operational Excellence.
+            Three Tiers. One Mission: <em className="italic">Operational Excellence.</em>
           </h2>
           <p className="text-base text-muted-foreground">
             Choose your entry point—all paths start with strategy
