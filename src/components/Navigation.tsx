@@ -72,7 +72,7 @@ const Navigation = () => {
                 className="w-full h-full object-contain"
               />
             </div>
-            <span className={`text-[17px] font-bold tracking-tight ${isDemoPage ? 'text-white' : 'text-gray-900'}`}>
+            <span className={`brand-wordmark text-[17px] tracking-tight ${isDemoPage ? 'text-white' : 'text-gray-900'}`}>
               AgentBlue
             </span>
           </Link>

@@ -19,7 +19,7 @@ const NewHero = () => {
 
         {/* Headline */}
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight animate-slide-up mb-6">
-          Automation Strategy That Fixes Revenue Leaks, For Operations-Heavy Businesses
+          Automation Strategy That Fixes <em className="italic">Revenue Leaks</em>, For Operations-Heavy Businesses
         </h1>
 
         {/* Subheading */}

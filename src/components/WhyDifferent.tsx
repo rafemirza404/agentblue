@@ -32,7 +32,7 @@ const WhyDifferent = () => {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.65, ease }}
           >
-            Most Automation Projects Fail. Here's Why We're Different:
+            Most Automation Projects Fail. Here's <em className="italic">Why We're Different:</em>
           </motion.h2>
 
           <motion.p

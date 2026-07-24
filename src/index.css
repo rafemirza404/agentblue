@@ -46,6 +46,22 @@
   font-display: swap;
 }
 
+/* Inter — body + AgentBlue wordmark (variable, weight 100–900). Free/OFL. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-Italic-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -192,20 +208,21 @@ html {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Typography — headlines & headings use Libre Caslon Condensed site-wide.
-     Default SemiBold reads well for headlines; elements with a `font-bold`
-     utility still render Caslon Bold, preserving existing emphasis. */
+  /* Typography — headlines & headings use Libre Caslon Condensed site-wide, in a
+     light Regular weight for an editorial feel (!important overrides Tailwind
+     font-bold utilities so headings render light, not heavy). */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Libre Caslon Condensed', 'Inter', Georgia, serif;
-    font-weight: 600;
+    font-weight: 400 !important;
     letter-spacing: -0.01em;
     line-height: 1.15;
   }
 
-  /* AgentBlue wordmark / brand name must stay Inter even inside heading tags */
+  /* AgentBlue wordmark / brand name — Inter, light Medium weight, even inside
+     heading tags. Class specificity beats the h1–h6 rule above. */
   .brand-wordmark {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     letter-spacing: -0.01em;
   }
 

@@ -19,7 +19,7 @@ const Footer = () => {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <span className="text-xl font-bold">AgentBlue</span>
+              <span className="brand-wordmark text-xl">AgentBlue</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
               Transforming businesses through strategic automation—not just tools, but operational excellence.
