@@ -9,7 +9,7 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 // Same Cal.com target as CalendarBooking — submitting prefills the booking.
 const CAL_URL = "https://cal.com/agent-blue-lt5i92/30min";
 
-const FONT = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+const FONT = "'Inter', Helvetica, Arial, sans-serif";
 
 const FinalCTA = () => {
   const [email, setEmail] = useState("");

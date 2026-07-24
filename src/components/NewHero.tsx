@@ -27,7 +27,7 @@ const NewHero = () => {
         highlightText=""
         description="We simplify your operations, automate the busywork, and scale what works — first call in 30 minutes."
         maxWidth="max-w-4xl"
-        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontFamily="'Inter', Helvetica, Arial, sans-serif"
         fontWeight={400}
         titleClassName="!text-black !font-normal"
         descriptionClassName="!text-white font-normal"
@@ -46,12 +46,12 @@ const NewHero = () => {
             placeholder="Enter your email"
             aria-label="Email"
             className="h-11 w-full flex-1 rounded-xl bg-transparent px-4 text-[15px] text-black placeholder:text-black/40 focus:outline-none"
-            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+            style={{ fontFamily: "'Inter', Helvetica, Arial, sans-serif" }}
           />
           <button
             type="submit"
             className="group inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-black px-6 text-[15px] font-semibold text-white transition-colors duration-300 hover:bg-[#111] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-            style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+            style={{ fontFamily: "'Inter', Helvetica, Arial, sans-serif" }}
           >
             Get started
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />

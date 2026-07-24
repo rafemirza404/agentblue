@@ -2,7 +2,7 @@
 
 import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 
-const FONT = "'Helvetica Neue', Helvetica, Arial, sans-serif";
+const FONT = "'Inter', Helvetica, Arial, sans-serif";
 
 type FooterLink = { label: string; href: string };
 

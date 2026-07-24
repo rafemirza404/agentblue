@@ -80,7 +80,7 @@ export function HeroSection({
       <div className={`relative z-10 ${maxWidth} mx-auto px-6 w-full`}>
         <div className="text-center">
           {/* Not an <h1> so the global Libre Caslon heading rule doesn't
-              override the hero's Helvetica Neue font. */}
+              override the hero's Inter font. */}
           <div
             role="heading"
             aria-level={1}

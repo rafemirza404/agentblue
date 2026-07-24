@@ -19,7 +19,7 @@ const SHOW_VIDEO_DEMO = false;
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen home-inter-headings">
       <Navigation />
       <main>
         {/* 1 — Hero: the promise */}

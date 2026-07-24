@@ -291,7 +291,7 @@ const Chatbot = () => {
       </div>
 
       {/* Desktop Chat Modal */}
-      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[414px] max-w-[414px] h-[522px] max-h-[522px] bg-white rounded-[26px] shadow-[0_24px_70px_-12px_rgba(20,20,40,0.28),0_0_0_1px_rgba(20,20,40,0.04)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
+      <div className="hidden md:flex fixed bottom-[90px] right-6 w-[414px] max-w-[414px] h-[600px] max-h-[600px] bg-white rounded-[26px] shadow-[0_24px_70px_-12px_rgba(20,20,40,0.28),0_0_0_1px_rgba(20,20,40,0.04)] z-[9999] flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 overflow-hidden">
         {/* Header */}
         <div className="h-[76px] bg-white px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">

@@ -2,84 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Helvetica Neue local font faces */
+/* Inter — body & UI font (variable, weight 100–900). Free/OFL. */
 @font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLight.woff2') format('woff2');
-  font-weight: 100;
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-Variable.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-UltraLightItalic.woff2') format('woff2');
-  font-weight: 100;
+  font-family: 'Inter';
+  src: url('/fonts/Inter/Inter-Italic-Variable.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-stretch: condensed;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Helvetica Neue';
-  src: url('/fonts/Helvetica Neue/HelveticaNeue-CondensedBlack.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-stretch: condensed;
   font-display: swap;
 }
 
@@ -265,7 +200,7 @@ html {
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     font-feature-settings: "kern" 1;
@@ -275,14 +210,14 @@ html {
 
   /* Typography — headings use Libre Caslon Condensed site-wide */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Libre Caslon Condensed', 'Helvetica Neue', Helvetica, Arial, serif;
+    font-family: 'Libre Caslon Condensed', 'Inter', Helvetica, Arial, serif;
     letter-spacing: -0.01em;
     line-height: 1.15;
   }
 
   /* Sub-heading helper — apply to the supporting copy under a heading */
   .subheading {
-    font-family: 'Libre Caslon Condensed', 'Helvetica Neue', Helvetica, Arial, serif;
+    font-family: 'Libre Caslon Condensed', 'Inter', Helvetica, Arial, serif;
   }
 }
 
@@ -290,8 +225,20 @@ html {
    inline Tailwind font-bold/semibold/etc. utilities. Placed outside @layer
    so it wins the cascade. */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Libre Caslon Condensed', 'Helvetica Neue', Helvetica, Arial, serif !important;
+  font-family: 'Libre Caslon Condensed', 'Inter', Helvetica, Arial, serif !important;
   font-weight: 400 !important;
+}
+
+/* Main (landing) page only — headings use Inter instead of Libre Caslon.
+   Higher specificity than the global rule above, so it wins even without
+   relying on source order. Scoped via .home-inter-headings on Index root. */
+.home-inter-headings h1,
+.home-inter-headings h2,
+.home-inter-headings h3,
+.home-inter-headings h4,
+.home-inter-headings h5,
+.home-inter-headings h6 {
+  font-family: 'Inter', Helvetica, Arial, sans-serif !important;
 }
 
 @layer components {
